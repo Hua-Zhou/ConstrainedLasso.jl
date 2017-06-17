@@ -1,5 +1,8 @@
-using ConstrainedLasso
-using Base.Test
+module PkgTest
+
+using Base.Test, ConstrainedLasso, SCS, ECOS
 
 # write your own tests here
-@test 1 == 2
+include("constrsparsereg_test.jl")
+
+end
