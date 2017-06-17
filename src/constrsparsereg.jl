@@ -11,6 +11,24 @@ Sparse linear regression with constraints. Minimize
 subject to linear constraints.
 
 # Input
+* `X`: predictor matrix.
+* `y`: response vector.
+* `λ`: tuning parameter. Default 0.
+
+# Optional argument
+* `A`: constraint matrix.
+* `sense`: can be a vector of `'='`, `'<'`, or `'>'`.
+* `b`: rhs of linear constaints.
+* `lb`: lower bounds.
+* `ub`: upper bounds.
+* `obswt`: observation weights.
+* `penwt`: predictor penalty weights. Default is `[0 1 1 ... 1]`
+* `solver`: a solver Convex.jl can use.
+
+# Output
+* `β`: estimated coefficents.
+* `objval`: optimal objective value.
+* `problem`: Convex.jl problem.
 """
 function lsq_constrsparsereg(
     X::AbstractMatrix,
