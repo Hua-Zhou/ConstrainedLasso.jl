@@ -66,11 +66,13 @@ function lsq_constrsparsereg(
         problem.constraints += A[idx, :] * β >= b[idx]
     end
     # boundary conditions
-    if any(lb .> typemin(eltype(X)))
-        problem.constraints += β >= lb
+    idx = find(lb .> typemin(eltype(X)))
+    if length(idx) > 0
+        problem.constraints += β[idx] >= lb[idx]
     end
-    if any(ub .< typemax(eltype(X)))
-        problem.constraints += β <= ub
+    idx = find(ub .< typemax(eltype(X)))
+    if length(idx) > 0
+        problem.constraints += β[idx] <= ub[idx]
     end
 
     # optimization
