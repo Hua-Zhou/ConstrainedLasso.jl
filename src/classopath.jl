@@ -4,7 +4,8 @@ export lsq_classopath
 
 function lsq_classopath(
     X::AbstractMatrix,
-    y::AbstractVector;
+    y::AbstractVector,
+    ρmax::Number = Inf;
     Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
     beq::AbstractVector   = zeros(eltype(X), size(A, 1)),
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
@@ -66,8 +67,29 @@ function lsq_classopath(
     objvalpath = zeros(maxiters) # objective value
 
     # initialization
-    # solve LP to find solution at ρ = ∞
-    β = Variable(p)
-    
+    # use LP to find ρmax
+    sense = [repmat(['='], neq); repmat(['<'], nineq)]
+    β, _, problem = lsq_constrsparsereg(X, y, Inf;
+                    [Aeq; Aineq], sense, [beq; bineq], lb, ub)
+
+
+end
+
+"""
+    find_ρmax(X, y)
+
+Find the maximum tuning parameter value `ρmax` such that the solution to
+    `minimize `
+"""
+function find_ρmax(
+    X::AbstractMatrix,
+    y::AbstractVector;
+    Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
+    beq::AbstractVector   = zeros(eltype(X), size(A, 1)),
+    Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+    bineq::AbstractVector = zeros(eltype(X), size(A, 1))
+    )
+
+    return ρmax, λeq, λineq
 
 end
