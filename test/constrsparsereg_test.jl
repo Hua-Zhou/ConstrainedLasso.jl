@@ -11,17 +11,30 @@ n, p = 100, 20
 # generate data
 X = randn(n, p)
 y = X * β + randn(n)
-# penalty parameter
-λ = 10.0
 A = ones(1, p)
 sense = '='
 b = 0.0
 penwt  = ones(p)
-solver = SCSSolver(verbose=1)
+solver = SCSSolver(verbose=0)
 #solver = ECOSSolver()
-#solver = MosekSolver(LOG=1)
+#using Mosek; solver = MosekSolver(LOG=1)
 #solver = GurobiSolver(OutputFlag=1)
-# fit using quadprog
-β̂, objval, = lsq_constrsparsereg(X, y, λ; A = A, sense = sense, b = b,
+
+info("Optimize at a single tuning parameter values")
+ρ = 10.0
+β̂, = lsq_constrsparsereg(X, y, ρ; A = A, sense = sense, b = b,
     penwt = penwt, solver = solver)
+@show β̂
 @test_approx_eq_eps sum(β̂) 0.0 1e-6
+
+info("Optimize at multiple tuning parameter values")
+
+ρlist = 1.0:10.0
+β̂ = lsq_constrsparsereg(X, y, ρlist; A = A, sense = sense, b = b,
+    penwt = penwt, solver = solver)
+println(β̂)
+@show sum(β̂, 1)
+
+#info("Test lsq_classopath")
+
+#lsq_classopath(X, y; Aeq, beq, Aineq, Bineq, )
