@@ -8,10 +8,10 @@ makedocs(
       pages = Any[
           "Home" => "index.md",
           "Examples" => Any[
-#              "demo/data1/.md",
-#              "demo/data2/.md",
-              "demo/data3/microbiome.md",
-              "demo/lasso/demo_lasso.md",
+              "demo/prostate.md",
+              "demo/warming.md",
+              "demo/tumor.md",
+              "demo/microbiome.md",
           ]
       ]
 
@@ -20,6 +20,7 @@ makedocs(
 deploydocs(
       repo    = "github.com/Hua-Zhou/ConstrainedLasso.jl.git",
       target  = "build",
+      julia   = "0.6",
       deps    = nothing,
       make    = nothing
 )
