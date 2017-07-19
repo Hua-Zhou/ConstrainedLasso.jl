@@ -5,9 +5,6 @@ Here we estimate a generalized lasso model (sparse fused lasso) via the constrai
 
 ```@setup tumor 
 using ConstrainedLasso
-using Mosek
-# include("../../../../src/constrsparsereg.jl") # hide 
-# include("../../../../src/classopath.jl") # hide 
 ```
 ```@example 1
 # organize data

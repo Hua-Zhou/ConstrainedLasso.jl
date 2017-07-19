@@ -5,14 +5,11 @@ Here we estimate the zero-sum regression model using constrained lasso.
 
 ```@setup micro
 using ConstrainedLasso
-using Mosek
-#include("../../../../src/constrsparsereg.jl")
-#include("../../../../src/classopath.jl")
 ```
 
 ```@example
 ## load & organize data 
-zerosum = readcsv("zerosum.csv", header=true)[1]
+zerosum = readcsv("data/zerosum.csv", header=true)[1]
 # extract data 
 y = zerosum[:, 1]
 X = zerosum[:, 2:end]

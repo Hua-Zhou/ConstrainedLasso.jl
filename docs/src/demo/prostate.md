@@ -8,15 +8,12 @@ the constrained lasso solution path (`lsq_classopath.jl`) and compares to two ot
 
 ```@setup lasso
 using ConstrainedLasso
-using Mosek
 using DataFrames
-#include("../src/constrsparsereg_tmp.jl") # hide 
-#include("../src/classopath_tmp.jl") # hide
 ```
 
 ```@example 1
 ## load data
-prostate = readtable("prostate.csv")
+prostate = readtable("data/prostate.csv")
 
 ## organize data
 # combine predictors into data matrix

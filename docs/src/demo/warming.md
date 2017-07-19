@@ -8,8 +8,6 @@ using ConstrainedLasso
 using DataFrames
 using Base.Test
 include("monreg.jl")
-# include("../../../../src/constrsparsereg.jl") # hide 
-# include("../../../../src/classopath.jl") # hide 
 ```
 
 
