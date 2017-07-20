@@ -1,5 +1,7 @@
 # functions for fitting constrained lasso at fixed tuning parameter value
 
+export lsq_constrsparsereg
+
 """
     lsq_constrsparsereg!(X, y, ρ=0.0)
 
@@ -7,26 +9,25 @@ Sparse linear regression with constraints. Minimize
     `0.5sumabs2(√obswt .* (y - X * β) + λ * sumabs(penwt .* β)`
 subject to linear constraints.
 
-# Input
-* `X`: predictor matrix.
-* `y`: response vector.
-* `ρ`: tuning parameter. Can be a number of a list of numbers. Default 0.
+# Arguments
+- `X`       : predictor matrix.
+- `y`       : response vector.
+- `ρ`       : tuning parameter. Can be a number of a list of numbers. Default 0.
 
-# Optional argument
-* `A`: constraint matrix.
-* `sense`: can be a vector of `'='`, `'<'`, or `'>'`.
-* `b`: rhs of linear constaints.
-* `lb`: lower bounds.
-* `ub`: upper bounds.
-* `obswt`: observation weights.
-* `penwt`: predictor penalty weights. Default is `[0 1 1 ... 1]`
-* `solver`: a solver Convex.jl can use.
-* `β0`: starting point for warm start.
+# Optional arguments
+- `Aeq`     : equality constraint matrix
+- `beq`     : equality constraint vector
+- `Aineq`   : inequality constraint matrix
+- `bineq`   : inequality constraint vector
+- `obswt`: observation weights.
+- `penwt`: predictor penalty weights. Default is `[0 1 1 ... 1]`
+- `solver`: a solver Convex.jl can use.
+- `β0`: starting point for warm start.
 
-# Output
-* `β`: estimated coefficents.
-* `objval`: optimal objective value.
-* `problem`: Convex.jl problem.
+### Returns
+- `β`: estimated coefficents.
+- `objval`: optimal objective value.
+- `problem`: Convex.jl problem.
 """
 
 function lsq_constrsparsereg(
@@ -40,7 +41,7 @@ function lsq_constrsparsereg(
     obswt::AbstractVector = ones(eltype(y), length(y)),
     penwt::AbstractVector = ones(eltype(X), size(X, 2)),
     #penwt::AbstractVector = [zero(eltype(X)); ones(eltype(X), size(X, 2) - 1)],
-    solver                = SCSSolver(max_iters=10e6, verbose=0),
+    solver                = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8),
     warmstart::Bool       = false
     )
 
@@ -49,8 +50,6 @@ function lsq_constrsparsereg(
     β̂ = zeros(eltype(X), p, length(ρ))
     optval_vec = zeros(length(ρ))
     prob_vec = []
-
-
 
     for i in 1:length(ρ)
 

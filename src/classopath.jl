@@ -1,9 +1,30 @@
-# functions for constrained lasso path algorithm
+export lsq_classopath 
+
+"""
+    lsq_classopath(X, y; ...)
+
+Estimate the constrained lasso problem using path algorithm
+
+# Arguments
+- `X`       : predictor matrix
+- `y`       : response vector
+
+# Optional arguments
+- `Aeq`     : equality constraint matrix
+- `beq`     : equality constraint vector
+- `Aineq`   : inequality constraint matrix
+- `bineq`   : inequality constraint vector
+- `ρridge`  : tuning parameter for ridge penalty. Default is 1e-4.
+- `penidx`  : a logical vector indicating penalized coefficients
+- `solver`  : a solver Convex.jl can use.
+
+# Examples
+   See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
+"""
 
 function lsq_classopath(
     X::AbstractMatrix,
     y::AbstractVector;
-    ρmax::Number = Inf,
     Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
     beq::AbstractVector   = zeros(eltype(X), size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
@@ -68,13 +89,11 @@ function lsq_classopath(
     #          [Aeq; Aineq], sense, [beq; bineq], lb, ub)#
 
     # find the maximum ρ (starting value)
-    println("time for finding maximum rho: ")
-    @time ρpath[1], ρidx, = find_ρmax(X, y; Aeq = Aeq, beq = beq, Aineq = Aineq,
+    ρpath[1], ρidx, = find_ρmax(X, y; Aeq = Aeq, beq = beq, Aineq = Aineq,
               bineq = bineq, solver = solver)
 
     # calculate at ρmax
-    println("time for finding the first beta")
-    @time βpath[:, 1], objvalpath[1], problem = lsq_constrsparsereg(X, y, ρpath[1];
+    βpath[:, 1], objvalpath[1], problem = lsq_constrsparsereg(X, y, ρpath[1];
               Aeq = Aeq, beq = beq, Aineq = Aineq, bineq = bineq,
               penwt = penidx, solver = solver); # jk
 
@@ -101,11 +120,7 @@ function lsq_classopath(
     # initialize subgradient vector
     resid = y - X * βpath[:, 1]
     subgrad = X' * resid - Aeq' * λpatheq[:, 1] - Aineq' * μpathineq[:, 1]
-    #ρpath[1], ρidx = findmax(abs.(subgrad))
-    # println("ρpath[1]: $(ρpath[1])")
-    # println("ρidx=", ρidx)
-    # println("ρmax: $ρmax")
-    # println("idxtmp = $idxtmp")
+
     subgrad[setActive] = sign.(βpath[find(setActive), 1])
     subgrad[.!setActive] = subgrad[.!setActive] / ρpath[1]
     setActive[ρidx] = true
@@ -127,8 +142,7 @@ function lsq_classopath(
 
     k = 0
 
-    println("time for the mainloop")
-    @time for k in 2:maxiters
+    for k in 2:maxiters
 
       # threshold near-zero rhos to zero and stop algorithm
       if ρpath[k-1] <= 1e-4
@@ -195,8 +209,6 @@ function lsq_classopath(
 
           # monitor and fix condition 1 violations
           while !isempty(inactSlowNegIdx)
-
-            println("monitor and fix condition 1 violations")
             ## Identify and move problem coefficient
             # indices corresponding to inactive coefficients
             inactiveCoeffs = find(.!setActive)
@@ -268,8 +280,6 @@ function lsq_classopath(
 
           # Monitor & fix subgradient condition 2 violations
           while ~isempty(inactSlowPosIdx)
-              println("monitor and fix condition 2 violations")
-
               # Identify & move problem coefficient #%
               # indices corresponding to inactive coefficients
               inactiveCoeffs = find(!setActive)
@@ -336,7 +346,6 @@ function lsq_classopath(
 
           # Monitor & fix condition 3 violations
           while ~isempty(signMismatchPosIdx)
-              println("monitor and fix condition 3 violations")
               ## Identify & move problem coefficient #%
               # indices corresponding to active coefficients
               activeCoeffs = find(setActive)
@@ -395,8 +404,6 @@ function lsq_classopath(
 
           # Monitor & fix condition 4 violations
           while ~isempty(signMismatchNegIdx)
-
-              println("monitor and fix condition 4 violations")
               ## Identify & move problem coefficient #%
               # indices corresponding to active coefficients
               activeCoeffs = find(setActive)
@@ -640,10 +647,9 @@ function lsq_classopath(
 end # end of the function
 
 """
-    find_ρmax(X, y)
+    find_ρmax(X, y; ...)
 
-Find the maximum tuning parameter value `ρmax` such that the solution to
-    `minimize `
+Find the maximum tuning parameter value `ρmax` such that the solution.
 """
 function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
     X::AbstractMatrix,
