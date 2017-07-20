@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Global Warming Data · ConstrainedLasso</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/highlightjs/default.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>ConstrainedLasso</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><span class="toctext">Examples</span><ul><li><a class="toctext" href="prostate.html">Example</a></li></ul></li><li><span class="toctext">Real Data Applications</span><ul><li class="current"><a class="toctext" href="warming.html">Global Warming Data</a><ul class="internal"><li><a class="toctext" href="#Section-6.1-1">Section 6.1</a></li></ul></li><li><a class="toctext" href="tumor.html">Brain Tumor Data</a></li><li><a class="toctext" href="microbiome.html">Microbiome Data</a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Real Data Applications</li><li><a href="warming.html">Global Warming Data</a></li></ul><a class="edit-page" href="https://github.com/Hua-Zhou/ConstrainedLasso/tree/de177aa746bfdf06a8018ba3fece8e9a383d4c92/docs/src/demo/warming.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Global Warming Data</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Global-Warming-Data-1" href="#Global-Warming-Data-1">Global Warming Data</a></h1><h2><a class="nav-anchor" id="Section-6.1-1" href="#Section-6.1-1">Section 6.1</a></h2><p>Here we estimate isotonic regression and constrained lasso solution path.</p><div></div><div><pre><code class="language-julia">## load &amp; organize data
+# load data
+warming = readcsv(&quot;data/warming.csv&quot;, header=true)[1]
+# extract year &amp; response
+year = warming[:, 1]
+y    = warming[:, 2]
+# extract dimensions
+n = p = size(y, 1)
+X = eye(n)
+
+## estimate models with monotonicity constraints
+## isotonic regression
+monoreg = readdlm(&quot;data/monoreg.txt&quot;)
+
+## constrained lasso solution path
+# model set up: inequality constraints
+A = [eye(p-1) zeros(p-1, 1)] - [zeros(p-1, 1) eye(p-1)]
+m2 = size(A, 1)
+b = zeros(m2)
+# estimate constrained lasso solution path
+β̂path, ρpath, = lsq_classopath(X, y; Aineq = A, bineq = b)</code></pre><pre><code class="language-none">Problem
+  Name                   :
+  Objective sense        : min
+  Type                   : LO (linear optimization problem)
+  Constraints            : 498
+  Cones                  : 0
+  Scalar variables       : 333
+  Matrix variables       : 0
+  Integer variables      : 0
+
+Optimizer started.
+Interior-point optimizer started.
+Presolve started.
+Linear dependency checker started.
+Linear dependency checker terminated.
+Eliminator started.
+Freed constraints in eliminator : 332
+Eliminator terminated.
+Eliminator - tries                  : 1                 time                   : 0.00
+Lin. dep.  - tries                  : 1                 time                   : 0.00
+Lin. dep.  - number                 : 0
+Presolve terminated. Time: 0.00
+Optimizer  - threads                : 4
+Optimizer  - solved problem         : the primal
+Optimizer  - Constraints            : 165
+Optimizer  - Cones                  : 0
+Optimizer  - Scalar variables       : 495               conic                  : 0
+Optimizer  - Semi-definite variables: 0                 scalarized             : 0
+Factor     - setup time             : 0.00              dense det. time        : 0.00
+Factor     - ML order time          : 0.00              GP order time          : 0.00
+Factor     - nonzeros before factor : 329               after factor           : 329
+Factor     - dense dim.             : 0                 flops                  : 5.92e+03
+ITE PFEAS    DFEAS    GFEAS    PRSTATUS   POBJ              DOBJ              MU       TIME
+0   1.0e+00  1.0e+00  2.8e+02  1.00e+00   2.816726189e+02   0.000000000e+00   1.0e+00  0.00
+1   1.0e+00  9.9e+01  2.8e+02  0.00e+00   9.008294150e+01   0.000000000e+00   1.0e+02  0.00
+2   8.1e-01  8.0e+01  2.3e+02  6.39e+01   4.729273541e-01   0.000000000e+00   8.1e+01  0.00
+3   3.7e-02  3.6e+00  1.0e+01  1.23e+00   9.235181300e-02   0.000000000e+00   3.7e+00  0.00
+4   8.3e-06  6.4e-04  2.3e-03  1.09e+00   1.957245158e-05   0.000000000e+00   8.3e-04  0.00
+5   8.3e-10  6.4e-08  2.3e-07  1.00e+00   1.957231635e-09   0.000000000e+00   8.3e-08  0.00
+Basis identification started.
+Primal basis identification phase started.
+ITER      TIME
+0         0.00
+Primal basis identification phase terminated. Time: 0.00
+Dual basis identification phase started.
+ITER      TIME
+0         0.00
+Dual basis identification phase terminated. Time: 0.00
+Basis identification terminated. Time: 0.00
+Interior-point optimizer terminated. Time: 0.00.
+
+Optimizer terminated. Time: 0.01
+
+Interior-point solution summary
+  Problem status  : PRIMAL_AND_DUAL_FEASIBLE
+  Solution status : OPTIMAL
+  Primal.  obj: 1.9572316346e-09    nrm: 2e-09    Viol.  con: 7e-12    var: 0e+00
+  Dual.    obj: 0.0000000000e+00    nrm: 1e+00    Viol.  con: 4e-10    var: 1e-16
+
+Basic solution summary
+  Problem status  : PRIMAL_AND_DUAL_FEASIBLE
+  Solution status : OPTIMAL
+  Primal.  obj: 0.0000000000e+00    nrm: 0e+00    Viol.  con: 0e+00    var: 0e+00
+  Dual.    obj: 0.0000000000e+00    nrm: 1e+00    Viol.  con: 2e-08    var: 3e-16
+Problem
+  Name                   :
+  Objective sense        : min
+  Type                   : CONIC (conic optimization problem)
+  Constraints            : 669
+  Cones                  : 2
+  Scalar variables       : 505
+  Matrix variables       : 0
+  Integer variables      : 0
+
+Optimizer started.
+Conic interior-point optimizer started.
+Presolve started.
+Linear dependency checker started.
+Linear dependency checker terminated.
+Eliminator started.
+Freed constraints in eliminator : 166
+Eliminator terminated.
+Eliminator - tries                  : 1                 time                   : 0.00
+Lin. dep.  - tries                  : 1                 time                   : 0.00
+Lin. dep.  - number                 : 0
+Presolve terminated. Time: 0.00
+Optimizer  - threads                : 4
+Optimizer  - solved problem         : the dual
+Optimizer  - Constraints            : 168
+Optimizer  - Cones                  : 2
+Optimizer  - Scalar variables       : 501               conic                  : 170
+Optimizer  - Semi-definite variables: 0                 scalarized             : 0
+Factor     - setup time             : 0.00              dense det. time        : 0.00
+Factor     - ML order time          : 0.00              GP order time          : 0.00
+Factor     - nonzeros before factor : 1.40e+04          after factor           : 1.40e+04
+Factor     - dense dim.             : 0                 flops                  : 1.60e+06
+ITE PFEAS    DFEAS    GFEAS    PRSTATUS   POBJ              DOBJ              MU       TIME
+0   1.0e+00  2.5e+00  1.5e+00  0.00e+00   0.000000000e+00   -2.000000000e+00  1.0e+00  0.00
+1   1.8e-01  4.6e-01  4.0e-01  1.47e-01   -1.483463114e+00  -1.225770400e+00  1.8e-01  0.00
+2   6.2e-02  1.5e-01  2.2e-01  7.67e-01   5.342966202e+00   5.448258528e+00   6.2e-02  0.00
+3   3.4e-02  8.6e-02  1.6e-01  9.15e-01   7.413941427e+00   7.467757400e+00   3.4e-02  0.00
+4   1.3e-02  3.3e-02  1.0e-01  9.49e-01   7.436661105e+00   7.454852400e+00   1.3e-02  0.00
+5   4.7e-04  1.2e-03  1.9e-02  9.80e-01   7.614456966e+00   7.614860318e+00   4.7e-04  0.00
+6   8.9e-06  2.2e-05  2.7e-03  1.00e+00   7.613354777e+00   7.613364133e+00   8.9e-06  0.00
+7   2.3e-08  5.7e-08  1.3e-04  1.00e+00   7.613572730e+00   7.613572772e+00   2.3e-08  0.01
+8   1.5e-10  2.9e-11  3.4e-06  1.00e+00   7.613573000e+00   7.613573000e+00   1.2e-11  0.01
+Interior-point optimizer terminated. Time: 0.01.
+
+Optimizer terminated. Time: 0.01
+
+Interior-point solution summary
+  Problem status  : PRIMAL_AND_DUAL_FEASIBLE
+  Solution status : OPTIMAL
+  Primal.  obj: 7.6135729998e+00    nrm: 2e+01    Viol.  con: 8e-11    var: 0e+00    cones: 7e-11
+  Dual.    obj: 7.6135729998e+00    nrm: 4e+00    Viol.  con: 0e+00    var: 7e-11    cones: 0e+00
+Problem
+  Name                   :
+  Objective sense        : min
+  Type                   : CONIC (conic optimization problem)
+  Constraints            : 669
+  Cones                  : 2
+  Scalar variables       : 505
+  Matrix variables       : 0
+  Integer variables      : 0
+
+Optimizer started.
+Conic interior-point optimizer started.
+Presolve started.
+Linear dependency checker started.
+Linear dependency checker terminated.
+Eliminator started.
+Freed constraints in eliminator : 166
+Eliminator terminated.
+Eliminator - tries                  : 1                 time                   : 0.00
+Lin. dep.  - tries                  : 1                 time                   : 0.00
+Lin. dep.  - number                 : 0
+Presolve terminated. Time: 0.00
+Optimizer  - threads                : 4
+Optimizer  - solved problem         : the dual
+Optimizer  - Constraints            : 168
+Optimizer  - Cones                  : 2
+Optimizer  - Scalar variables       : 501               conic                  : 170
+Optimizer  - Semi-definite variables: 0                 scalarized             : 0
+Factor     - setup time             : 0.00              dense det. time        : 0.00
+Factor     - ML order time          : 0.00              GP order time          : 0.00
+Factor     - nonzeros before factor : 1.40e+04          after factor           : 1.40e+04
+Factor     - dense dim.             : 0                 flops                  : 1.60e+06
+ITE PFEAS    DFEAS    GFEAS    PRSTATUS   POBJ              DOBJ              MU       TIME
+0   1.0e+00  2.5e+00  1.5e+00  0.00e+00   0.000000000e+00   -2.000000000e+00  1.0e+00  0.00
+1   1.8e-01  4.6e-01  4.0e-01  1.47e-01   -1.483463114e+00  -1.225770400e+00  1.8e-01  0.00
+2   6.2e-02  1.5e-01  2.2e-01  7.67e-01   5.342966202e+00   5.448258528e+00   6.2e-02  0.00
+3   3.4e-02  8.6e-02  1.6e-01  9.15e-01   7.413941427e+00   7.467757400e+00   3.4e-02  0.00
+4   1.3e-02  3.3e-02  1.0e-01  9.49e-01   7.436661105e+00   7.454852400e+00   1.3e-02  0.00
+5   4.7e-04  1.2e-03  1.9e-02  9.80e-01   7.614456966e+00   7.614860318e+00   4.7e-04  0.00
+6   8.9e-06  2.2e-05  2.7e-03  1.00e+00   7.613354777e+00   7.613364133e+00   8.9e-06  0.01
+7   2.3e-08  5.7e-08  1.3e-04  1.00e+00   7.613572730e+00   7.613572772e+00   2.3e-08  0.01
+8   1.5e-10  2.9e-11  3.4e-06  1.00e+00   7.613573000e+00   7.613573000e+00   1.2e-11  0.01
+Interior-point optimizer terminated. Time: 0.01.
+
+Optimizer terminated. Time: 0.01
+
+Interior-point solution summary
+  Problem status  : PRIMAL_AND_DUAL_FEASIBLE
+  Solution status : OPTIMAL
+  Primal.  obj: 7.6135729998e+00    nrm: 2e+01    Viol.  con: 8e-11    var: 0e+00    cones: 7e-11
+  Dual.    obj: 7.6135729998e+00    nrm: 4e+00    Viol.  con: 0e+00    var: 7e-11    cones: 0e+00
+WARNING: !(B::BitArray) is deprecated, use .!(B) instead.
+Stacktrace:
+ [1] depwarn(::String, ::Symbol) at ./deprecated.jl:70
+ [2] !(::BitArray{1}) at ./deprecated.jl:57
+ [3] #lsq_classopath#2(::Array{Float64,2}, ::Array{Float64,1}, ::Array{Float64,2}, ::Array{Float64,1}, ::Float64, ::Array{Bool,1}, ::Mosek.MosekMathProgSolverInterface.MosekSolver, ::Function, ::Array{Float64,2}, ::Array{Float64,1}) at /Users/juhyun-kim/Desktop/workspace/classo/ConstrainedLasso/src/classopath.jl:285
+ [4] (::ConstrainedLasso.#kw##lsq_classopath)(::Array{Any,1}, ::ConstrainedLasso.#lsq_classopath, ::Array{Float64,2}, ::Array{Float64,1}) at ./&lt;missing&gt;:0
+ [5] eval(::Module, ::Any) at ./boot.jl:235
+ [6] #8 at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Expanders.jl:459 [inlined]
+ [7] cd(::Documenter.Expanders.##8#10, ::String) at ./file.jl:70
+ [8] withoutput(::Documenter.Expanders.##7#9{Documenter.Documents.Page}) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Utilities/Utilities.jl:587
+ [9] runner(::Type{Documenter.Expanders.ExampleBlocks}, ::Base.Markdown.Code, ::Documenter.Documents.Page, ::Documenter.Documents.Document) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Expanders.jl:457
+ [10] dispatch(::Type{Documenter.Expanders.ExpanderPipeline}, ::Base.Markdown.Code, ::Documenter.Documents.Page, ::Documenter.Documents.Document) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Selectors.jl:164
+ [11] expand(::Documenter.Documents.Document) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Expanders.jl:29
+ [12] dispatch(::Type{Documenter.Builder.DocumentPipeline}, ::Documenter.Documents.Document) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Selectors.jl:164
+ [13] cd(::Documenter.##2#3{Documenter.Documents.Document}, ::String) at ./file.jl:70
+ [14] #makedocs#1(::Bool, ::Array{Any,1}, ::Function) at /Users/juhyun-kim/.julia/v0.6/Documenter/src/Documenter.jl:198
+ [15] (::Documenter.#kw##makedocs)(::Array{Any,1}, ::Documenter.#makedocs) at ./&lt;missing&gt;:0
+ [16] include_from_node1(::String) at ./loading.jl:569
+ [17] include(::String) at ./sysimg.jl:14
+ [18] process_options(::Base.JLOptions) at ./client.jl:305
+ [19] _start() at ./client.jl:371
+while loading /Users/juhyun-kim/Desktop/workspace/classo/ConstrainedLasso/docs/make.jl, in expression starting on line 5</code></pre></div><div><pre><code class="language-julia">## compare estimates
+@show maximum(abs.(monoreg - β̂path[:, end]))</code></pre><pre><code class="language-none">maximum(abs.(monoreg - β̂path[:, end])) = 3.6637359812630166e-15
+3.6637359812630166e-15</code></pre></div><div><pre><code class="language-julia">## graph estimates
+scatter(year, y, label=&quot;Observed Data&quot;, markerstrokecolor=&quot;darkblue&quot;,
+        markercolor=&quot;white&quot;)
+scatter!(year, β̂path[:, end], label=L&quot;Classopath $(\rho=0)$&quot;,
+        markerstrokecolor=&quot;black&quot;, marker=:rect, markercolor=&quot;white&quot;)
+scatter!(year, monoreg, label=&quot;Isotonic Regression&quot;, marker=:x,
+        markercolor=&quot;red&quot;, markersize=2)
+xaxis!(&quot;Year&quot;)
+yaxis!(&quot;Temperature anomalies&quot;)
+title!(&quot;Global Warming Data&quot;)</code></pre></div><p><img src="warming.svg" alt/></p><footer><hr/><a class="previous" href="prostate.html"><span class="direction">Previous</span><span class="title">Example</span></a><a class="next" href="tumor.html"><span class="direction">Next</span><span class="title">Brain Tumor Data</span></a></footer></article></body></html>

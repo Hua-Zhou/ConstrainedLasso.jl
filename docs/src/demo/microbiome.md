@@ -1,7 +1,16 @@
-# Real Data Example 3
-## Microbiome Data - Section 6.3
+# Microbiome Data
+## Section 6.3
 
-Here we estimate the zero-sum regression model using constrained lasso.
+   Our last real data application with the constrained lasso uses microbiome data. 
+   Here the problem is to 
+
+```math
+\begin{align}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
+& \text{subject to} \hspace{1em} \sum_j \beta_j = 0
+\end{align}
+```
+where ``\alpha = 1``. Hence this problem is reduced to the constrained lasso. 
 
 ```@setup micro
 using ConstrainedLasso
@@ -40,12 +49,16 @@ end
 
 nothing # hide 
 ```
+Now, let's plot the solution path. 
 
 ```@example micro
-# plot solution path
 using Plots; pyplot(); using LaTeXStrings; # hide
 plot(norm1path, β̂path', xaxis = (L"$ \|| \widehat{\beta} \||_1$"), yaxis=(L"$\widehat{\beta}$"), label="")
 title!("Microbiome Data: Solution Path via Constrained Lasso")
 savefig("micro.svg") # hide
 ```
+The following figure plots the coefficient estimate solution paths, ``\widehat{\boldsymbol{\beta}}(\rho)``, as a function of ``||\widehat{\boldsymbol{\beta}}(\rho)||_1`` using both the zero-sum regression and the constrained lasso. 
+
 ![](micro.svg)
+
+As can be seen in the graphs, the coeffcient estimates are nearly indistinguishable except for some very minor differences, which are a result of the slightly different formulations of the two problems.

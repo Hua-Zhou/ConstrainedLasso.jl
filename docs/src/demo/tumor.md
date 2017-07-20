@@ -1,5 +1,5 @@
-# Real Data Example 2
-## Brain Tumor Data - Section 6.2
+# Brain Tumor Data
+## Section 6.2
 
 Here we estimate a generalized lasso model (sparse fused lasso) via the constrained lasso. 
 

@@ -1,5 +1,5 @@
-# Real Data Example 1 
-## Global Warming data - Section 6.1
+# Global Warming Data  
+## Section 6.1
 
 Here we estimate isotonic regression and constrained lasso solution path.
 

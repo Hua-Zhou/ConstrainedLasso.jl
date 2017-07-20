@@ -5,12 +5,15 @@ using Documenter, ConstrainedLasso
 makedocs(
       doctest   = false,
       format    = :html,
+      clean     = true,
       sitename  = "ConstrainedLasso",
       modules   = [ConstrainedLasso],
       pages     = Any[
           "Home"     => "index.md",
           "Examples" => Any[
               "demo/prostate.md",
+          ],
+          "Real Data Applications" => Any[
               "demo/warming.md",
               "demo/tumor.md",
               "demo/microbiome.md",
