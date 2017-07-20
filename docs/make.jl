@@ -3,10 +3,12 @@ push!(LOAD_PATH, "../src/")
 using Documenter, ConstrainedLasso
 
 makedocs(
-      format = :html,
-      sitename = "ConstrainedLasso",
-      pages = Any[
-          "Home" => "index.md",
+      doctest   = false,
+      format    = :html,
+      sitename  = "ConstrainedLasso",
+      modules   = [ConstrainedLasso],
+      pages     = Any[
+          "Home"     => "index.md",
           "Examples" => Any[
               "demo/prostate.md",
               "demo/warming.md",

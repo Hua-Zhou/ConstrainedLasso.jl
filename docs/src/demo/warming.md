@@ -7,15 +7,12 @@ Here we estimate isotonic regression and constrained lasso solution path.
 using ConstrainedLasso 
 using DataFrames
 using Base.Test
-include("monreg.jl")
 ```
 
-
-
-```@example 1
+```@example warming
 ## load & organize data
 # load data 
-warming = readtable("warming.csv", header=true)[1]
+warming = readcsv("data/warming.csv", header=true)[1]
 # extract year & response
 year = warming[:, 1]
 y    = warming[:, 2]
@@ -25,7 +22,7 @@ X = eye(n)
 
 ## estimate models with monotonicity constraints
 ## isotonic regression
-monoreg, = monreg(y)
+monoreg = readdlm("data/monoreg.txt")
 
 ## constrained lasso solution path 
 # model set up: inequality constraints
@@ -34,12 +31,14 @@ m2 = size(A, 1)
 b = zeros(m2)
 # estimate constrained lasso solution path
 β̂path, ρpath, = lsq_classopath(X, y; Aineq = A, bineq = b)
-
+nothing # hide
+```
+```@example warming 
 ## compare estimates
 @show maximum(abs.(monoreg - β̂path[:, end]))
 
 ```
-```@example 1
+```@example warming
 ## graph estimates 
 using Plots; pyplot(); using LaTeXStrings; # hide
 scatter(year, y, label="Observed Data", markerstrokecolor="darkblue", 
@@ -51,6 +50,6 @@ scatter!(year, monoreg, label="Isotonic Regression", marker=:x,
 xaxis!("Year") 
 yaxis!("Temperature anomalies")
 title!("Global Warming Data")
-savefig("betapath.svg") # hide
+savefig("warming.svg") # hide
 ```
 ![](warming.svg)

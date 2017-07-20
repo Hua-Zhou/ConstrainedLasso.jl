@@ -7,7 +7,7 @@ Here we estimate the zero-sum regression model using constrained lasso.
 using ConstrainedLasso
 ```
 
-```@example
+```@example micro
 ## load & organize data 
 zerosum = readcsv("data/zerosum.csv", header=true)[1]
 # extract data 
@@ -37,13 +37,15 @@ norm1path = zeros(size(β̂path, 2))
 for i in eachindex(norm1path)
     norm1path[i] = norm(β̂path[:, i], 1)
 end
+
+nothing # hide 
 ```
 
-```@example
+```@example micro
 # plot solution path
 using Plots; pyplot(); using LaTeXStrings; # hide
 plot(norm1path, β̂path', xaxis = (L"$ \|| \widehat{\beta} \||_1$"), yaxis=(L"$\widehat{\beta}$"), label="")
 title!("Microbiome Data: Solution Path via Constrained Lasso")
-savefig("betapath.svg") # hide
+savefig("micro.svg") # hide
 ```
-![](betapath.svg)
+![](micro.svg)

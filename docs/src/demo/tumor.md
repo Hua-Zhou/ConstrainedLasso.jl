@@ -6,7 +6,13 @@ Here we estimate a generalized lasso model (sparse fused lasso) via the constrai
 ```@setup tumor 
 using ConstrainedLasso
 ```
-```@example 1
+```@example tumor
+# load data
+y = readdlm("data/y.txt")
+lambda_path = readdlm("data/lambda_path.txt")
+beta_path_fused = readdlm("data/beta_path_fused.txt")[2:end, :]
+
+
 # organize data
 n = p = size(y, 1)
 X = eye(n)
@@ -60,20 +66,22 @@ using Plots; pyplot(); using LaTeXStrings; # hide
 plot(ρpath, β̂path', label="", xaxis = (L"$\rho$", (minimum(ρpath),
       maximum(ρpath))), yaxis = (L"$\widehat{\beta}(\rho$)"), width=0.5)
 title!("Brain Tumor Data: Solution Path via Constrained Lasso")
-savefig("betapath1.svg") # hide
+savefig("tumor1.svg") # hide
+nothing # hide 
 ```
-![](betapath1.svg)
+![](tumor1.svg)
 
 
-```@example 1
+```@example tumor
 ## plot generalized lasso solution path (from genlasso R package)
-plot(lambda_path, beta_path_fused, label="", xaxis = (L"$\lambda$", (minimum(lambda_path),
+plot(lambda_path, beta_path_fused', label="", xaxis = (L"$\lambda$", (minimum(lambda_path),
       maximum(lambda_path))), yaxis = (L"$\widehat{\beta}(\lambda$)"), width=0.5)
 title!("Brain Tumor Data: Generalized Lasso Solution Path")
-savefig("betapath2.svg") # hide
+savefig("tumor2.svg") # hide
+nothing # hide 
 ```
-![](betapath2.svg)
+![](tumor2.svg)
 
-```@example 2
+```@example tumor
 # compare estimates at common values of rho 
 ```

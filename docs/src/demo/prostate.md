@@ -1,7 +1,7 @@
 
 # Example 
 
-## Unconstrained lasso using constrained lasso solution path
+## Unconstrained lasso
 
 This demonstration solves a regular, unconstrained lasso problem using
 the constrained lasso solution path (`lsq_classopath.jl`) and compares to two other methods.
@@ -11,7 +11,7 @@ using ConstrainedLasso
 using DataFrames
 ```
 
-```@example 1
+```@example lasso
 ## load data
 prostate = readtable("data/prostate.csv")
 
@@ -33,13 +33,17 @@ n, p = size(Xz)
 βpath, ρpath, = lsq_classopath(Xz, y);
 @show βpath
 @show ρpath
+nothing # hide
+```
 
+```@example lasso 
 ## plot solution path 
 using Plots; using LaTeXStrings; pyplot(); # hide 
 labels = ["lcavol" "lweight" "age" "lbph" "svi" "lcp" "gleason" "pgg45"]
 colors = [:green :orange :black :purple :red :grey :brown :blue] 
 plot(ρpath, βpath', xaxis = (L"$\rho$", (minimum(ρpath),
       maximum(ρpath))), yaxis = (L"$\beta(\rho$)"), label=labels, color=colors)
-savefig("betapath.svg") # hide
+title!("Prostrate Data: Solution Path via Constrained Lasso")
+savefig("prostate.svg") # hide
 ```
-![](betapath.svg)
+![](prostate.svg)
