@@ -6,14 +6,14 @@ makedocs(
       doctest   = false,
       format    = :html,
       clean     = true,
-      sitename  = "ConstrainedLasso",
+      sitename  = "ConstrainedLasso.jl",
       modules   = [ConstrainedLasso],
-      pages     = Any[
+      pages     = [
           "Home"     => "index.md",
-          "Examples" => Any[
+          "Interface" => "interface.md",
+          "Simulations" => "demo/sim.md",
+          "Real Data Applications" => [
               "demo/prostate.md",
-          ],
-          "Real Data Applications" => Any[
               "demo/warming.md",
               "demo/tumor.md",
               "demo/microbiome.md",
