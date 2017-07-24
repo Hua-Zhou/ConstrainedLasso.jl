@@ -1,6 +1,6 @@
 module ConstrainedLasso
 
-using Convex, Mosek, SCS
+using Convex, SCS
 
 # package code goes here
 include("constrsparsereg.jl")
