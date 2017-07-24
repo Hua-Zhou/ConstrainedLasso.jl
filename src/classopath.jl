@@ -1,15 +1,23 @@
-export lsq_classopath 
-
 """
-    lsq_classopath(X, y; ...)
+```
+  lsq_classopath(X, y;
+      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      ρridge :: Number = zero(eltype(X)),
+      penidx ::Array{Bool} = fill(true, size(X, 2)),
+      solver = SCSSolver(verbose=0)
+      )
 
 Estimate the constrained lasso problem using path algorithm
+```
 
-# Arguments
+### Arguments
 - `X`       : predictor matrix
 - `y`       : response vector
 
-# Optional arguments
+### Optional arguments
 - `Aeq`     : equality constraint matrix
 - `beq`     : equality constraint vector
 - `Aineq`   : inequality constraint matrix
@@ -18,7 +26,7 @@ Estimate the constrained lasso problem using path algorithm
 - `penidx`  : a logical vector indicating penalized coefficients
 - `solver`  : a solver Convex.jl can use.
 
-# Examples
+### Examples
    See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
 """
 
@@ -31,7 +39,7 @@ function lsq_classopath(
     bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
     ρridge::Number        = zero(eltype(X)),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
+    solver = SCSSolver(verbose=0)
     )
 
     T = promote_type(eltype(X), eltype(y))
@@ -50,8 +58,6 @@ function lsq_classopath(
         # n_orig = n
     else
         # make sure X is full column rank
-
-        #rankX = rank(X)
         R = qrfact(X)[:R]
         rankX = sum(abs.(diag(R)) .> abs(R[1,1]) * max(n,p) * eps(eps(eltype(R))))
 
@@ -64,8 +70,6 @@ function lsq_classopath(
             # create augmented data
             y = [y; zeros(p)]
             X = [X; √ρridge * eye(p)]
-            # record original number of observations
-            #n_orig = n
         end
     end
 
@@ -89,7 +93,7 @@ function lsq_classopath(
     #          [Aeq; Aineq], sense, [beq; bineq], lb, ub)#
 
     # find the maximum ρ (starting value)
-    ρpath[1], ρidx, = find_ρmax(X, y; Aeq = Aeq, beq = beq, Aineq = Aineq,
+    ρpath[1], idx, = find_ρmax(X, y; Aeq = Aeq, beq = beq, Aineq = Aineq,
               bineq = bineq, solver = solver)
 
     # calculate at ρmax
@@ -123,7 +127,7 @@ function lsq_classopath(
 
     subgrad[setActive] = sign.(βpath[find(setActive), 1])
     subgrad[.!setActive] = subgrad[.!setActive] / ρpath[1]
-    setActive[ρidx] = true
+    setActive[idx] = true
     nActive = countnz(setActive)
 
     # calculate degrees of freedom
@@ -167,6 +171,10 @@ function lsq_classopath(
       dir = try
         dirsgn * (M \ [subgrad[setActive]; zeros(neq + nIneqBorder)])
       catch
+        dir = -(pinv(M) * [subgrad[setActive]; zeros(neq + nIneqBorder)])
+      end
+
+      if any(isnan.(dir))
         dir = -(pinv(M) * [subgrad[setActive]; zeros(neq + nIneqBorder)])
       end
 
@@ -282,7 +290,7 @@ function lsq_classopath(
           while ~isempty(inactSlowPosIdx)
               # Identify & move problem coefficient #%
               # indices corresponding to inactive coefficients
-              inactiveCoeffs = find(!setActive)
+              inactiveCoeffs = find(.!setActive)
               # identify problem coefficient
               viol_coeff = inactiveCoeffs[inactSlowPosIdx]
               # put problem coefficient back into active set;
@@ -627,13 +635,7 @@ function lsq_classopath(
           break
       end
 
-
-
     end # end of big for loop
-
-      # clean up output
-       #warn("");
-       #warn("");
 
        βpath = βpath[:, 1:k-1]
        deleteat!(ρpath, k:length(ρpath))
@@ -647,11 +649,18 @@ function lsq_classopath(
 end # end of the function
 
 """
-    find_ρmax(X, y; ...)
-
+```
+  find_ρmax(X, y;
+      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      penidx :: Array{Bool} = fill(true, size(X, 2)),
+      solver = SCSSolver(verbose=0)
+```
 Find the maximum tuning parameter value `ρmax` such that the solution.
 """
-function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
+function find_ρmax(
     X::AbstractMatrix,
     y::AbstractVector;
     Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
@@ -659,7 +668,7 @@ function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
     bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
+    solver = SCSSolver(verbose=0)
     )
 
     p = size(X, 2)
@@ -668,8 +677,6 @@ function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
     problem = minimize(dot(ones(p), abs(x)), Aeq * x == beq,
               Aineq * x <= bineq)
 
-
-    #problem = minimize(dot(ones(p), abs(x)))
     problem = minimize(dot(ones(eltype(X), size(X, 2)), abs(x)))
     if !isempty(Aeq)
       problem.constraints += Aeq * x == beq
@@ -678,8 +685,11 @@ function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
       problem.constraints += Aineq * x <= bineq
     end
 
+    TT = STDOUT # save original STDOUT stream
+    redirect_stdout()
     solve!(problem, solver)
     β = x.value
+    redirect_stdout(TT) # restore STDOUT
 
     λeq = zeros(eltype(X), 0, 1)
     μineq = zeros(eltype(X), 0, 1)
@@ -701,7 +711,6 @@ function find_ρmax(#X, y, Aeq, beq, Aineq, bineq
     resid = y - X * β
     subgrad = X' * resid - Aeq' * λeq - Aineq' * μineq
     ρmax, indρmax = findmax(abs.(subgrad))
-
 
     return ρmax, indρmax, problem.optval, λeq, μineq
 end

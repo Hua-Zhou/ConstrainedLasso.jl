@@ -1,33 +1,41 @@
-# functions for fitting constrained lasso at fixed tuning parameter value
-
-export lsq_constrsparsereg
-
 """
-    lsq_constrsparsereg!(X, y, ρ=0.0)
+```
+  lsq_constrsparsereg(X, y, ρ= zero(eltype(X));
+      Aeq       :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq       :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq     :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq     :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      obswt     :: AbstractVector = ones(eltype(y), length(y)),
+      penwt     :: AbstractVector = ones(eltype(X), size(X, 2)),
+      warmstart :: Bool = false,
+      solver = SCSSolver(verbose=0)
+      )
+```
+Fit constrained lasso at fixed tuning parameter value.
 
-Sparse linear regression with constraints. Minimize
+Minimize
     `0.5sumabs2(√obswt .* (y - X * β) + λ * sumabs(penwt .* β)`
 subject to linear constraints.
 
-# Arguments
+### Arguments
 - `X`       : predictor matrix.
 - `y`       : response vector.
 - `ρ`       : tuning parameter. Can be a number of a list of numbers. Default 0.
 
-# Optional arguments
+### Optional arguments
 - `Aeq`     : equality constraint matrix
 - `beq`     : equality constraint vector
 - `Aineq`   : inequality constraint matrix
 - `bineq`   : inequality constraint vector
-- `obswt`: observation weights.
-- `penwt`: predictor penalty weights. Default is `[0 1 1 ... 1]`
-- `solver`: a solver Convex.jl can use.
-- `β0`: starting point for warm start.
+- `obswt`   : observation weights.
+- `penwt`   : predictor penalty weights. Default is `[1 1 1 ... 1]`
+- `solver`  : a solver Convex.jl can use.
+- `β0`      : starting point for warm start.
 
 ### Returns
-- `β`: estimated coefficents.
-- `objval`: optimal objective value.
-- `problem`: Convex.jl problem.
+- `β`       : estimated coefficents.
+- `objval`  : optimal objective value.
+- `problem` : Convex.jl problem.
 """
 
 function lsq_constrsparsereg(
@@ -41,8 +49,8 @@ function lsq_constrsparsereg(
     obswt::AbstractVector = ones(eltype(y), length(y)),
     penwt::AbstractVector = ones(eltype(X), size(X, 2)),
     #penwt::AbstractVector = [zero(eltype(X)); ones(eltype(X), size(X, 2) - 1)],
-    solver                = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8),
-    warmstart::Bool       = false
+    warmstart::Bool       = false,
+    solver = SCSSolver(verbose=0)
     )
 
     n, p = size(X)
@@ -67,14 +75,19 @@ function lsq_constrsparsereg(
       problem.constraints += Aeq * β == beq
       problem.constraints += Aineq * β <= bineq
 
-      solve!(problem, solver)
-      push!(prob_vec, problem)
-
       if warmstart
+          TT = STDOUT # save original STDOUT stream
+          redirect_stdout()
           solve!(problem, solver; warmstart = i > 1? true : false)
+          redirect_stdout(TT)
+          push!(prob_vec, problem)
           optval_vec[i] = problem.optval
       else
+          TT = STDOUT # save original STDOUT stream
+          redirect_stdout()
           solve!(problem, solver)
+          redirect_stdout(TT) # restore STDOUT
+          push!(prob_vec, problem)
           optval_vec[i] = problem.optval
       end
 
