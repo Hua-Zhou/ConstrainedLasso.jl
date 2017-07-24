@@ -45,20 +45,20 @@ solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
 nothing # hide
 ```
 In this formulation, isotonic regression is a special case of the constrained lasso with ``\rho=0.``
-Below, `monoreg` is trend estimates using isotonic regression. 
+Below, `monoreg` is coefficient estimates using isotonic regression. 
 
 ```@example warming 
-## estimate models with monotonicity constraints # hide
-## isotonic regression # hide 
 monoreg = readdlm("data/monoreg.txt")
+nothing # hide 
 ```
-Now let's compare estimates. 
+Now let's compare estimates by obtaining the largest absolute difference between isotonic regression constrained lasso fit. 
 
 ```@example warming 
 maximum(abs.(monoreg - β̂path[:, end]))
 ```
-```@example warming
-## graph estimates 
+Below is a figure that plots the constrained lasso fit at $\rho = 0$ with the estimates using isotonic regression.
+
+```@example warming 
 using Plots; pyplot(); # hide
 scatter(year, y, label="Observed Data", markerstrokecolor="darkblue", 
         markercolor="white")
@@ -72,5 +72,3 @@ title!("Global Warming Data")
 savefig("warming.svg"); nothing # hide
 ```
 ![](warming.svg)
-
-The above figure plots the constrained lasso fit at $\rho = 0$ with the estimates using isotonic regression. 

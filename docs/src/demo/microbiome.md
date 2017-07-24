@@ -41,15 +41,11 @@ m1 = size(Aeq, 1)
 #	   divides the loss fuction by 2n instead of just 2
 newρpath = ρpath ./ n
 
-# @show β̂path[:, end]
-# @show ρpath
-
 # calculate L1 norm along path
 norm1path = zeros(size(β̂path, 2))
 for i in eachindex(norm1path)
     norm1path[i] = norm(β̂path[:, i], 1)
 end
-
 nothing # hide 
 ```
 Now, let's plot the solution path. 
@@ -60,8 +56,6 @@ plot(norm1path, β̂path', xaxis = ("||β̂||₁"), yaxis=("β̂"), label="")
 title!("Microbiome Data: Solution Path via Constrained Lasso")
 savefig("micro.svg"); nothing # hide
 ```
-The following figure plots the coefficient estimate solution paths, ``\widehat{\boldsymbol{\beta}}(\rho)``, as a function of ``||\widehat{\boldsymbol{\beta}}(\rho)||_1`` using both the zero-sum regression and the constrained lasso. 
+The following figure plots the coefficient estimate solution paths, ``\widehat{\boldsymbol{\beta}}(\rho)``, as a function of ``||\widehat{\boldsymbol{\beta}}(\rho)||_1`` using constrained lasso. 
 
 ![](micro.svg)
-
-As can be seen in the graphs, the coeffcient estimates are nearly indistinguishable except for some very minor differences, which are a result of the slightly different formulations of the two problems.
