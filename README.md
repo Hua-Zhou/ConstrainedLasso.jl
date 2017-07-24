@@ -18,6 +18,11 @@ Pkg.clone("https://github.com/Hua-Zhou/ConstrainedLasso.git")
 
 This package supports Julia v0.6.
 
+## Examples
+
+Examples are found here in this [documentation] (http://github.com/Hua-Zhou/ConstrainedLasso.jl.git). 
+
+
 ## Citation 
 
 If you use ConstrainedLasso package in your research, please cite the following reference in the resulting publications:
