@@ -1,12 +1,13 @@
 # Simulation Examples 
 
+
+## Sum-to-zero constraint 
+
 ```@setup sim1
 using ConstrainedLasso
 using Mosek 
-using Plots; pyplot(); # hide
+using Plots; pyplot(); # hide 
 ```
-
-## Sum-to-zero constraint 
 
 ```@example sim1
 n = 50    # no. of observations
@@ -36,14 +37,17 @@ solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
 β̂path1, ρpath1, objpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq, solver = solver)
 nothing # hide 
 ```
+Now let's see if sums of coefficients at all ``\rho`` values are approximately ``0``. 
+
 ```@example sim1
 all(abs.(sum(β̂path1, 1)) .< 1e-6)
 ```
+Plot the solution path below. 
 
-```@exmaple sim1
+```@example sim1
 plot(ρpath1, β̂path1', label="", xaxis = ("ρ", (minimum(ρpath1),
-      maximum(ρpath1))), yaxis = ("β̂(ρ)"), width=0.5)
-title!("Simulation 1: Solution Path via Constrained Lasso")
+      maximum(ρpath1))), yaxis = ("β̂(ρ)"), width=0.5) 
+title!("Simulation 1: Solution Path via Constrained Lasso") 
 savefig("sumtozero.svg"); nothing # hide 
 ```
 
@@ -75,15 +79,16 @@ y = X * β + randn(n)
 
 ## estimate path with classopath
 solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
-β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver = solver)
+β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver = solver) 
 nothing # hide 
 ```
+Plot the solution path below. 
 
-```@exmaple sim1
+```@example sim1
 plot(ρpath2, β̂path2', label="", xaxis = ("ρ", (minimum(ρpath2),
-      maximum(ρpath2))), yaxis = ("β̂(ρ)"), width=0.5)
-title!("Simulation 2: Solution Path via Constrained Lasso")
-savefig("nonneg.svg"); nothing # hide 
+      maximum(ρpath2))), yaxis = ("β̂(ρ)"), width=0.5) 
+title!("Simulation 2: Solution Path via Constrained Lasso") 
+savefig("nonneg.svg"); nothing # hide
 ```
 
 ![](nonneg.svg)
