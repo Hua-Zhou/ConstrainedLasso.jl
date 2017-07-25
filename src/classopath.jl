@@ -10,7 +10,9 @@
       solver = SCSSolver(verbose=0)
       )
 
-Estimate the constrained lasso problem using path algorithm
+Calculate the solution path of the constrained lasso problem that minimizes
+    `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
+subject to linear constraints.
 ```
 
 ### Arguments
@@ -22,9 +24,9 @@ Estimate the constrained lasso problem using path algorithm
 - `beq`     : equality constraint vector
 - `Aineq`   : inequality constraint matrix
 - `bineq`   : inequality constraint vector
-- `ρridge`  : tuning parameter for ridge penalty. Default is 1e-4.
+- `ρridge`  : tuning parameter for ridge penalty. Default is 0.
 - `penidx`  : a logical vector indicating penalized coefficients
-- `solver`  : a solver Convex.jl can use.
+- `solver`  : a solver Convex.jl supports. Default is SCS. <http://convexjl.readthedocs.io/en/latest/solvers.html>
 
 ### Examples
    See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
@@ -658,7 +660,7 @@ end # end of the function
       penidx :: Array{Bool} = fill(true, size(X, 2)),
       solver = SCSSolver(verbose=0)
 ```
-Find the maximum tuning parameter value `ρmax` such that the solution.
+Find the maximum tuning parameter value `ρmax` to kick-start the solution path.
 """
 function find_ρmax(
     X::AbstractMatrix,

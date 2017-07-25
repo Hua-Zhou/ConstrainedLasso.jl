@@ -9,7 +9,7 @@
 
 
 
-**ConstrainedLasso** estimates the following constrained lasso problem, using the approach of Gaines and Zhou (2016).
+**ConstrainedLasso.jl** implements algorithms for fitting the following constrained lasso problem
 
 <center><a href="https://www.codecogs.com/eqnedit.php?latex=\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" title="\text{minimize} \hspace{1em} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1" /></a>
 
@@ -17,7 +17,7 @@
 
 where <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\boldsymbol{y}&space;\in&space;\mathbb{R}^n" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{y}&space;\in&space;\mathbb{R}^n" title="\boldsymbol{y} \in \mathbb{R}^n" /></a> is the response vector, <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\boldsymbol{X}\in&space;\mathbb{R}^{n\times&space;p}" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{X}\in&space;\mathbb{R}^{n\times&space;p}" title="\boldsymbol{X}\in \mathbb{R}^{n\times p}" /></a> is the design matrix of predictor or covariates, <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\boldsymbol{\beta}&space;\in&space;\mathbb{R}^p" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\beta}&space;\in&space;\mathbb{R}^p" title="\boldsymbol{\beta} \in \mathbb{R}^p" /></a> is the vector of unknown regression coefficients, and <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\rho&space;\geq&space;0" target="_blank"><img src="http://latex.codecogs.com/gif.latex?\inline&space;\rho&space;\geq&space;0" title="\rho \geq 0" /></a> is a tuning parameter that controls the amount of regularization.
 
-## Installation 
+## Installation
 
 Within Julia, use the package manager to install **ConstainedLasso**:
 
@@ -27,16 +27,20 @@ Pkg.clone("https://github.com/Hua-Zhou/ConstrainedLasso.git")
 
 This package supports Julia v0.6.
 
-## Examples
+## Documentation
 
-Examples are found here in this [documentation] (http://github.com/Hua-Zhou/ConstrainedLasso.jl.git). 
+[![Latest][docs-latest-img]][docs-latest-url]
 
 
-## Citation 
+## Citation
 
-If you use ConstrainedLasso package in your research, please cite the following reference in the resulting publications:
+If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:
 
-*Gaines BR, Zhou H (2016) Algorithms for Fitting the Constrained Lasso. arXiv preprint arXiv:1611.01511.*
+*B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <https://arxiv.org/abs/1611.01511>*
+
+Original method paper on the constrained lasso is
+
+*G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <http://www-bcf.usc.edu/~gareth/research/PAC.pdf>*
 
 
 

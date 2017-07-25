@@ -1,6 +1,6 @@
 """
 ```
-  lsq_constrsparsereg(X, y, ρ= zero(eltype(X));
+  lsq_constrsparsereg(X, y, ρ = zero(eltype(X));
       Aeq       :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
       beq       :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
       Aineq     :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
@@ -11,25 +11,23 @@
       solver = SCSSolver(verbose=0)
       )
 ```
-Fit constrained lasso at fixed tuning parameter value.
-
-Minimize
-    `0.5sumabs2(√obswt .* (y - X * β) + λ * sumabs(penwt .* β)`
+Fit constrained lasso at fixed tuning parameter value(s) by minimizing
+    `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
 subject to linear constraints.
 
 ### Arguments
 - `X`       : predictor matrix.
 - `y`       : response vector.
-- `ρ`       : tuning parameter. Can be a number of a list of numbers. Default 0.
+- `ρ`       : tuning parameter. Can be a number or a list of numbers. Default 0.
 
 ### Optional arguments
-- `Aeq`     : equality constraint matrix
-- `beq`     : equality constraint vector
-- `Aineq`   : inequality constraint matrix
-- `bineq`   : inequality constraint vector
+- `Aeq`     : equality constraint matrix.
+- `beq`     : equality constraint vector.
+- `Aineq`   : inequality constraint matrix.
+- `bineq`   : inequality constraint vector.
 - `obswt`   : observation weights.
-- `penwt`   : predictor penalty weights. Default is `[1 1 1 ... 1]`
-- `solver`  : a solver Convex.jl can use.
+- `penwt`   : predictor penalty weights. Default is `[1 1 1 ... 1]`.
+- `solver`  : a solver Convex.jl supports. Default is SCS. <http://convexjl.readthedocs.io/en/latest/solvers.html>
 - `β0`      : starting point for warm start.
 
 ### Returns

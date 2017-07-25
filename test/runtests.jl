@@ -1,6 +1,6 @@
 module PkgTest
 
-using Base.Test, ConstrainedLasso, SCS, ECOS
+using Base.Test, ConstrainedLasso, SCS
 
 # write your own tests here
 @testset "constrsparsereg" begin include("constrsparsereg_test.jl") end
