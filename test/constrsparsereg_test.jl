@@ -15,9 +15,9 @@ y = X * β + randn(n)
 Aeq = ones(1, p)
 beq = [0.0]
 penwt  = ones(p)
-#solver = SCSSolver(verbose=0)
+solver = SCSSolver(verbose=0)
 #solver = ECOSSolver()
-using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
+# using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
 #solver = GurobiSolver(OutputFlag=1)
 
 info("Optimize at a single tuning parameter values")
@@ -52,7 +52,7 @@ logging(DevNull, ConstrainedLasso, :lsq_classopath, kind=:warn) # hide
 info("Test lsq_classopath 2")
 
 ### set up ###
-n, p = 50, 100
+n, p = 20, 100
 # define true parameter vector: sparsity with a few non-zero coefficients
 β = zeros(p)
 β[1:10] = 1:10
@@ -63,7 +63,7 @@ bineq = zeros(p)
 srand(41)
 X = randn(n, p)
 y = X * β + randn(n)
-using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
+# using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
 
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq,
           solver = solver)
