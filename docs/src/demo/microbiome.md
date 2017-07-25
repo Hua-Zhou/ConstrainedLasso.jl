@@ -1,61 +1,62 @@
 # Microbiome Data
-## Section 6.3
 
-   Our last real data application with the constrained lasso uses microbiome data. 
-   Here the problem is to 
 
+   Our last real data application with the constrained lasso uses microbiome data [[5](../references.md)]. The dataset itself contains information on 160 bacteria genera from 37 patients. The bacteria counts were ``\log_2``-transformed and normalized to have a constant average across samples. 
+   
+First, let's load and organize data. 
+   
+```@example micro 
+zerosum = readcsv("data/zerosum.csv", header=true)[1]
+y = zerosum[:, 1]
+X = zerosum[:, 2:end] 
+n, p = size(X)
+nothing # hide 
+```
+
+[Altenbuchinger et al.](../references.md) demonstrated that a sum-to- zero constraint is useful anytime the normalization of data relative to some reference point results in proportional data, as is often the case in biological applications, since the analysis using the constraint is insensitive to the choice of the reference. [Altenbuchinger et al.](../references.md) derived a coordinate descent algorithm for the elastic net with a zero-sum constraint,
+	
 ```math 
-\begin{align}
+\begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
 & \text{subject to} \hspace{1em} \sum_j \beta_j = 0
-\end{align}
+\end{split}
 ```
+but the focus of their analysis corresponds to ``\alpha = 1``. Hence the problem is reduced to the constrained lasso. 
 
-where ``\alpha = 1``. Hence this problem is reduced to the constrained lasso. 
-
-```@setup micro
-using ConstrainedLasso
-using Mosek 
-```
+We set up the zero-sum constraint.
 
 ```@example micro
-## load & organize data 
-zerosum = readcsv("data/zerosum.csv", header=true)[1]
-# extract data 
-y = zerosum[:, 1]
-X = zerosum[:, 2:end]
-# extract dimensions 
-n, p = size(X)
-
-## model set-up
-solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
-# set up equality constraints
 Aeq = ones(1, p)
 beq = [0]
 m1 = size(Aeq, 1)
+nothing # hide 
+```
+Now we estimate the constrained lasso solution path using path algorithm. 
 
-## constrained Lasso solution path
-# estimate solution path
+```@example micro
+using ConstrainedLasso
+using Mosek
+solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
 β̂path, ρpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq, solver = solver)
-# scale the tuning parameter to match the zeroSum formulation (which
-#	   divides the loss fuction by 2n instead of just 2
-newρpath = ρpath ./ n
+nothing # hide 
+```
+Then we calculate `L1` norm of coefficients at each ``\rho``.
 
-# calculate L1 norm along path
+```@example micro
 norm1path = zeros(size(β̂path, 2))
 for i in eachindex(norm1path)
     norm1path[i] = norm(β̂path[:, i], 1)
 end
 nothing # hide 
 ```
-Now, let's plot the solution path. 
+Now, let's plot the solution path, ``\widehat{\boldsymbol{\beta}}(\rho)``, as a function of ``||\widehat{\boldsymbol{\beta}}(\rho)||_1`` using constrained lasso. 
 
 ```@example micro
-using Plots; pyplot(); # hide
+using Plots; pyplot();
 plot(norm1path, β̂path', xaxis = ("||β̂||₁"), yaxis=("β̂"), label="")
 title!("Microbiome Data: Solution Path via Constrained Lasso")
 savefig("micro.svg"); nothing # hide
 ```
-The following figure plots the coefficient estimate solution paths, ``\widehat{\boldsymbol{\beta}}(\rho)``, as a function of ``||\widehat{\boldsymbol{\beta}}(\rho)||_1`` using constrained lasso. 
 
 ![](micro.svg)
+

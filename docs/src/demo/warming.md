@@ -1,7 +1,14 @@
 # Global Warming Data  
-## Section 6.1
 
-Here we consider the annual data on temperature anomalies. As has been previously noted in the literature on isotonic regression, in general temperature appears to increase monotonically over the time period of 1850 to 2015 (Wu et al., 2001; Tibshirani et al., 2011). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:
+Here we consider the annual data on temperature anomalies. As has been previously noted in the literature on isotonic regression, in general temperature appears to increase monotonically over the time period of 1850 to 2015 ([Wu et al., 2001](../references.md); [Tibshirani et al., 2011](../references.md)). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:
+
+```math
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{ subject to} \hspace{1em} \boldsymbol{C\beta} \leq \boldsymbol{d} 
+\end{split}
+```
+where 
 
 ```math
 \boldsymbol{C} = \begin{pmatrix} 
@@ -17,35 +24,34 @@ and ``\boldsymbol{d} = \boldsymbol{0}.``
 
 ```@setup warming
 using ConstrainedLasso 
-using DataFrames
-using Base.Test
-using Mosek 
 ```
+First we load and organize the data. 
 
 ```@example warming
-## load & organize data
-# load data 
 warming = readcsv("data/warming.csv", header=true)[1]
-# extract year & response
 year = warming[:, 1]
 y    = warming[:, 2]
-# extract dimensions
 n = p = size(y, 1)
 X = eye(n)
+nothing # hide 
+```
+Now we define inequality constraints as specified earlier. 
 
-## constrained lasso solution path 
-# model set up: inequality constraints
+```@example warming
 A = [eye(p-1) zeros(p-1, 1)] - [zeros(p-1, 1) eye(p-1)]
 m2 = size(A, 1)
 b = zeros(m2)
-# estimate constrained lasso solution path
+nothing # hide 
+```
+Then we estimate constrained lasso solution path.
+
+```@example warming 
 logging(DevNull, ConstrainedLasso, :lsq_classopath, kind=:warn) # hide 
-solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)
-β̂path, ρpath, = lsq_classopath(X, y; Aineq = A, bineq = b, solver = solver) 
+β̂path, ρpath, = lsq_classopath(X, y; Aineq = A, bineq = b) 
 nothing # hide
 ```
 In this formulation, isotonic regression is a special case of the constrained lasso with ``\rho=0.``
-Below, `monoreg` is coefficient estimates using isotonic regression. 
+Below, `monoreg` is coefficient estimates obtained using isotonic regression. 
 
 ```@example warming 
 monoreg = readdlm("data/monoreg.txt")
