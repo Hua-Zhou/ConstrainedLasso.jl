@@ -1,5 +1,14 @@
 # ConstrainedLasso
 
+| **Documentation**                                                                           | **Build Status**                                                              | **Code Coverage**                                                                            |
+|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| [![Stable][docs-stable-img]][docs-stable-url] [![Latest][docs-latest-img]][docs-latest-url] | [![Travis][travis-img]][travis-url] [![Appveyor][appveyor-img]][appveyor-url] | [![Coverage Status][coveralls-img]][coveralls-url] [![codecov.io][codecov-img]][codecov-url] |
+
+
+
+
+
+
 **ConstrainedLasso** estimates the following constrained lasso problem, using the approach of Gaines and Zhou (2016).
 
 <center><a href="https://www.codecogs.com/eqnedit.php?latex=\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" title="\text{minimize} \hspace{1em} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1" /></a>
@@ -28,3 +37,23 @@ Examples are found here in this [documentation] (http://github.com/Hua-Zhou/Cons
 If you use ConstrainedLasso package in your research, please cite the following reference in the resulting publications:
 
 *Gaines BR, Zhou H (2016) Algorithms for Fitting the Constrained Lasso. arXiv preprint arXiv:1611.01511.*
+
+
+
+[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-latest-url]: https://Hua-Zhou.github.io/ConstrainedLasso.jl/latest
+
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://Hua-Zhou.github.io/ConstrainedLasso.jl/stable
+
+[travis-img]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.jl.svg?branch=master
+[travis-url]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.jl
+
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/wvaqu7i3ty2gk377/branch/master?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso-jl
+
+[coveralls-img]: https://coveralls.io/repos/github/Hua-Zhou/ConstrainedLasso.jl/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/https://travis-ci.org/ConstrainedLasso.jl?branch=master
+
+[codecov-img]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl
