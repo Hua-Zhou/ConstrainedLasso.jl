@@ -36,6 +36,7 @@ subject to linear constraints.
 - `β`       : estimated coefficents.
 - `objval`  : optimal objective value.
 - `problem` : Convex.jl problem.
+
 """
 
 function lsq_constrsparsereg(
