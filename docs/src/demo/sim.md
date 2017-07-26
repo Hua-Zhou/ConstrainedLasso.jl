@@ -31,22 +31,22 @@ n, p = 50, 100
 β[(round(Int, 3p / 4) + 1):p] = -1
 srand(41)
 X = randn(n, p)
+```
+```@example sim1
 y = X * β + randn(n)
-nothing # hide 
 ```
 Since the problem has equality constraints only, we define the constraints as below. 
 
 ```@example sim1
-Aeq = ones(1, p)
 beq = [0]
-nothing # hide 
+Aeq = ones(1, p)
 ```
 Now we are ready to obtain the solution path using the path algorithm. By default, we use the solver SCS. 
 
 ```@example sim1
 using ConstrainedLasso
-β̂path1, ρpath1, objpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq)
-nothing # hide
+β̂path1, ρpath1, objpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq);
+β̂path1
 ```
 Let's see if sums of coefficients at all ``\rho`` values are approximately 0. 
 
@@ -98,22 +98,22 @@ n, p = 50, 100
 β[1:10] = 1:10
 srand(41)
 X = randn(n, p)
+```
+```@example sim1
 y = X * β + randn(n)
-nothing # hide
 ```
 Now set up the inequality constraint for the problem. 
 
 ```@example sim1
-Aineq = - eye(p)
 bineq = zeros(p)
-nothing # hide 
+Aineq = - eye(p)
 ```
 Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver `Mosek` for `Convex.jl`. 
 
 ```@example sim1
 using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver = solver) 
-nothing # hide 
+β̂path2
 ```
 We plot the solution path below. 
 
