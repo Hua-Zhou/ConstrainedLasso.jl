@@ -8,7 +8,7 @@
       obswt     :: AbstractVector = ones(eltype(y), length(y)),
       penwt     :: AbstractVector = ones(eltype(X), size(X, 2)),
       warmstart :: Bool = false,
-      solver = SCSSolver(verbose=0)
+      solver = SCSSolver(verbose=0, max_iters=10e8)
       )
 ```
 Fit constrained lasso at fixed tuning parameter value(s) by minimizing
@@ -49,7 +49,7 @@ function lsq_constrsparsereg(
     penwt::AbstractVector = ones(eltype(X), size(X, 2)),
     #penwt::AbstractVector = [zero(eltype(X)); ones(eltype(X), size(X, 2) - 1)],
     warmstart::Bool       = false,
-    solver = SCSSolver(verbose=0)
+    solver = SCSSolver(verbose=0, max_iters=10e8)
     )
 
     n, p = size(X)

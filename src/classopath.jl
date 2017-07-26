@@ -7,7 +7,7 @@
       bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
       ρridge :: Number = zero(eltype(X)),
       penidx ::Array{Bool} = fill(true, size(X, 2)),
-      solver = SCSSolver(verbose=0)
+      solver = SCSSolver(verbose=0, max_iters=10e8)
       )
 
 Calculate the solution path of the constrained lasso problem that minimizes
@@ -41,7 +41,7 @@ function lsq_classopath(
     bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
     ρridge::Number        = zero(eltype(X)),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = SCSSolver(verbose=0)
+    solver = SCSSolver(verbose=0, max_iters=10e8)
     )
 
     T = promote_type(eltype(X), eltype(y))
@@ -658,7 +658,7 @@ end # end of the function
       Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
       bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
       penidx :: Array{Bool} = fill(true, size(X, 2)),
-      solver = SCSSolver(verbose=0)
+      solver = SCSSolver(verbose=0, max_iters=10e8)
 ```
 Find the maximum tuning parameter value `ρmax` to kick-start the solution path.
 """
@@ -670,7 +670,7 @@ function find_ρmax(
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
     bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = SCSSolver(verbose=0)
+    solver = SCSSolver(verbose=0, max_iters=10e8)
     )
 
     p = size(X, 2)
