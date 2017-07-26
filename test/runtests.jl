@@ -1,24 +1,5 @@
 module PkgTest
 
-using Base.Test, ConstrainedLasso, SCS
-
-# write your own tests here
-@testset "constrsparsereg" begin include("constrsparsereg_test.jl") end
-# include("")
-# include("")
-#
-# # List of tests
-# tests = [
-#
-#        ]
-#
-# println("Running tests:")
-#
-# for t in tests
-#   @testset "$(t)" begin
-#     include("$(t).jl")
-#   end
-# end
-
-
-end # end of module
+include("constrsparsereg_test.jl")
+include("classopath_test.jl")
+end
