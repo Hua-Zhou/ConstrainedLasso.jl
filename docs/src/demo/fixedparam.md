@@ -38,8 +38,10 @@ Next we generate data based on the true parameter `β`.
 ```@example tuning
 srand(123)
 X = randn(n, p)
+```
+
+```@example tuning 
 y = X * β + randn(n)
-nothing # hide
 ```
 Since the equality constraint can be written as
 
@@ -49,9 +51,8 @@ Since the equality constraint can be written as
 we define the constraint as below.
 
 ```@example tuning
-Aeq   = ones(1, p)
 beq   = [0.0]
-nothing # hide
+Aeq   = ones(1, p)
 ```
 
 Now we are ready to fit the constrained lasso problem, say at `ρ=10`.
@@ -59,8 +60,7 @@ Now we are ready to fit the constrained lasso problem, say at `ρ=10`.
 ```@example tuning
 ρ = 10.0
 logging(DevNull, ConstrainedLasso, :lsq_constrsparsereg, kind=:warn) # hide
-β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq)
-nothing # hide
+β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq);
 ```
 We see if the sum of estimated ``\beta`` coefficients equal to 0.
 
@@ -80,9 +80,7 @@ Using the same equality constraints, we fit the constrained lasso.
 
 ```@example tuning
 logging(DevNull, ConstrainedLasso, :lsq_constrsparsereg, kind=:warn) # hide
-β̂, = lsq_constrsparsereg(X, y, ρlist; Aeq = Aeq, beq = beq,
-    penwt = penwt)
-nothing # hide
+β̂, = lsq_constrsparsereg(X, y, ρlist; Aeq = Aeq, beq = beq);
 ```
 
 Now let's test if coefficients sum to 0 at each parameter value.
