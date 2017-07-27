@@ -1,6 +1,6 @@
 module classopath_test
 
-using Base.Test, ConstrainedLasso, SCS
+using Base.Test, ConstrainedLasso, SCS, ECOS
 
 info("Test lsq_classopath: sum-to-zero constraint")
 
@@ -34,23 +34,23 @@ n, p = 20, 100
 β = zeros(p)
 β[1:10] = 1:10
 # generate data
-srand(41)
+srand(123)
 X = randn(n, p)
 y = X * β + randn(n)
 # inequality constraints
 Aineq = - eye(p)
 bineq = zeros(p)
 
-# using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
+solver = ECOSSolver(verbose=0, maxit=10e8)
 
 # NOT WORKING!!
-# β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq)
-# #@test all(β̂path2 .>= -0.5)
-#
-# @testset "non-negativity" begin
-# for i in reshape(β̂path2, p * length(ρpath2), 1)
-#   @test i >= 0
-# end
-# end
+β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver=solver)
+#@test all(β̂path2 .>= -0.5)
+
+@testset "non-negativity" begin
+for i in reshape(β̂path2, p * length(ρpath2), 1)
+  @test i >= 0
+end
+end
 
 end # classopath_test module
