@@ -9,7 +9,7 @@
 
 
 
-**ConstrainedLasso.jl** implements algorithms for fitting the following constrained lasso problem
+**ConstrainedLasso.jl** implements algorithms for fitting the constrained lasso problem
 
 <center><a href="https://www.codecogs.com/eqnedit.php?latex=\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\text{minimize}&space;\hspace{1em}&space;\frac&space;12&space;||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2&space;&plus;&space;\rho||\boldsymbol{\beta}||_1" title="\text{minimize} \hspace{1em} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1" /></a>
 
@@ -34,14 +34,13 @@ This package supports Julia v0.6.
 
 ## Citation
 
-If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:
-
-*B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <https://arxiv.org/abs/1611.01511>*
-
-Original method paper on the constrained lasso is
+The original method paper on the constrained lasso is
 
 *G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <http://www-bcf.usc.edu/~gareth/research/PAC.pdf>*
 
+If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:
+
+*B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <https://arxiv.org/abs/1611.01511>*
 
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
@@ -50,11 +49,11 @@ Original method paper on the constrained lasso is
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://Hua-Zhou.github.io/ConstrainedLasso.jl/stable
 
-[travis-img]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.jl
+[travis-img]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.svg?branch=master
+[travis-url]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso
 
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/wvaqu7i3ty2gk377/branch/master?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso-jl
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/ocq8r95cr70kod8x/branch/master?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso/branch/master
 
 [coveralls-img]: https://coveralls.io/repos/github/Hua-Zhou/ConstrainedLasso.jl/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/https://travis-ci.org/ConstrainedLasso.jl?branch=master
