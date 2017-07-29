@@ -55,8 +55,8 @@ If you use ConstrainedLasso package in your research, please cite the following 
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/ocq8r95cr70kod8x/branch/master?svg=true
 [appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso/branch/master
 
-[coveralls-img]: https://coveralls.io/repos/github/Hua-Zhou/ConstrainedLasso.jl/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/https://travis-ci.org/ConstrainedLasso.jl?branch=master
+[coveralls-img]: https://coveralls.io/repos/github/Hua-Zhou/ConstrainedLasso/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/Hua-Zhou/ConstrainedLasso?branch=master
 
-[codecov-img]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl
+[codecov-img]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso
