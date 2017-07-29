@@ -24,7 +24,7 @@ solver = SCSSolver(verbose=0)
 # using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
 #solver = GurobiSolver(OutputFlag=1)
 
-info("Optimize at a single tuning parameter values")
+info("Optimize at a single tuning parameter value")
 ρ = 10.0
 β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq,
     penwt = penwt, solver = solver)
