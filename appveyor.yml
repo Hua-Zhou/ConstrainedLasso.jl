@@ -35,8 +35,8 @@ install:
 build_script:
 # Need to convert from shallow to complete for Pkg.clone to work
   - IF EXIST .git\shallow (git fetch --unshallow)
-  - C:\projects\julia\bin\julia -depwarn=no -e "versioninfo();
+  - C:\projects\julia\bin\julia --depwarn=no -e "versioninfo();
       Pkg.clone(pwd(), \"ConstrainedLasso\"); Pkg.build(\"ConstrainedLasso\")"
 
 test_script:
-  - C:\projects\julia\bin\julia --check-bounds=yes -depwarn=no -e "Pkg.test(\"ConstrainedLasso\")"
+  - C:\projects\julia\bin\julia --check-bounds=yes --depwarn=no -e "Pkg.test(\"ConstrainedLasso\")"
