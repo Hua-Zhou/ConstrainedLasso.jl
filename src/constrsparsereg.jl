@@ -58,34 +58,29 @@ function lsq_constrsparsereg(
     optval_vec = zeros(length(ρ))
     prob_vec = []
 
+    β = Variable(p)
+    loss = (1//2)sumsquares(sqrt(obswt) .* (y - X * β)) # loss term
+    pen  = dot(penwt, abs(β))   # penalty term
+    eqconstr   = Aeq * β == beq
+    ineqconstr = Aineq * β <= bineq
+
     for i in 1:length(ρ)
 
-      β = Variable(p)
       ρi = ρ[i]
       if ρi == typemax(typeof(ρi))
-          problem = minimize(dot(penwt, abs(β)))
+          problem = minimize(pen, eqconstr, ineqconstr)
       elseif ρi ≤ 0
-          problem = minimize((1//2)sumsquares(sqrt(obswt) .* (y - X * β)))
+          problem = minimize(loss, eqconstr, ineqconstr)
       else
-          problem = minimize((1//2)sumsquares(sqrt(obswt) .* (y - X * β)) +
-              ρi * dot(penwt, abs(β)))
+          problem = minimize(loss + ρi * pen, eqconstr, ineqconstr)
       end
 
-      problem.constraints += Aeq * β == beq
-      problem.constraints += Aineq * β <= bineq
-
       if warmstart
-          TT = STDOUT # save original STDOUT stream
-          redirect_stdout()
           solve!(problem, solver; warmstart = i > 1? true : false)
-          redirect_stdout(TT)
           push!(prob_vec, problem)
           optval_vec[i] = problem.optval
       else
-          TT = STDOUT # save original STDOUT stream
-          redirect_stdout()
           solve!(problem, solver)
-          redirect_stdout(TT) # restore STDOUT
           push!(prob_vec, problem)
           optval_vec[i] = problem.optval
       end
