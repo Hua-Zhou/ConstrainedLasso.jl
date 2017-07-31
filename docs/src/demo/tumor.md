@@ -40,7 +40,7 @@ As discussed in [Gaines, B.R. and Zhou, H., (2016)](../references.md), the spars
 
 ```math 
 \begin{split}
-& \text{minimize} \hspace{1em} \frac 12 ||\tilde{\boldsymbol{y}} -\widetilde{\boldsymbol{X}}\boldsymbol{\alpha}||_2^2 + \rho||\boldsymbol{\alpha}||_1 \hspace{5em} (3) \\
+& \text{minimize} \hspace{1em} \frac 12 ||\widetilde{\boldsymbol{y}} -\widetilde{\boldsymbol{X}}\boldsymbol{\alpha}||_2^2 + \rho||\boldsymbol{\alpha}||_1 \hspace{5em} (3) \\
 & \text{subject to} \hspace{1em} \boldsymbol{U}^T_2\boldsymbol{\alpha} = \boldsymbol{0}
 \end{split}
 ```
@@ -48,7 +48,7 @@ where $\widetilde{\boldsymbol{y}} = (\boldsymbol{I}-\boldsymbol{P}_{\boldsymbol{
 \widehat{\boldsymbol{\alpha}}(\rho)`` can be translated back to that of the original generalized lasso problem via 
 
 ```math 
-\hat{\boldsymbol{\beta}}(\rho) = [\boldsymbol{I}-\boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}]\boldsymbol{D}^+\hat{\boldsymbol{\alpha}}(\rho)+ \boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{y}
+\widehat{\boldsymbol{\beta}}(\rho) = [\boldsymbol{I}-\boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}]\boldsymbol{D}^+\hat{\boldsymbol{\alpha}}(\rho)+ \boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{y}
 ```
 where $\boldsymbol{X}^-$ denotes the generalized inverse of a matrix $\boldsymbol{X}$.
 
