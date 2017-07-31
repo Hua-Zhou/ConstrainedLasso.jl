@@ -41,7 +41,7 @@ y = X * β + randn(n)
 Aineq = - eye(p)
 bineq = zeros(p)
 
-solver = ECOSSolver(verbose=0, maxit=10e8)
+solver = ECOSSolver(verbose=0, maxit=1e8)
 
 # NOT WORKING!!
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver=solver)
