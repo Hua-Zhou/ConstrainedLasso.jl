@@ -24,7 +24,7 @@ and ``\boldsymbol{d} = \boldsymbol{0}.``
 
 ```@setup warming
 using ConstrainedLasso 
-using Mosek 
+using ECOS
 ```
 First we load and organize the data. 
 
@@ -46,11 +46,11 @@ C = [eye(p-1) zeros(p-1, 1)] - [zeros(p-1, 1) eye(p-1)]
 ```@example warming  
 d = zeros(size(C, 1))
 ```
-Then we estimate constrained lasso solution path. Here we use `Mosek` solver rather than the default `SCS` solver. 
+Then we estimate constrained lasso solution path. Here we use `ECOS` solver rather than the default `SCS` solver. 
 
 ```@example warming 
 logging(DevNull, ConstrainedLasso, :lsq_classopath, kind=:warn) # hide 
-β̂path, ρpath, = lsq_classopath(X, y; Aineq = C, bineq = d, solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8)); 
+β̂path, ρpath, = lsq_classopath(X, y; Aineq = C, bineq = d, solver = ECOSSolver(verbose=0, maxit=1e8)); 
 β̂path
 ```
 In this formulation, isotonic regression is a special case of the constrained lasso with ``\rho=0.``

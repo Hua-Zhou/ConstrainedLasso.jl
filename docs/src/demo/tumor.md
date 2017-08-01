@@ -108,8 +108,7 @@ We solve the constrained lasso problem and obtain $\hat{\boldsymbol{\alpha}}(\rh
 
 ```@example tumor 
 logging(DevNull, ConstrainedLasso, :lsq_classopath, kind=:warn) # hide 
-using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
-α̂path, ρpath, = lsq_classopath(X̃, ỹ; solver = solver)
+α̂path, ρpath, = lsq_classopath(X̃, ỹ)
 α̂path
 ```
 Now we need to transform ``\widehat{\boldsymbol{\alpha}} (\rho)`` back to ``\widehat{\boldsymbol{\beta}} (\rho)`` as seen in (3).

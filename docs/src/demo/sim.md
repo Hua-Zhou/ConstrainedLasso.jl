@@ -108,10 +108,10 @@ Now set up the inequality constraint for the problem.
 bineq = zeros(p)
 Aineq = - eye(p)
 ```
-Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver `Mosek` for `Convex.jl`. 
+Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver `ECOS` for `Convex.jl`. 
 
 ```@example sim1
-using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8, LOG=0);
+using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver = solver) 
 β̂path2
 ```

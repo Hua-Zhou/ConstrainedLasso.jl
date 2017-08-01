@@ -36,8 +36,8 @@ Now we estimate the constrained lasso solution path using path algorithm.
 
 ```@example micro
 using ConstrainedLasso
-using Mosek
-solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
+using ECOS
+solver = ECOSSolver(verbose=0, maxit=1e8);
 β̂path, ρpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq, solver = solver)
 β̂path
 ```
