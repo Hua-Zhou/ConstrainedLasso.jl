@@ -11,16 +11,6 @@ makedocs(
       pages     = [
           "Home"     => "index.md",
           "Interface" => "interface.md",
-          "Examples" => [
-                "demo/fixedparam.md",
-                "demo/sim.md",
-          ],
-          "Real Data Applications" => [
-              "demo/prostate.md",
-              "demo/warming.md",
-              "demo/tumor.md",
-              "demo/microbiome.md",
-          ],
           "References" => "references.md"
       ]
 
