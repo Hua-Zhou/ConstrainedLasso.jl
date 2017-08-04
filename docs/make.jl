@@ -1,5 +1,3 @@
-
-
 using Documenter, ConstrainedLasso
 
 makedocs(
@@ -10,7 +8,6 @@ makedocs(
       modules   = [ConstrainedLasso],
       pages     = [
           "Home"     => "index.md",
-          "Interface" => "interface.md",
           "References" => "references.md"
       ]
 
