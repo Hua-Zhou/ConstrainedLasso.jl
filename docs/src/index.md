@@ -9,7 +9,7 @@
 \end{split}
 ```
 
-where ``\boldsymbol{y} \in \mathbb{R}^n`` is the response vector, ``\boldsymbol{X}\in \mathbb{R}^{n\times p}`` is the design matrix of predictor or covariates, ``\boldsymbol{\beta} \in \mathbb{R}^p`` is the vector of unknown regression coefficients, and ``\rho \geq 0`` is a tuning parameter that controls the amount of regularization.
+where $\boldsymbol{y} \in \mathbb{R}^n$ is the response vector, $\boldsymbol{X}\in \mathbb{R}^{n\times p}$ is the design matrix of predictor or covariates, $\boldsymbol{\beta} \in \mathbb{R}^p$ is the vector of unknown regression coefficients, and $\rho \geq 0$ is a tuning parameter that controls the amount of regularization.
 
 ## Installation
 
