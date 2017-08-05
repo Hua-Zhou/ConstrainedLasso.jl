@@ -34,4 +34,6 @@ docs_dir: 'build'
 pages:
 - Home: index.md
 - Interface: interface.md
+- Example:
+     - 'Fixed tuning param value(s)': 'demo/fixedparam.md' 
 - References: references.md
