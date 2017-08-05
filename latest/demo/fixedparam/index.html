@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Constrained Lasso">
+      
+      
+      
+        <meta name="author" content="Hua Zhou and Juhyun Kim">
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.0">
+    
+    
+      
+        <title>Fixed tuning param value(s) - ConstrainedLasso.jl</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-bfecc7305d.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-02c2a4388f.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Example
+                </span>
+              
+            
+            Fixed tuning param value(s)
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    ConstrainedLasso.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../interface/" title="Interface" class="md-nav__link">
+      Interface
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Example
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Example
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Fixed tuning param value(s)
+      </label>
+    
+    <a href="./" title="Fixed tuning param value(s)" class="md-nav__link md-nav__link--active">
+      Fixed tuning param value(s)
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#single-tuning-parameter-value" title="Single tuning parameter value" class="md-nav__link">
+    Single tuning parameter value
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-tuning-parameter-values" title="Multiple tuning parameter values" class="md-nav__link">
+    Multiple tuning parameter values
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../references/" title="References" class="md-nav__link">
+      References
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#single-tuning-parameter-value" title="Single tuning parameter value" class="md-nav__link">
+    Single tuning parameter value
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-tuning-parameter-values" title="Multiple tuning parameter values" class="md-nav__link">
+    Multiple tuning parameter values
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/fixedparam.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                <p><a id='Optimize-at-a-fixed-tuning-parameter-value-1'></a></p>
+<h1 id="optimize-at-a-fixed-tuning-parameter-value">Optimize at a fixed tuning parameter value</h1>
+<p><code>lsq_constrsparsereg.jl</code> fits constrained lasso</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{ subject to} \hspace{0.5em} \boldsymbol{A\beta}=\boldsymbol{b} \text{ and } \boldsymbol{C\beta} \leq \boldsymbol{d}
+\end{split}
+</script>
+</p>
+<p>at a fixed tuning parameter value $\rho$ or several tuning parameter values provided by user.</p>
+<p><a id='Single-tuning-parameter-value-1'></a></p>
+<h3 id="single-tuning-parameter-value">Single tuning parameter value</h3>
+<p>We demonstrate using a sum-to-zero constraint example</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0
+\end{split}
+</script>
+</p>
+<p>First, let's define a true parameter <code>β</code> such that <code>sum(β) = 0</code>.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">Test</span>
+
+<span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span>
+<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">β</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="mi">3</span><span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="mi">3</span><span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="nb">nothing</span> <span class="c"># hide output</span>
+</pre></div>
+
+
+<p>Next we generate data based on the true parameter <code>β</code>.</p>
+<div class="codehilite"><pre><span></span><span class="n">srand</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×20 Array{Float64,2}:
+  1.19027     0.376264   0.346589    0.458099   …   0.0523088   2.23365
+  2.04818    -0.405272   1.60431     0.139124      -0.168468    1.29252
+  1.14265     1.33585   -0.0246589  -0.230745      -0.247202   -0.822482
+  0.459416    1.60076   -0.106035    1.35195       -1.66701     0.0134896
+ -0.396679   -1.45789   -1.29118    -0.106316      -1.24891     0.466877
+ -0.664713    0.800589  -0.337985   -0.205883   …  -0.623667    1.32134
+  0.980968    0.895878  -0.177092   -0.612003       0.372048    0.581506
+ -0.0754831  -0.691934   0.57499    -1.39397       -0.633969    1.35917
+  0.273815   -1.50876   -1.37834     1.73135       -0.74986     1.27668
+ -0.194229   -0.754523  -0.867869    2.61556       -2.07352     1.59349
+  ⋮                                             ⋱
+  0.678443    0.934982   0.425372    1.17431        0.780863    0.439673
+  0.28718     2.00606   -1.18929     1.35692       -0.545467   -0.40497
+  1.06816    -0.379291   0.11631     2.48089       -1.04331     1.24328
+ -0.306877    0.20646   -1.34497    -0.584326      -1.8609     -0.383338
+ -1.92021    -0.276028   0.426339    0.38792    …   2.16327    -1.02578
+  1.6696      1.19586   -0.783625    0.718697       1.13162    -1.31358
+ -0.213558   -1.2965     0.648433   -0.289336       0.263283    0.000636658
+ -0.163711    0.575279  -0.176555   -0.0457259      0.152164    0.1559
+ -0.902986   -0.166001  -1.27924    -1.31238        0.49458    -0.171711
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">β</span> <span class="o">+</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100-element Array{Float64,1}:
+ -5.25671
+ -3.12013
+ -1.51739
+  4.29692
+  1.27458
+ -1.88724
+  3.85962
+ -0.546135
+  0.0889302
+  1.34159
+  ⋮
+ -2.58354
+  0.457617
+  0.0892258
+  2.67329
+ -4.80027
+ -4.35654
+  2.06607
+ -1.0041
+ -6.03571
+</pre></div>
+
+
+<p>Since the equality constraint can be written as</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \beta = 0,
+</script>
+</p>
+<p>we define the constraint as below.</p>
+<div class="codehilite"><pre><span></span><span class="n">beq</span>   <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">Aeq</span>   <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>1×20 Array{Float64,2}:
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0  …  1.0  1.0  1.0  1.0  1.0  1.0  1.0
+</pre></div>
+
+
+<p>Now we are ready to fit the constrained lasso problem, say at <code>ρ=10</code>.</p>
+<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">);</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>([1.06543e-7; 1.16499e-7; … ; -1.00308; -0.704239], 127.35094120783674, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal)
+</pre></div>
+
+
+<p>We see if the sum of estimated $\beta$ coefficients equal to 0.</p>
+<div class="codehilite"><pre><span></span><span class="nd">@test</span> <span class="n">sum</span><span class="p">(</span><span class="n">β̂</span><span class="p">)</span><span class="n">≈0</span><span class="o">.</span><span class="mi">0</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>Test Passed
+</pre></div>
+
+
+<p><a id='Multiple-tuning-parameter-values-1'></a></p>
+<h3 id="multiple-tuning-parameter-values">Multiple tuning parameter values</h3>
+<p>Define <code>ρlist</code> to be a sequence of values from 1 to 10.</p>
+<div class="codehilite"><pre><span></span><span class="n">ρlist</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">:</span><span class="mf">10.0</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>1.0:1.0:10.0
+</pre></div>
+
+
+<p>Using the same equality constraints, we fit the constrained lasso.</p>
+<div class="codehilite"><pre><span></span><span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρlist</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">);</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>([0.0654744 0.0528563 … 1.36207e-7 1.06543e-7; 0.0984093 0.0769516 … 1.55064e-7 1.16499e-7; … ; -1.14266 -1.12595 … -1.01705 -1.00308; -0.89232 -0.873294 … -0.725531 -0.704239], [40.7849, 51.2411, 61.4508, 71.4287, 81.1815, 90.7322, 100.116, 109.345, 118.421, 127.351], Any[Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal, Problem:
+minimize AbstractExpr with
+head: +
+size: (1, 1)
+sign: Convex.Positive()
+vexity: Convex.ConvexVexity()
+
+subject to
+Constraint:
+== constraint
+lhs: AbstractExpr with
+head: *
+size: (1, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: [0.0]
+vexity: Convex.AffineVexity()
+        Constraint:
+&lt;= constraint
+lhs: AbstractExpr with
+head: *
+size: (0, 1)
+sign: Convex.NoSign()
+vexity: Convex.AffineVexity()
+
+rhs: Float64[]
+vexity: Convex.AffineVexity()
+current status: Optimal])
+</pre></div>
+
+
+<p>Now let's test if coefficients sum to 0 at each parameter value.</p>
+<div class="codehilite"><pre><span></span><span class="nd">@testset</span> <span class="s">&quot;zero-sum for multiple param values&quot;</span> <span class="k">begin</span> <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="n">sum</span><span class="p">(</span><span class="n">β̂</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nd">@test</span> <span class="n">i≈0</span><span class="o">.</span><span class="mi">0</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-5</span>
+<span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>Test Summary:                      | Pass  Total
+zero-sum for multiple param values |   10     10
+Base.Test.DefaultTestSet(&quot;zero-sum for multiple param values&quot;, Any[], 10, false)
+</pre></div>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../interface/" title="Interface" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Interface
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                References
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-1d6ee6ee6c.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
