@@ -1,13 +1,14 @@
 using Documenter, ConstrainedLasso
 
 makedocs(
-      doctest   = false,
+#      doctest   = false,
       format    = :html,
       clean     = true,
       sitename  = "ConstrainedLasso.jl",
       modules   = [ConstrainedLasso],
       pages     = [
           "Home"     => "index.md",
+	  "Interface" => "interface.md",
           "References" => "references.md"
       ]
 
