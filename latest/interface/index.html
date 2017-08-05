@@ -14,22 +14,22 @@
         <meta name="author" content="Hua Zhou and Juhyun Kim">
       
       
-        <link rel="shortcut icon" href="./assets/images/favicon.png">
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.0">
     
     
       
-        <title>ConstrainedLasso.jl</title>
+        <title>Interface - ConstrainedLasso.jl</title>
       
     
     
-      <script src="./assets/javascripts/modernizr-1df76c4e58.js"></script>
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
     
     
-      <link rel="stylesheet" href="./assets/stylesheets/application-bfecc7305d.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-bfecc7305d.css">
       
-        <link rel="stylesheet" href="./assets/stylesheets/application-02c2a4388f.palette.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-02c2a4388f.palette.css">
       
     
     
@@ -43,7 +43,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
     
-      <link rel="stylesheet" href="./assets/Documenter.css">
+      <link rel="stylesheet" href="../assets/Documenter.css">
     
     
   </head>
@@ -70,7 +70,7 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
+          <a href=".." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
           </a>
         
       </div>
@@ -83,7 +83,7 @@
             
               
             
-            Home
+            Interface
           
         </span>
       </div>
@@ -188,6 +188,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -195,37 +207,26 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        Home
+        Interface
       </label>
     
-    <a href="." title="Home" class="md-nav__link md-nav__link--active">
-      Home
+    <a href="./" title="Interface" class="md-nav__link md-nav__link--active">
+      Interface
     </a>
     
       
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" title="Installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#citation" title="Citation" class="md-nav__link">
-    Citation
+  <a href="#interface" title="Interface" class="md-nav__link">
+    Interface
   </a>
   
 </li>
@@ -245,19 +246,7 @@
 
 
   <li class="md-nav__item">
-    <a href="interface/" title="Interface" class="md-nav__link">
-      Interface
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="references/" title="References" class="md-nav__link">
+    <a href="../references/" title="References" class="md-nav__link">
       References
     </a>
   </li>
@@ -277,22 +266,13 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" title="Installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#citation" title="Citation" class="md-nav__link">
-    Citation
+  <a href="#interface" title="Interface" class="md-nav__link">
+    Interface
   </a>
   
 </li>
@@ -311,35 +291,105 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/interface.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                <p><a id='ConstrainedLasso-1'></a></p>
-<h1 id="constrainedlasso">ConstrainedLasso</h1>
-<p><strong>ConstrainedLasso</strong> estimates the following constrained lasso problem</p>
-<p>
-<script type="math/tex; mode=display">
-\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
-& \text{ subject to} \hspace{0.5em} \boldsymbol{A\beta}=\boldsymbol{b} \text{ and } \boldsymbol{C\beta} \leq \boldsymbol{d}
-\end{split}
-</script>
-</p>
-<p>where $\boldsymbol{y} \in \mathbb{R}^n$ is the response vector, $\boldsymbol{X}\in \mathbb{R}^{n\times p}$ is the design matrix of predictor or covariates, $\boldsymbol{\beta} \in \mathbb{R}^p$ is the vector of unknown regression coefficients, and $\rho \geq 0$ is a tuning parameter that controls the amount of regularization.</p>
-<p><a id='Installation-1'></a></p>
-<h2 id="installation">Installation</h2>
-<p>Within Julia, use the package manager to install <strong>ConstainedLasso</strong>:</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/Hua-Zhou/ConstrainedLasso.git&quot;</span><span class="p">)</span>
+                  <h1>Interface</h1>
+                
+                <p><a id='Interface-1'></a></p>
+<h2 id="interface">Interface</h2>
+<p>Functions exported from <code>ConstrainedLasso</code>:</p>
+<p><a id='ConstrainedLasso.lsq_constrsparsereg' href='#ConstrainedLasso.lsq_constrsparsereg'>#</a>
+<strong><code>ConstrainedLasso.lsq_constrsparsereg</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>  lsq_constrsparsereg(X, y, ρ = zero(eltype(X));
+      Aeq       :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq       :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq     :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq     :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      obswt     :: AbstractVector = ones(eltype(y), length(y)),
+      penwt     :: AbstractVector = ones(eltype(X), size(X, 2)),
+      warmstart :: Bool = false,
+      solver = SCSSolver(verbose=0, max_iters=10e8)
+      )
 </pre></div>
 
 
-<p>This package supports Julia v0.6.</p>
-<p><a id='Citation-1'></a></p>
-<h2 id="citation">Citation</h2>
-<p>If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:</p>
-<p><em>B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <a href="https://arxiv.org/abs/1611.01511">https://arxiv.org/abs/1611.01511</a></em></p>
-<p>Original method paper on the constrained lasso is</p>
-<p><em>G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <a href="http://www-bcf.usc.edu/~gareth/research/PAC.pdf">http://www-bcf.usc.edu/~gareth/research/PAC.pdf</a></em></p>
+<p>Fit constrained lasso at fixed tuning parameter value(s) by minimizing     <code>0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)</code> subject to linear constraints.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><code>X</code>       : predictor matrix.</li>
+<li><code>y</code>       : response vector.</li>
+<li><code>ρ</code>       : tuning parameter. Can be a number or a list of numbers. Default 0.</li>
+</ul>
+<p><strong>Optional arguments</strong></p>
+<ul>
+<li><code>Aeq</code>     : equality constraint matrix.</li>
+<li><code>beq</code>     : equality constraint vector.</li>
+<li><code>Aineq</code>   : inequality constraint matrix.</li>
+<li><code>bineq</code>   : inequality constraint vector.</li>
+<li><code>obswt</code>   : observation weights.</li>
+<li><code>penwt</code>   : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
+<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS. <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+<li><code>β0</code>      : starting point for warm start.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>β</code>       : estimated coefficents.</li>
+<li><code>objval</code>  : optimal objective value.</li>
+<li><code>problem</code> : Convex.jl problem.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/7ee8e263b6e59044b396a11729bd285c2345218a/src/constrsparsereg.jl#L1-L38' class='documenter-source'>source</a><br></p>
+<p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
+<strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>  lsq_classopath(X, y;
+      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      ρridge :: Number = zero(eltype(X)),
+      penidx ::Array{Bool} = fill(true, size(X, 2)),
+      solver = SCSSolver(verbose=0, max_iters=10e8)
+      )
+
+Calculate the solution path of the constrained lasso problem that minimizes
+    `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
+subject to linear constraints.
+</pre></div>
+
+
+<p><strong>Arguments</strong></p>
+<ul>
+<li><code>X</code>       : predictor matrix</li>
+<li><code>y</code>       : response vector</li>
+</ul>
+<p><strong>Optional arguments</strong></p>
+<ul>
+<li><code>Aeq</code>     : equality constraint matrix</li>
+<li><code>beq</code>     : equality constraint vector</li>
+<li><code>Aineq</code>   : inequality constraint matrix</li>
+<li><code>bineq</code>   : inequality constraint vector</li>
+<li><code>ρridge</code>  : tuning parameter for ridge penalty. Default is 0.</li>
+<li><code>penidx</code>  : a logical vector indicating penalized coefficients</li>
+<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS. <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+</ul>
+<p><strong>Examples</strong></p>
+<p>See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso</p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/7ee8e263b6e59044b396a11729bd285c2345218a/src/classopath.jl#L1-L33' class='documenter-source'>source</a><br></p>
+<p>Private function in <code>ConstrainedLasso</code>:</p>
+<p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
+<strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>  find_ρmax(X, y;
+      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
+      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
+      penidx :: Array{Bool} = fill(true, size(X, 2)),
+      solver = SCSSolver(verbose=0, max_iters=10e8)
+</pre></div>
+
+
+<p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/7ee8e263b6e59044b396a11729bd285c2345218a/src/classopath.jl#L653-L664' class='documenter-source'>source</a><br></p>
                 
                   
                 
@@ -358,14 +408,28 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
         
-          <a href="interface/" title="Interface" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Interface
+                References
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -395,14 +459,14 @@
       
     </div>
     
-      <script src="./assets/javascripts/application-1d6ee6ee6c.js"></script>
+      <script src="../assets/javascripts/application-1d6ee6ee6c.js"></script>
       
       
-      <script>app.initialize({url:{base:"."}})</script>
+      <script>app.initialize({url:{base:".."}})</script>
       
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
       
-        <script src="./assets/mathjaxhelper.js"></script>
+        <script src="../assets/mathjaxhelper.js"></script>
       
     
     
