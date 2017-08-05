@@ -22,7 +22,7 @@ where <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\boldsymb
 Within Julia, use the package manager to install **ConstainedLasso**:
 
 ```{julia}
-Pkg.clone("https://github.com/Hua-Zhou/ConstrainedLasso.git")
+Pkg.clone("https://github.com/Hua-Zhou/ConstrainedLasso.jl.git")
 ```
 
 This package supports Julia v0.6.
@@ -50,13 +50,13 @@ If you use ConstrainedLasso package in your research, please cite the following 
 [docs-stable-url]: https://Hua-Zhou.github.io/ConstrainedLasso.jl/stable
 
 [travis-img]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.svg?branch=master
-[travis-url]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso
+[travis-url]: https://travis-ci.org/Hua-Zhou/ConstrainedLasso.jl
 
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/ocq8r95cr70kod8x/branch/master?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso/branch/master
+[appveyor-url]: https://ci.appveyor.com/project/Hua-Zhou/constrainedlasso.jl/branch/master
 
 [coveralls-img]: https://coveralls.io/repos/github/Hua-Zhou/ConstrainedLasso/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/Hua-Zhou/ConstrainedLasso?branch=master
+[coveralls-url]: https://coveralls.io/github/Hua-Zhou/ConstrainedLasso.jl?branch=master
 
-[codecov-img]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso
+[codecov-img]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/Hua-Zhou/ConstrainedLasso.jl
