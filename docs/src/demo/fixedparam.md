@@ -1,4 +1,4 @@
-# Optimize at a fixed tuning parameter value
+# Optimize at fixed tuning parameter value(s)
 
 `lsq_constrsparsereg.jl` fits constrained lasso
 
@@ -31,7 +31,6 @@ n, p = 100, 20
 β[(round(Int, p / 4) + 1):round(Int, p / 2)] = 1
 β[(round(Int, p / 2) + 1):round(Int, 3p / 4)] = 0
 β[(round(Int, 3p / 4) + 1):p] = -1
-nothing # hide output
 ```
 Next we generate data based on the true parameter `β`.
 
@@ -81,6 +80,11 @@ Using the same equality constraints, we fit the constrained lasso.
 ```@example tuning
 logging(DevNull, ConstrainedLasso, :lsq_constrsparsereg, kind=:warn) # hide
 β̂, = lsq_constrsparsereg(X, y, ρlist; Aeq = Aeq, beq = beq);
+nothing # hide 
+```
+
+```@example tuning
+β̂
 ```
 
 Now let's test if coefficients sum to 0 at each parameter value.
