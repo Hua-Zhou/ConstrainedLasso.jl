@@ -33,4 +33,5 @@ docs_dir: 'build'
 
 pages:
 - Home: index.md
+- Interface: interface.md
 - References: references.md
