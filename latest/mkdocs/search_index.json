@@ -1,0 +1,34 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "ConstrainedLasso\n\n\nConstrainedLasso\n estimates the following constrained lasso problem\n\n\n\n\n\n\\begin{split}\n& \\text{minimize} \\hspace{1em} \\frac 12||\\boldsymbol{y}-\\boldsymbol{X\\beta}||^2_2 + \\rho||\\beta||_1 \\\\\n& \\text{ subject to} \\hspace{0.5em} \\boldsymbol{A\\beta}=\\boldsymbol{b} \\text{ and } \\boldsymbol{C\\beta} \\leq \\boldsymbol{d}\n\\end{split}\n\n\n\n\n\nwhere $\\boldsymbol{y} \\in \\mathbb{R}^n$ is the response vector, $\\boldsymbol{X}\\in \\mathbb{R}^{n\\times p}$ is the design matrix of predictor or covariates, $\\boldsymbol{\\beta} \\in \\mathbb{R}^p$ is the vector of unknown regression coefficients, and $\\rho \\geq 0$ is a tuning parameter that controls the amount of regularization.\n\n\n\n\nInstallation\n\n\nWithin Julia, use the package manager to install \nConstainedLasso\n:\n\n\nPkg\n.\nclone\n(\nhttps://github.com/Hua-Zhou/ConstrainedLasso.git\n)\n\n\n\n\n\n\nThis package supports Julia v0.6.\n\n\n\n\nCitation\n\n\nIf you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:\n\n\nB.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. \nhttps://arxiv.org/abs/1611.01511\n\n\nOriginal method paper on the constrained lasso is\n\n\nG.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. \nhttp://www-bcf.usc.edu/~gareth/research/PAC.pdf", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#constrainedlasso", 
+            "text": "ConstrainedLasso  estimates the following constrained lasso problem   \n\\begin{split}\n& \\text{minimize} \\hspace{1em} \\frac 12||\\boldsymbol{y}-\\boldsymbol{X\\beta}||^2_2 + \\rho||\\beta||_1 \\\\\n& \\text{ subject to} \\hspace{0.5em} \\boldsymbol{A\\beta}=\\boldsymbol{b} \\text{ and } \\boldsymbol{C\\beta} \\leq \\boldsymbol{d}\n\\end{split}   where $\\boldsymbol{y} \\in \\mathbb{R}^n$ is the response vector, $\\boldsymbol{X}\\in \\mathbb{R}^{n\\times p}$ is the design matrix of predictor or covariates, $\\boldsymbol{\\beta} \\in \\mathbb{R}^p$ is the vector of unknown regression coefficients, and $\\rho \\geq 0$ is a tuning parameter that controls the amount of regularization.", 
+            "title": "ConstrainedLasso"
+        }, 
+        {
+            "location": "/#installation", 
+            "text": "Within Julia, use the package manager to install  ConstainedLasso :  Pkg . clone ( https://github.com/Hua-Zhou/ConstrainedLasso.git )   This package supports Julia v0.6.", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/#citation", 
+            "text": "If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:  B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso.  https://arxiv.org/abs/1611.01511  Original method paper on the constrained lasso is  G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression.  http://www-bcf.usc.edu/~gareth/research/PAC.pdf", 
+            "title": "Citation"
+        }, 
+        {
+            "location": "/references/", 
+            "text": "References\n\n\n\n\n[1] Altenbuchinger, M., Rehberg, T., Zacharias, H.U., St\u00e4mmler, F., Dettmer, K., Weber, D., Hiergeist, A., Gessner, A., Holler, E., Oefner, P.J. and Spang, R. (2016). Reference point insensitive molecular data analysis. \nBioinformatics\n, 33(2):219-226.\n\n\n[2] Bredel, M., Bredel, C., Juric, D., Harsh, G. R., Vogel, H., Recht, L. D., and Sikic, B. I. (2005). High-resolution genome-wide mapping of genetic alterations in human glial brain tumors. \nCancer Research\n, 65:4088\u20134096.\n\n\n[3] Gaines, B.R. and Zhou, H. (2016). Algorithms for fitting the constrained lasso. arXiv preprint arXiv:1611.01511.\n\n\n[4] Stamey, T.A., Kabalin, J.N., McNeal, J.E., Johnstone, I.M., Freiha, F., Redwine, E.A. and Yang, N. (1989). Prostate specific antigen in the diagnosis and treatment of adenocarcinoma of the prostate: II. radical prostatectomy treated patients. \nJournal of Urology\n 141(5):1076\u20131083.\n\n\n[5] Tibshirani, R. J., Hoefling, H., and Tibshirani, R. (2011). Nearly-isotonic regression. \nTechnometrics\n, 53:54\u201361.\n\n\n[6] Tibshirani, R. and Wang, P. (2008). Spatial smoothing and hot spot detection for CGH data using the fused lasso. \nBiostatistics\n, 9:18\u201329.\n\n\n[7] Weber, D., Oefner, P. J., Hiergeist, A., Koestler, J., Gessner, A., Weber, M., Hahn, J., Wolff, D., Sta \u0308mmler, F., Spang, R., Herr, W., Dettmer, K., and Holler, E. (2015). Low urinary undoxyl sulfate levels early after transplantation reflect a disrupted microbiome and are associated with poor outcome. \nBlood\n, 126:1723\u20131728.\n\n\n[8] Wu, W. B., Woodroofe, M., and Mentz, G. (2001). Isotonic regression: another look at the changepoint problem. \nBiometrika\n, 88:793\u2013804.", 
+            "title": "References"
+        }, 
+        {
+            "location": "/references/#references", 
+            "text": "[1] Altenbuchinger, M., Rehberg, T., Zacharias, H.U., St\u00e4mmler, F., Dettmer, K., Weber, D., Hiergeist, A., Gessner, A., Holler, E., Oefner, P.J. and Spang, R. (2016). Reference point insensitive molecular data analysis.  Bioinformatics , 33(2):219-226.  [2] Bredel, M., Bredel, C., Juric, D., Harsh, G. R., Vogel, H., Recht, L. D., and Sikic, B. I. (2005). High-resolution genome-wide mapping of genetic alterations in human glial brain tumors.  Cancer Research , 65:4088\u20134096.  [3] Gaines, B.R. and Zhou, H. (2016). Algorithms for fitting the constrained lasso. arXiv preprint arXiv:1611.01511.  [4] Stamey, T.A., Kabalin, J.N., McNeal, J.E., Johnstone, I.M., Freiha, F., Redwine, E.A. and Yang, N. (1989). Prostate specific antigen in the diagnosis and treatment of adenocarcinoma of the prostate: II. radical prostatectomy treated patients.  Journal of Urology  141(5):1076\u20131083.  [5] Tibshirani, R. J., Hoefling, H., and Tibshirani, R. (2011). Nearly-isotonic regression.  Technometrics , 53:54\u201361.  [6] Tibshirani, R. and Wang, P. (2008). Spatial smoothing and hot spot detection for CGH data using the fused lasso.  Biostatistics , 9:18\u201329.  [7] Weber, D., Oefner, P. J., Hiergeist, A., Koestler, J., Gessner, A., Weber, M., Hahn, J., Wolff, D., Sta \u0308mmler, F., Spang, R., Herr, W., Dettmer, K., and Holler, E. (2015). Low urinary undoxyl sulfate levels early after transplantation reflect a disrupted microbiome and are associated with poor outcome.  Blood , 126:1723\u20131728.  [8] Wu, W. B., Woodroofe, M., and Mentz, G. (2001). Isotonic regression: another look at the changepoint problem.  Biometrika , 88:793\u2013804.", 
+            "title": "References"
+        }
+    ]
+}
