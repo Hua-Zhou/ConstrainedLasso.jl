@@ -1,5 +1,5 @@
 site_name:        ConstrainedLasso.jl
-repo_url:         https://github.com/Hua-Zhou/ConstrainedLasso
+repo_url:         https://github.com/Hua-Zhou/ConstrainedLasso.jl
 site_description: Constrained Lasso
 site_author:      Hua Zhou and Juhyun Kim
 
