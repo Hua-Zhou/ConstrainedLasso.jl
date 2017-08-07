@@ -206,3 +206,7 @@ title!("Microbiome Data: Solution Path via Constrained Lasso")
 ```
 
 ![](misc/micro.svg)
+
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/micro.ipynb) to access the .ipynb file of this page.*

@@ -230,8 +230,8 @@ We see if the sum of estimated ``\beta`` coefficients equal to 0.
 
 
 
-    [1m[32mTest Passed
-    [39m[22m
+    Test Passed
+    
 
 
 
@@ -305,3 +305,6 @@ title!("Solution Path at Fixed Parameter Values")
 ```
 
 ![](misc/fixed.svg)
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/fixedparam.ipynb) to access the .ipynb file of this page.*

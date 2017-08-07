@@ -27,7 +27,10 @@ subject to linear constraints.
 - `bineq`   : inequality constraint vector.
 - `obswt`   : observation weights.
 - `penwt`   : predictor penalty weights. Default is `[1 1 1 ... 1]`.
-- `solver`  : a solver Convex.jl supports. Default is SCS. <http://convexjl.readthedocs.io/en/latest/solvers.html>
+- `solver`  : a solver Convex.jl supports. Default is SCS.
+              Note that Mosek and Gurobi are more robust than SCS. Unlike SCS or
+              ECOS, both Mosek and Gurobi require a license (free for academic
+              use). <http://convexjl.readthedocs.io/en/latest/solvers.html>
 - `β0`      : starting point for warm start.
 
 ### Returns

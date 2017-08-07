@@ -26,8 +26,10 @@ subject to linear constraints.
 - `bineq`   : inequality constraint vector
 - `ρridge`  : tuning parameter for ridge penalty. Default is 0.
 - `penidx`  : a logical vector indicating penalized coefficients
-- `solver`  : a solver Convex.jl supports. Default is SCS. <http://convexjl.readthedocs.io/en/latest/solvers.html>
-
+- `solver`  : a solver Convex.jl supports. Default is SCS.
+              Note that Mosek and Gurobi are more robust than SCS. Unlike SCS or
+              ECOS, both Mosek and Gurobi require a license (free for academic
+              use). <http://convexjl.readthedocs.io/en/latest/solvers.html>
 ### Examples
    See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
 """

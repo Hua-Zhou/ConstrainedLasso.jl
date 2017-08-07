@@ -304,3 +304,8 @@ title!("Global Warming Data")
 ```
 
 ![](misc/warming.svg)
+
+
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb) to access the .ipynb file of this page.*

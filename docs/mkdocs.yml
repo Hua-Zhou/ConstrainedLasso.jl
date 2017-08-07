@@ -35,11 +35,11 @@ pages:
 - Home: index.md
 - Interface: interface.md
 - Example:
-     - 'Fixed tuning param value': demo/fixedparam.md
-     - 'Path algorithm': demo/path.md
+     - 'Fixed Tuning Parameter Value': demo/fixedparam.md
+     - 'Path Algorithm': demo/path.md
 - 'Real Data Applications':
-     - 'Prostate data': demo/prostate.md
-     - 'Global warming data': demo/warming.md
-     - 'Tumor data': demo/tumor.md
-     - 'Microbiome data': demo/micro.md
+     - 'Prostate Data': demo/prostate.md
+     - 'Global Warming Data': demo/warming.md
+     - 'Brain Tumor Data': demo/tumor.md
+     - 'Microbiome Data': demo/micro.md
 - References: references.md

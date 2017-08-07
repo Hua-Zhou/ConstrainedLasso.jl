@@ -383,3 +383,7 @@ title!("Simulation 2: Solution Path via Constrained Lasso")
 ```
 
 ![](misc/nonneg.svg)
+
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/path.ipynb) to access the .ipynb file of this page.*

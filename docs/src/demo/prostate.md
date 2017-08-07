@@ -211,3 +211,7 @@ plot(path.lambda, path.betas', color=colors, label=labels,
 ```
 
 ![](misc/prostate2.svg)
+
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/prostate.ipynb) to access the .ipynb file of this page.*

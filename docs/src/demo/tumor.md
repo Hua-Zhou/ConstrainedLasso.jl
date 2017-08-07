@@ -425,3 +425,9 @@ println([mean(sameρ_err); median(sameρ_err); maximum(sameρ_err)])
 
     [4.77914e-7, 4.80866e-7, 5.00013e-7]
 
+
+
+
+
+
+*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/tumor.ipynb) to access the .ipynb file of this page.*
