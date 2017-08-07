@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Constrained Lasso">
+      
+      
+      
+        <meta name="author" content="Hua Zhou and Juhyun Kim">
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.0">
+    
+    
+      
+        <title>Path algorithm - ConstrainedLasso.jl</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-bfecc7305d.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-02c2a4388f.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Example
+                </span>
+              
+            
+            Path algorithm
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    ConstrainedLasso.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../interface/" title="Interface" class="md-nav__link">
+      Interface
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Example
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Example
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../fixedparam/" title="Fixed tuning param value" class="md-nav__link">
+      Fixed tuning param value
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Path algorithm
+      </label>
+    
+    <a href="./" title="Path algorithm" class="md-nav__link md-nav__link--active">
+      Path algorithm
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sum-to-zero-constraint" title="Sum-to-zero constraint" class="md-nav__link">
+    Sum-to-zero constraint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-negativity-constraint" title="Non-negativity constraint" class="md-nav__link">
+    Non-negativity constraint
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../references/" title="References" class="md-nav__link">
+      References
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sum-to-zero-constraint" title="Sum-to-zero constraint" class="md-nav__link">
+    Sum-to-zero constraint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-negativity-constraint" title="Non-negativity constraint" class="md-nav__link">
+    Non-negativity constraint
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/sim.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                <p><a id='Path-algorithm-1'></a></p>
+<h1 id="path-algorithm">Path algorithm</h1>
+<p><a id='Sum-to-zero-constraint-1'></a></p>
+<h2 id="sum-to-zero-constraint">Sum-to-zero constraint</h2>
+<p>In this example, we will solve a problem defined by </p>
+<p>
+<script type="math/tex; mode=display">
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1  \\
+& \text{subject to} \hspace{1em} \sum_j \beta_j = 0
+\end{split}
+</script>
+</p>
+<p>Note that we can re-write the constraint as  $\boldsymbol{A\beta} = \boldsymbol{b}$</p>
+<p>where </p>
+<p>
+<script type="math/tex; mode=display">
+\boldsymbol{A} = \begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \text{ and } \boldsymbol{b} = 0.
+</script>
+</p>
+<p>First let's generate the predictor matrix <code>X</code> and response vector <code>y</code>. To do so, we need a true parameter vector <code>β</code> whose sum equals to 0. Note <code>n</code> is the number of observations <code>n</code> and <code>p</code> is the number of predictors. </p>
+<div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>  
+<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">β</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="mi">3</span><span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="mi">3</span><span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">srand</span><span class="p">(</span><span class="mi">41</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50×100 Array{Float64,2}:
+  1.21212    -0.153889    0.141533  …  -0.458125    0.0951976  -2.14019   
+  0.345895    1.30676     1.60944      -0.409901    0.323719    0.989333  
+ -1.27859    -1.18894     0.512064      1.80509     1.62606    -1.44251   
+  0.230616    2.54741    -0.523533      2.73358     1.07999     0.432834  
+ -1.17103    -0.39082     0.441921     -0.179239   -0.158189   -0.640611  
+  1.67135     0.0829011   0.964089  …  -0.720038    1.99359    -0.671572  
+ -0.614717    2.16204    -0.0602       -0.324456   -0.616887    1.11243   
+ -0.810535    0.974719   -0.045405      0.881578    1.29611     0.696869  
+ -1.10879    -1.32489    -1.18272       0.579381   -0.971269   -0.687591  
+ -0.219752   -0.447897   -0.974186     -0.880804   -0.480702   -1.36887   
+  0.0952544  -0.126203   -0.273737  …  -0.264421    0.565684   -0.798719  
+  1.4126      0.295896   -0.213161     -1.46343    -1.27144    -0.0589753 
+ -0.418407   -0.479389    0.324243      1.96976     0.867659   -1.2999    
+  ⋮                                 ⋱                                     
+  0.504861   -1.03911    -0.357771      0.815027    0.919037    1.07463   
+ -0.820358   -0.955319    0.097768      0.553219    1.56424     0.10535   
+  1.39684     1.93183     0.706641  …  -0.0222014   0.987281   -0.0646814 
+ -1.55206     0.446778    1.48206      -1.42384    -1.04209     0.0460478 
+  0.928527    0.933087   -0.641975     -1.16347    -0.313851   -1.20434   
+  0.380879   -0.144713    1.54374      -0.605637    0.408246    0.632131  
+ -1.30233    -2.31664     1.51324       0.765034   -0.515553    0.984551  
+  1.36747     1.34059    -0.114778  …   0.846682   -0.565511   -0.539113  
+ -2.82496    -0.0447351   0.426242     -0.353497   -0.14583    -0.00304009
+ -0.847741    1.49306     1.15522       0.637659    1.70818     0.641035  
+ -0.22286    -0.43932    -0.373259      0.788337    0.223785   -0.343495  
+  1.32145     0.104516   -0.993017     -0.272744   -0.133748    0.968627
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">β</span> <span class="o">+</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50-element Array{Float64,1}:
+  -9.90585 
+  -5.40562 
+   5.24289 
+  -6.29951 
+  -4.9586  
+  -6.1342  
+  -7.90981 
+   2.51009 
+  -5.79548 
+   1.61355 
+  -0.722766
+  10.4522  
+   4.03935 
+   ⋮       
+   0.397781
+  -2.6661  
+   5.36896 
+  -3.56537 
+  -2.402   
+   0.11478 
+  -5.39248 
+   4.38391 
+   0.706801
+ -10.1066  
+  -1.12558 
+  14.2473
+</pre></div>
+
+
+<p>Since the problem has equality constraints only, we define the constraints as below. </p>
+<div class="codehilite"><pre><span></span><span class="n">beq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Aeq</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>1×100 Array{Float64,2}:
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0  …  1.0  1.0  1.0  1.0  1.0  1.0  1.0
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span>
+<span class="n">β̂path1</span><span class="p">,</span> <span class="n">ρpath1</span><span class="p">,</span> <span class="n">objpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Now we are ready to obtain the solution path using the path algorithm. By default, we use the solver SCS. </p>
+<div class="codehilite"><pre><span></span><span class="n">β̂path1</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×64 Array{Float64,2}:
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.206561   0.212696   0.22402 
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0          -0.378352  -0.411385  -0.41288 
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.325283   0.3467     0.357212
+ 0.0  0.0   0.0         0.0          -0.19861   -0.181371  -0.181397
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ ⋮                                ⋱                                 
+ 0.0  0.0   0.0         0.0          -0.46258   -0.452943  -0.458164
+ 0.0  0.0   0.0         0.0          -0.401578  -0.359423  -0.358849
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0  -0.0558231  -0.101399     -0.850614  -0.874227  -0.881474
+ 0.0  0.0   0.0         0.0          -1.07203   -1.05001   -1.06761 
+ 0.0  0.0   0.0         0.0          -0.674324  -0.621432  -0.622139
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0          -1.25239   -1.20357   -1.2081  
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0
+</pre></div>
+
+
+<p>Let's see if sums of coefficients at all $\rho$ values are approximately 0. </p>
+<div class="codehilite"><pre><span></span><span class="n">all</span><span class="p">(</span><span class="n">abs</span><span class="o">.</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">β̂path1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">.&lt;</span> <span class="mf">1e-6</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>true
+</pre></div>
+
+
+<p>We plot the solution path below. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">ρpath1</span><span class="p">,</span> <span class="n">β̂path1</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρpath1</span><span class="p">),</span>
+      <span class="n">maximum</span><span class="p">(</span><span class="n">ρpath1</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
+<span class="n">title!</span><span class="p">(</span><span class="s">&quot;Simulation 1: Solution Path via Constrained Lasso&quot;</span><span class="p">)</span> 
+</pre></div>
+
+
+<p><a id='Non-negativity-constraint-1'></a></p>
+<h2 id="non-negativity-constraint">Non-negativity constraint</h2>
+<p>In this example, the problem is defined by </p>
+<p>
+<script type="math/tex; mode=display">
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1  \\
+& \text{subject to} \hspace{1em} \beta_j \geq 0 \forall j
+\end{split}
+</script>
+</p>
+<p>We can re-write the inequality constraint as $\boldsymbol{C\beta} \leq \boldsymbol{d}$ where </p>
+<p>
+<script type="math/tex; mode=display">
+\boldsymbol{C} = \begin{pmatrix} 
+-1 & & & \\
+    & -1 & & \\
+    &   & \ddots & \\
+    &   &   & -1
+\end{pmatrix}
+\text{ and } \boldsymbol{d} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}
+</script>
+</p>
+<p>First we define a true parameter vector <code>β</code> that is sparse with a few non-zero coefficients. Let <code>n</code> and <code>p</code> be the number of observations and predictors, respectively. </p>
+<div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>   
+<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">β</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">10</span>
+<span class="n">srand</span><span class="p">(</span><span class="mi">41</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50×100 Array{Float64,2}:
+  1.21212    -0.153889    0.141533  …  -0.458125    0.0951976  -2.14019   
+  0.345895    1.30676     1.60944      -0.409901    0.323719    0.989333  
+ -1.27859    -1.18894     0.512064      1.80509     1.62606    -1.44251   
+  0.230616    2.54741    -0.523533      2.73358     1.07999     0.432834  
+ -1.17103    -0.39082     0.441921     -0.179239   -0.158189   -0.640611  
+  1.67135     0.0829011   0.964089  …  -0.720038    1.99359    -0.671572  
+ -0.614717    2.16204    -0.0602       -0.324456   -0.616887    1.11243   
+ -0.810535    0.974719   -0.045405      0.881578    1.29611     0.696869  
+ -1.10879    -1.32489    -1.18272       0.579381   -0.971269   -0.687591  
+ -0.219752   -0.447897   -0.974186     -0.880804   -0.480702   -1.36887   
+  0.0952544  -0.126203   -0.273737  …  -0.264421    0.565684   -0.798719  
+  1.4126      0.295896   -0.213161     -1.46343    -1.27144    -0.0589753 
+ -0.418407   -0.479389    0.324243      1.96976     0.867659   -1.2999    
+  ⋮                                 ⋱                                     
+  0.504861   -1.03911    -0.357771      0.815027    0.919037    1.07463   
+ -0.820358   -0.955319    0.097768      0.553219    1.56424     0.10535   
+  1.39684     1.93183     0.706641  …  -0.0222014   0.987281   -0.0646814 
+ -1.55206     0.446778    1.48206      -1.42384    -1.04209     0.0460478 
+  0.928527    0.933087   -0.641975     -1.16347    -0.313851   -1.20434   
+  0.380879   -0.144713    1.54374      -0.605637    0.408246    0.632131  
+ -1.30233    -2.31664     1.51324       0.765034   -0.515553    0.984551  
+  1.36747     1.34059    -0.114778  …   0.846682   -0.565511   -0.539113  
+ -2.82496    -0.0447351   0.426242     -0.353497   -0.14583    -0.00304009
+ -0.847741    1.49306     1.15522       0.637659    1.70818     0.641035  
+ -0.22286    -0.43932    -0.373259      0.788337    0.223785   -0.343495  
+  1.32145     0.104516   -0.993017     -0.272744   -0.133748    0.968627
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">β</span> <span class="o">+</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50-element Array{Float64,1}:
+  12.6173  
+  40.3776  
+   2.2169  
+  27.4631  
+  38.592   
+   7.82023 
+  22.7367  
+   7.88475 
+  -7.47037 
+   0.621035
+  -4.91899 
+ -14.9363  
+   8.26901 
+   ⋮       
+   7.83882 
+  -9.30699 
+ -29.7205  
+  15.2482  
+ -19.1784  
+  14.9865  
+   2.32728 
+  -9.11988 
+ -15.3472  
+  22.9679  
+  -0.997964
+  42.6068
+</pre></div>
+
+
+<p>Now set up the inequality constraint for the problem.</p>
+<div class="codehilite"><pre><span></span><span class="n">bineq</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">Aineq</span> <span class="o">=</span> <span class="o">-</span> <span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×100 Array{Float64,2}:
+ -1.0  -0.0  -0.0  -0.0  -0.0  -0.0  …  -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -1.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -1.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -1.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -1.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -1.0  …  -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0  …  -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+  ⋮                             ⋮    ⋱         ⋮                          
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0  …  -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -1.0  -0.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0  …  -0.0  -1.0  -0.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -1.0  -0.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -1.0  -0.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -1.0  -0.0
+ -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -1.0
+</pre></div>
+
+
+<p>Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver <code>ECOS</code> for <code>Convex.jl</code>. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ECOS</span><span class="p">;</span> <span class="n">solver</span><span class="o">=</span><span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">);</span>
+<span class="n">β̂path2</span><span class="p">,</span> <span class="n">ρpath2</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">Aineq</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">bineq</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span><span class="p">)</span> 
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">β̂path2</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×183 Array{Float64,2}:
+ 0.0         0.0      0.0      0.0      …  0.783939   0.791708   0.796529 
+ 0.0         0.0      0.0      0.0         2.17561    2.18099    2.18875  
+ 0.0         0.0      0.0      0.0         2.99935    3.008      3.01471  
+ 0.0         0.0      0.0      0.0         4.30984    4.31056    4.30849  
+ 0.0         0.0      0.0      0.0         4.98995    4.99358    4.9955   
+ 0.0         0.0      0.0      0.0      …  6.18666    6.18814    6.18596  
+ 0.0         0.0      0.0      0.0         6.92076    6.92371    6.92749  
+ 0.0         0.0      0.0      0.0         8.56963    8.55907    8.54642  
+ 0.0         0.0      0.0      0.0         8.86323    8.864      8.86137  
+ 0.00616069  2.01444  2.41323  2.42264     9.8864     9.89486    9.90491  
+ 0.0         0.0      0.0      0.0      …  0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ ⋮                                      ⋱  ⋮                              
+ 0.0         0.0      0.0      0.0         0.127693   0.122633   0.114126 
+ 0.0         0.0      0.0      0.0         0.257807   0.261246   0.265255 
+ 0.0         0.0      0.0      0.0      …  0.294213   0.285664   0.272772 
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0      …  0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0838146  0.0914735  0.0978112
+ 0.0         0.0      0.0      0.0         0.200482   0.202642   0.201151 
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0      
+ 0.0         0.0      0.0      0.0         0.0        0.0        0.0
+</pre></div>
+
+
+<p>We plot the solution path below. </p>
+<div class="codehilite"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">,</span> <span class="n">β̂path2</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">),</span>
+      <span class="n">maximum</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
+<span class="n">title!</span><span class="p">(</span><span class="s">&quot;Simulation 2: Solution Path via Constrained Lasso&quot;</span><span class="p">)</span> 
+</pre></div>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../fixedparam/" title="Fixed tuning param value" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Fixed tuning param value
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                References
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-1d6ee6ee6c.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
