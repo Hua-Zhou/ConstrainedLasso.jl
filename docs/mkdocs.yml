@@ -35,6 +35,5 @@ pages:
 - Home: index.md
 - Interface: interface.md
 - Example:
-     - 'Fixed tuning param value': demo/fixedparam.mdd  
-- Real Data Applications:
+     - 'Fixed tuning param value': demo/fixedparam.md
 - References: references.md
