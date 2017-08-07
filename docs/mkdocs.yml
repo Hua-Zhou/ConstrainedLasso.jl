@@ -39,4 +39,5 @@ pages:
      - 'Path algorithm': demo/sim.md
 - 'Real Data Applications':
      - 'Prostate data': demo/prostate.md
+     - 'Global warming data': demo/warming.md
 - References: references.md
