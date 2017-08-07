@@ -249,7 +249,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../sim/" title="Path algorithm" class="md-nav__link">
+    <a href="../path/" title="Path algorithm" class="md-nav__link">
       Path algorithm
     </a>
   </li>
@@ -310,6 +310,30 @@
   <li class="md-nav__item">
     <a href="../warming/" title="Global warming data" class="md-nav__link">
       Global warming data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tumor/" title="Tumor data" class="md-nav__link">
+      Tumor data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../micro/" title="Microbiome data" class="md-nav__link">
+      Microbiome data
     </a>
   </li>
 
@@ -378,7 +402,7 @@
 </ul>
 <p>The response variable is <code>lpsa</code>, which is log(prostate specific antigen). </p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span> 
-<span class="n">prostate</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;data/prostate.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+<span class="n">prostate</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;misc/prostate.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;lcavol&quot;</span> <span class="s">&quot;lweight&quot;</span> <span class="s">&quot;age&quot;</span> <span class="s">&quot;lbph&quot;</span> <span class="s">&quot;svi&quot;</span> <span class="s">&quot;lcp&quot;</span> <span class="s">&quot;gleason&quot;</span> <span class="s">&quot;pgg45&quot;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="n">labels</span>
@@ -519,7 +543,7 @@
 </pre></div>
 
 
-<p><img alt="" src="../data/prostate.svg" /></p>
+<p><img alt="" src="../misc/prostate.svg" /></p>
 <p>Below, we solve the same problem using <code>GLMNet.jl</code> package. </p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">GLMNet</span><span class="p">;</span>  
 <span class="n">path</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">Xz</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">intercept</span><span class="o">=</span><span class="kc">false</span><span class="p">);</span>
@@ -544,7 +568,7 @@
 </pre></div>
 
 
-<p><img alt="" src="../data/prostate2.svg" /></p>
+<p><img alt="" src="../misc/prostate2.svg" /></p>
                 
                   
                 
@@ -563,7 +587,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../sim/" title="Path algorithm" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../path/" title="Path algorithm" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>

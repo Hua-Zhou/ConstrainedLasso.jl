@@ -26,7 +26,7 @@
     </url>
         
     <url>
-     <loc>/demo/sim/</loc>
+     <loc>/demo/path/</loc>
      <lastmod>2017-08-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -43,6 +43,18 @@
         
     <url>
      <loc>/demo/warming/</loc>
+     <lastmod>2017-08-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/demo/tumor/</loc>
+     <lastmod>2017-08-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/demo/micro/</loc>
      <lastmod>2017-08-07</lastmod>
      <changefreq>daily</changefreq>
     </url>

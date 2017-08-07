@@ -249,7 +249,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../sim/" title="Path algorithm" class="md-nav__link">
+    <a href="../path/" title="Path algorithm" class="md-nav__link">
       Path algorithm
     </a>
   </li>
@@ -311,6 +311,30 @@
       Global warming data
     </a>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tumor/" title="Tumor data" class="md-nav__link">
+      Tumor data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../micro/" title="Microbiome data" class="md-nav__link">
+      Microbiome data
+    </a>
   </li>
 
         
@@ -391,7 +415,7 @@
 
 
 <p>First we load and organize the data. </p>
-<div class="codehilite"><pre><span></span><span class="n">warming</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;data/warming.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><span class="n">warming</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;misc/warming.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">year</span> <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">y</span>    <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 </pre></div>
@@ -571,7 +595,7 @@
 
 
 <p>In this formulation, isotonic regression is a special case of the constrained lasso with $\rho=0.$ Below, <code>monoreg</code> is coefficient estimates obtained using isotonic regression. </p>
-<div class="codehilite"><pre><span></span><span class="n">monoreg</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;data/monoreg.txt&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">monoreg</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;misc/monoreg.txt&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -628,7 +652,7 @@
 </pre></div>
 
 
-<p><img alt="" src="../data/warming.svg" /></p>
+<p><img alt="" src="../misc/warming.svg" /></p>
                 
                   
                 
@@ -662,13 +686,13 @@
           </a>
         
         
-          <a href="../../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../tumor/" title="Tumor data" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                References
+                Tumor data
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
