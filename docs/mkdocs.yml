@@ -36,8 +36,10 @@ pages:
 - Interface: interface.md
 - Example:
      - 'Fixed tuning param value': demo/fixedparam.md
-     - 'Path algorithm': demo/sim.md
+     - 'Path algorithm': demo/path.md
 - 'Real Data Applications':
      - 'Prostate data': demo/prostate.md
      - 'Global warming data': demo/warming.md
+     - 'Tumor data': demo/tumor.md
+     - 'Microbiome data': demo/micro.md
 - References: references.md

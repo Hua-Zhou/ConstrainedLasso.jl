@@ -289,8 +289,6 @@ We solve the constrained lasso problem and obtain $\widehat{\boldsymbol{\alpha}}
 
 
 ```julia
-using Mosek
-solver=MosekSolver()
 α̂path, ρpath, = lsq_classopath(X̃, ỹ; solver=solver)
 ```
 
