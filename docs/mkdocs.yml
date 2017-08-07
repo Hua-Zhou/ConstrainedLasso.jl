@@ -37,4 +37,6 @@ pages:
 - Example:
      - 'Fixed tuning param value': demo/fixedparam.md
      - 'Path algorithm': demo/sim.md
+- 'Real Data Applications':
+     - 'Prostate data': demo/prostate.md
 - References: references.md
