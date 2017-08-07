@@ -265,8 +265,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/fixedparam/" title="Fixed tuning param value" class="md-nav__link">
-      Fixed tuning param value
+    <a href="../demo/fixedparam/" title="Fixed Tuning Parameter Value" class="md-nav__link">
+      Fixed Tuning Parameter Value
     </a>
   </li>
 
@@ -277,8 +277,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/path/" title="Path algorithm" class="md-nav__link">
-      Path algorithm
+    <a href="../demo/path/" title="Path Algorithm" class="md-nav__link">
+      Path Algorithm
     </a>
   </li>
 
@@ -313,8 +313,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/prostate/" title="Prostate data" class="md-nav__link">
-      Prostate data
+    <a href="../demo/prostate/" title="Prostate Data" class="md-nav__link">
+      Prostate Data
     </a>
   </li>
 
@@ -325,8 +325,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/warming/" title="Global warming data" class="md-nav__link">
-      Global warming data
+    <a href="../demo/warming/" title="Global Warming Data" class="md-nav__link">
+      Global Warming Data
     </a>
   </li>
 
@@ -337,8 +337,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/tumor/" title="Tumor data" class="md-nav__link">
-      Tumor data
+    <a href="../demo/tumor/" title="Brain Tumor Data" class="md-nav__link">
+      Brain Tumor Data
     </a>
   </li>
 
@@ -349,8 +349,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../demo/micro/" title="Microbiome data" class="md-nav__link">
-      Microbiome data
+    <a href="../demo/micro/" title="Microbiome Data" class="md-nav__link">
+      Microbiome Data
     </a>
   </li>
 
@@ -449,7 +449,7 @@
 <li><code>bineq</code>   : inequality constraint vector.</li>
 <li><code>obswt</code>   : observation weights.</li>
 <li><code>penwt</code>   : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
-<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS. <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS.             Note that Mosek and Gurobi are more robust than SCS. Unlike SCS or             ECOS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
 <li><code>β0</code>      : starting point for warm start.</li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -458,7 +458,7 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/81d0e471068ee78b1eba75dcb22d8469499beb32/src/constrsparsereg.jl#L1-L38' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/418f5019e1f36d1f7eb48944aece7caf16daed0a/src/constrsparsereg.jl#L1-L41' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
 <strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_classopath(X, y;
@@ -490,11 +490,11 @@ subject to linear constraints.
 <li><code>bineq</code>   : inequality constraint vector</li>
 <li><code>ρridge</code>  : tuning parameter for ridge penalty. Default is 0.</li>
 <li><code>penidx</code>  : a logical vector indicating penalized coefficients</li>
-<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS. <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+<li><code>solver</code>  : a solver Convex.jl supports. Default is SCS.             Note that Mosek and Gurobi are more robust than SCS. Unlike SCS or             ECOS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
 </ul>
 <p><strong>Examples</strong></p>
 <p>See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/81d0e471068ee78b1eba75dcb22d8469499beb32/src/classopath.jl#L1-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/418f5019e1f36d1f7eb48944aece7caf16daed0a/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
 <p>Private function in <code>ConstrainedLasso</code>:</p>
 <p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
 <strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
@@ -509,7 +509,7 @@ subject to linear constraints.
 
 
 <p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/81d0e471068ee78b1eba75dcb22d8469499beb32/src/classopath.jl#L653-L664' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/418f5019e1f36d1f7eb48944aece7caf16daed0a/src/classopath.jl#L655-L666' class='documenter-source'>source</a><br></p>
                 
                   
                 
@@ -543,13 +543,13 @@ subject to linear constraints.
           </a>
         
         
-          <a href="../demo/fixedparam/" title="Fixed tuning param value" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../demo/fixedparam/" title="Fixed Tuning Parameter Value" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Fixed tuning param value
+                Fixed Tuning Parameter Value
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
