@@ -36,4 +36,5 @@ pages:
 - Interface: interface.md
 - Example:
      - 'Fixed tuning param value': demo/fixedparam.md
+     - 'Path algorithm': demo/sim.md
 - References: references.md
