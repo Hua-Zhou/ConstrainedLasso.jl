@@ -20,7 +20,7 @@ The response variable is `lpsa`, which is log(prostate specific antigen).
 
 ```julia
 using ConstrainedLasso 
-prostate = readcsv("data/prostate.csv", header=true)
+prostate = readcsv("misc/prostate.csv", header=true)
 tmp = []
 labels = ["lcavol" "lweight" "age" "lbph" "svi" "lcp" "gleason" "pgg45"]
 for i in labels
@@ -179,7 +179,7 @@ plot(ρpath, βpath', xaxis = ("ρ", (minimum(ρpath),
 title!("Prostrate Data: Solution Path via Constrained Lasso")
 ```
 
-![](data/prostate.svg)
+![](misc/prostate.svg)
 
 Below, we solve the same problem using `GLMNet.jl` package. 
 
@@ -210,4 +210,4 @@ plot(path.lambda, path.betas', color=colors, label=labels,
 		xaxis=("λ"), yaxis= ("β̂(λ)"))
 ```
 
-![](data/prostate2.svg)
+![](misc/prostate2.svg)
