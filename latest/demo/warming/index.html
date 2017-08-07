@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Constrained Lasso">
+      
+      
+      
+        <meta name="author" content="Hua Zhou and Juhyun Kim">
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.1">
+    
+    
+      
+        <title>Global warming data - ConstrainedLasso.jl</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-bfecc7305d.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-02c2a4388f.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Real Data Applications
+                </span>
+              
+            
+            Global warming data
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    ConstrainedLasso.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../interface/" title="Interface" class="md-nav__link">
+      Interface
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Example
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Example
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../fixedparam/" title="Fixed tuning param value" class="md-nav__link">
+      Fixed tuning param value
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sim/" title="Path algorithm" class="md-nav__link">
+      Path algorithm
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Real Data Applications
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Real Data Applications
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../prostate/" title="Prostate data" class="md-nav__link">
+      Prostate data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Global warming data" class="md-nav__link md-nav__link--active">
+      Global warming data
+    </a>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../references/" title="References" class="md-nav__link">
+      References
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/warming.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                <p><a id='Global-Warming-Data-1'></a></p>
+<h1 id="global-warming-data">Global Warming Data</h1>
+<p>Here we consider the annual data on temperature anomalies. As has been previously noted in the literature on isotonic regression, in general temperature appears to increase monotonically over the time period of 1850 to 2015 (<a href="../../references/#8">Wu et al., 2001</a>; <a href="../../references/#5">Tibshirani et al., 2011</a>). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{split}
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{ subject to} \hspace{1em} \boldsymbol{C\beta} \leq \boldsymbol{d} 
+\end{split}
+</script>
+</p>
+<p>where </p>
+<p>
+<script type="math/tex; mode=display">
+\boldsymbol{C} = \begin{pmatrix} 
+1 & -1 &     &        &       &     & \\
+  & 1  & -1  &        &         &   & \\
+  &    &  1  & -1     &         &   & \\
+  &     &       & \ddots & \ddots &  & \\
+  &     &       &        &          & 1 & -1 \\
+\end{pmatrix}
+</script>
+</p>
+<p>and $\boldsymbol{d} = \boldsymbol{0}.$</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span> 
+<span class="k">using</span> <span class="n">ECOS</span>
+</pre></div>
+
+
+<p>First we load and organize the data. </p>
+<div class="codehilite"><pre><span></span><span class="n">warming</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;data/warming.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">year</span> <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span>    <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>166-element Array{Float64,1}:
+ -0.375
+ -0.223
+ -0.224
+ -0.271
+ -0.246
+ -0.271
+ -0.352
+ -0.46 
+ -0.466
+ -0.286
+ -0.346
+ -0.409
+ -0.522
+  ⋮    
+  0.45 
+  0.544
+  0.505
+  0.493
+  0.395
+  0.506
+  0.559
+  0.422
+  0.47 
+  0.499
+  0.567
+  0.746
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">p</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>166×166 Array{Float64,2}:
+ 1.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  …  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  1.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  1.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  1.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  1.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  1.0  0.0  0.0  …  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  1.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  1.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  …  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ ⋮                        ⋮              ⋱       ⋮                        ⋮  
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  …  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     1.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  …  0.0  1.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  1.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  1.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  1.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0     0.0  0.0  0.0  0.0  0.0  1.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  …  0.0  0.0  0.0  0.0  0.0  0.0  1.0
+</pre></div>
+
+
+<p>Now we define inequality constraints as specified earlier. </p>
+<div class="codehilite"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">-</span> <span class="p">[</span><span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>165×166 Array{Float64,2}:
+ 1.0  -1.0   0.0   0.0   0.0   0.0  …   0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   1.0  -1.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   1.0  -1.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   1.0  -1.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   1.0  -1.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   1.0  …   0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0  …   0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ ⋮                             ⋮    ⋱   ⋮                             ⋮  
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0  …   0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0     -1.0   0.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0  …   1.0  -1.0   0.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   1.0  -1.0   0.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   1.0  -1.0   0.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   1.0  -1.0   0.0
+ 0.0   0.0   0.0   0.0   0.0   0.0      0.0   0.0   0.0   0.0   1.0  -1.0
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>165-element Array{Float64,1}:
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ ⋮  
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+</pre></div>
+
+
+<p>Then we estimate constrained lasso solution path. Here we use <code>ECOS</code> solver rather than the default <code>SCS</code> solver. </p>
+<div class="codehilite"><pre><span></span><span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">C</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">));</span> 
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">β̂path</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>166×198 Array{Float64,2}:
+ 0.0  0.0  0.0  0.0  0.0  0.0       …  -0.323225  -0.366     -0.375   
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0       …  -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0       …  -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ 0.0  0.0  0.0  0.0  0.0  0.0          -0.294082  -0.336857  -0.345857
+ ⋮                        ⋮         ⋱   ⋮                             
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.432796   0.475571   0.484571
+ 0.0  0.0  0.0  0.0  0.0  0.0       …   0.432796   0.475571   0.484571
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.432796   0.475571   0.484571
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.432796   0.475571   0.484571
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.432796   0.475571   0.484571
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.437475   0.48025    0.48925 
+ 0.0  0.0  0.0  0.0  0.0  0.0       …   0.437475   0.48025    0.48925 
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.437475   0.48025    0.48925 
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.437475   0.48025    0.48925 
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.447225   0.49       0.499   
+ 0.0  0.0  0.0  0.0  0.0  0.0           0.515225   0.558      0.567   
+ 0.0  0.0  0.0  0.0  0.0  0.011639  …   0.699138   0.737854   0.746
+</pre></div>
+
+
+<p>In this formulation, isotonic regression is a special case of the constrained lasso with $\rho=0.$ Below, <code>monoreg</code> is coefficient estimates obtained using isotonic regression. </p>
+<div class="codehilite"><pre><span></span><span class="n">monoreg</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;data/monoreg.txt&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>166×1 Array{Float64,2}:
+ -0.375   
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+ -0.345857
+  ⋮       
+  0.484571
+  0.484571
+  0.484571
+  0.484571
+  0.484571
+  0.48925 
+  0.48925 
+  0.48925 
+  0.48925 
+  0.499   
+  0.567   
+  0.746
+</pre></div>
+
+
+<p>Now let's compare estimates by obtaining the largest absolute difference between isotonic regression constrained lasso fit. </p>
+<div class="codehilite"><pre><span></span><span class="n">maximum</span><span class="p">(</span><span class="n">abs</span><span class="o">.</span><span class="p">(</span><span class="n">monoreg</span> <span class="o">-</span> <span class="n">β̂path</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="k">end</span><span class="p">]))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>1.2212453270876722e-15
+</pre></div>
+
+
+<p>Below is a figure that plots the constrained lasso fit at $\rho = 0$ with the estimates using isotonic regression.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span> 
+<span class="n">scatter</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Observed Data&quot;</span><span class="p">,</span> <span class="n">markerstrokecolor</span><span class="o">=</span><span class="s">&quot;darkblue&quot;</span><span class="p">,</span> 
+        <span class="n">markercolor</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+<span class="n">scatter!</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">β̂path</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="k">end</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Classopath (ρ=0)&quot;</span><span class="p">,</span> 
+        <span class="n">markerstrokecolor</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=:</span><span class="n">rect</span><span class="p">,</span> <span class="n">markercolor</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+<span class="n">scatter!</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">monoreg</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Isotonic Regression&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=:</span><span class="n">x</span><span class="p">,</span>
+        <span class="n">markercolor</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">xaxis!</span><span class="p">(</span><span class="s">&quot;Year&quot;</span><span class="p">)</span> 
+<span class="n">yaxis!</span><span class="p">(</span><span class="s">&quot;Temperature anomalies&quot;</span><span class="p">)</span>
+<span class="n">title!</span><span class="p">(</span><span class="s">&quot;Global Warming Data&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="" src="../data/warming.svg" /></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../prostate/" title="Prostate data" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Prostate data
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                References
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-6940329b9f.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
