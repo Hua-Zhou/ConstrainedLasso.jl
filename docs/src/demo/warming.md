@@ -32,7 +32,7 @@ First we load and organize the data.
 
 
 ```julia
-warming = readcsv("data/warming.csv", header=true)[1]
+warming = readcsv("misc/warming.csv", header=true)[1]
 year = warming[:, 1]
 y    = warming[:, 2]
 ```
@@ -237,7 +237,7 @@ Below, `monoreg` is coefficient estimates obtained using isotonic regression.
 
 
 ```julia
-monoreg = readdlm("data/monoreg.txt")
+monoreg = readdlm("misc/monoreg.txt")
 ```
 
 
@@ -303,4 +303,4 @@ yaxis!("Temperature anomalies")
 title!("Global Warming Data")
 ```
 
-![](data/warming.svg)
+![](misc/warming.svg)
