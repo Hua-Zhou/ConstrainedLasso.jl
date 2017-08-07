@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Constrained Lasso">
+      
+      
+      
+        <meta name="author" content="Hua Zhou and Juhyun Kim">
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.0">
+    
+    
+      
+        <title>Prostate data - ConstrainedLasso.jl</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-bfecc7305d.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-02c2a4388f.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Real Data Applications
+                </span>
+              
+            
+            Prostate data
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    ConstrainedLasso.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../interface/" title="Interface" class="md-nav__link">
+      Interface
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Example
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Example
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../fixedparam/" title="Fixed tuning param value" class="md-nav__link">
+      Fixed tuning param value
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sim/" title="Path algorithm" class="md-nav__link">
+      Path algorithm
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Real Data Applications
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Real Data Applications
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Prostate data" class="md-nav__link md-nav__link--active">
+      Prostate data
+    </a>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../references/" title="References" class="md-nav__link">
+      References
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/prostate.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                
+                
+                <p><a id='Prostate-Data-1'></a></p>
+<h1 id="prostate-data">Prostate Data</h1>
+<p>This demonstration solves a regular, unconstrained lasso problem using the constrained lasso solution path (<code>lsq_classopath.jl</code>).</p>
+<p>The <code>prostate</code> data come from a study that examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. (<a href="../../references/#4">Stamey et al. (1989)</a>)</p>
+<p>Let's load and organize the <code>prostate</code> data. Since we are interested in the following variables as predictors, we extract them and create a design matrix <code>Xz</code>:</p>
+<ul>
+<li><code>lcavol</code> : log(cancer volume)</li>
+<li><code>lweight</code>: log(prostate weight)</li>
+<li><code>age</code>    : age</li>
+<li><code>lbph</code>   : log(benign prostatic hyperplasia amount)</li>
+<li><code>svi</code>    : seminal vesicle invasion</li>
+<li><code>lcp</code>    : log(capsular penetration)</li>
+<li><code>gleason</code>: Gleason score</li>
+<li><code>pgg45</code>  : percentage Gleason scores 4 or 5</li>
+</ul>
+<p>The response variable is <code>lpsa</code>, which is log(prostate specific antigen). </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span> 
+<span class="n">prostate</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;data/prostate.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;lcavol&quot;</span> <span class="s">&quot;lweight&quot;</span> <span class="s">&quot;age&quot;</span> <span class="s">&quot;lbph&quot;</span> <span class="s">&quot;svi&quot;</span> <span class="s">&quot;lcp&quot;</span> <span class="s">&quot;gleason&quot;</span> <span class="s">&quot;pgg45&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="n">labels</span>
+    <span class="n">push!</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="n">prostate</span><span class="p">[</span><span class="mi">2</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">end</span>
+<span class="n">Xz</span> <span class="o">=</span> <span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="n">prostate</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="n">tmp</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>97×8 Array{Float64,2}:
+ -0.579818  2.76946  50.0  -1.38629   0.0  -1.38629   6.0   0.0
+ -0.994252  3.31963  58.0  -1.38629   0.0  -1.38629   6.0   0.0
+ -0.510826  2.69124  74.0  -1.38629   0.0  -1.38629   7.0  20.0
+ -1.20397   3.28279  58.0  -1.38629   0.0  -1.38629   6.0   0.0
+  0.751416  3.43237  62.0  -1.38629   0.0  -1.38629   6.0   0.0
+ -1.04982   3.22883  50.0  -1.38629   0.0  -1.38629   6.0   0.0
+  0.737164  3.47352  64.0   0.615186  0.0  -1.38629   6.0   0.0
+  0.693147  3.53951  58.0   1.53687   0.0  -1.38629   6.0   0.0
+ -0.776529  3.53951  47.0  -1.38629   0.0  -1.38629   6.0   0.0
+  0.223144  3.24454  63.0  -1.38629   0.0  -1.38629   6.0   0.0
+  0.254642  3.60414  65.0  -1.38629   0.0  -1.38629   6.0   0.0
+ -1.34707   3.59868  63.0   1.26695   0.0  -1.38629   6.0   0.0
+  1.61343   3.02286  63.0  -1.38629   0.0  -0.597837  7.0  30.0
+  ⋮                                         ⋮                  
+  3.30285   3.51898  64.0  -1.38629   1.0   2.32728   7.0  60.0
+  2.02419   3.7317   58.0   1.639     0.0  -1.38629   6.0   0.0
+  1.73166   3.36902  62.0  -1.38629   1.0   0.300105  7.0  30.0
+  2.80759   4.71805  65.0  -1.38629   1.0   2.46385   7.0  60.0
+  1.56235   3.69511  76.0   0.936093  1.0   0.81093   7.0  75.0
+  3.24649   4.10182  68.0  -1.38629   0.0  -1.38629   6.0   0.0
+  2.5329    3.67757  61.0   1.34807   1.0  -1.38629   7.0  15.0
+  2.83027   3.8764   68.0  -1.38629   1.0   1.32176   7.0  60.0
+  3.821     3.89691  44.0  -1.38629   1.0   2.16905   7.0  40.0
+  2.90745   3.39619  52.0  -1.38629   1.0   2.46385   7.0  10.0
+  2.88256   3.77391  68.0   1.55814   1.0   1.55814   7.0  80.0
+  3.47197   3.975    68.0   0.438255  1.0   2.90417   7.0  20.0
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="n">prostate</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>97-element Array{Float64,1}:
+ -0.430783
+ -0.162519
+ -0.162519
+ -0.162519
+  0.371564
+  0.765468
+  0.765468
+  0.854415
+  1.04732 
+  1.04732 
+  1.26695 
+  1.26695 
+  1.26695 
+  ⋮       
+  3.63099 
+  3.68009 
+  3.71235 
+  3.98434 
+  3.9936  
+  4.02981 
+  4.12955 
+  4.38515 
+  4.68444 
+  5.14312 
+  5.47751 
+  5.58293
+</pre></div>
+
+
+<p>First we standardize the data by subtracting its mean and dividing by its standard deviation. </p>
+<div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">Xz</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">size</span><span class="p">(</span><span class="n">Xz</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">Xz</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mean</span><span class="p">(</span><span class="n">Xz</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">Xz</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">std</span><span class="p">(</span><span class="n">Xz</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+<span class="k">end</span>
+<span class="n">Xz</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>97×8 Array{Float64,2}:
+ -1.63736   -2.00621    -1.86243    …  -0.863171  -1.04216   -0.864467
+ -1.98898   -0.722009   -0.787896      -0.863171  -1.04216   -0.864467
+ -1.57882   -2.18878     1.36116       -0.863171   0.342627  -0.155348
+ -2.16692   -0.807994   -0.787896      -0.863171  -1.04216   -0.864467
+ -0.507874  -0.458834   -0.250631      -0.863171  -1.04216   -0.864467
+ -2.03613   -0.933955   -1.86243    …  -0.863171  -1.04216   -0.864467
+ -0.519967  -0.362793    0.0180011     -0.863171  -1.04216   -0.864467
+ -0.557313  -0.208757   -0.787896      -0.863171  -1.04216   -0.864467
+ -1.80425   -0.208757   -2.26537       -0.863171  -1.04216   -0.864467
+ -0.956085  -0.897266   -0.116315      -0.863171  -1.04216   -0.864467
+ -0.92936   -0.0578992   0.152317   …  -0.863171  -1.04216   -0.864467
+ -2.28833   -0.0706369  -0.116315      -0.863171  -1.04216   -0.864467
+  0.223498  -1.41472    -0.116315      -0.299282   0.342627   0.199211
+  ⋮                                 ⋱   ⋮                             
+  1.65688   -0.256675    0.0180011  …   1.7927     0.342627   1.26289 
+  0.572009   0.239854   -0.787896      -0.863171  -1.04216   -0.864467
+  0.323806  -0.606718   -0.250631       0.342907   0.342627   0.199211
+  1.23668    2.54221     0.152317       1.89038    0.342627   1.26289 
+  0.180156   0.154448    1.6298         0.70824    0.342627   1.79473 
+  1.60906    1.10379     0.555266   …  -0.863171  -1.04216   -0.864467
+  1.00362    0.113497   -0.384948      -0.863171   0.342627  -0.332628
+  1.25592    0.577607    0.555266       1.07357    0.342627   1.26289 
+  2.09651    0.625489   -2.66832        1.67954    0.342627   0.55377 
+  1.3214    -0.543304   -1.59379        1.89038    0.342627  -0.509907
+  1.30029    0.338384    0.555266   …   1.24263    0.342627   1.97201 
+  1.80037    0.807764    0.555266       2.20528    0.342627  -0.155348
+</pre></div>
+
+
+<p>Now we solve the problem using solution path algorithm. </p>
+<div class="codehilite"><pre><span></span><span class="n">βpath</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">Xz</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<span class="n">βpath</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>8×9 Array{Float64,2}:
+ 0.0  0.421131  0.461588   0.557453  …   0.597269    0.602923    0.665147 
+ 0.0  0.0       0.0        0.171805      0.232686    0.246293    0.26648  
+ 0.0  0.0       0.0        0.0          -0.0598626  -0.0937415  -0.158195 
+ 0.0  0.0       0.0        0.0           0.088065    0.108124    0.140311 
+ 0.0  0.0       0.0404563  0.182941      0.2436      0.252692    0.315329 
+ 0.0  0.0       0.0        0.0       …   0.0         0.0        -0.148286 
+ 0.0  0.0       0.0        0.0           0.0         0.0123116   0.0355492
+ 0.0  0.0       0.0        0.0           0.0645835   0.0700037   0.12572
+</pre></div>
+
+
+<p>We plot the solution path below. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span> 
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">green</span> <span class="o">:</span><span class="n">orange</span> <span class="o">:</span><span class="n">black</span> <span class="o">:</span><span class="n">purple</span> <span class="o">:</span><span class="n">red</span> <span class="o">:</span><span class="n">grey</span> <span class="o">:</span><span class="n">brown</span> <span class="o">:</span><span class="n">blue</span><span class="p">]</span> 
+<span class="n">plot</span><span class="p">(</span><span class="n">ρpath</span><span class="p">,</span> <span class="n">βpath</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρpath</span><span class="p">),</span>
+      <span class="n">maximum</span><span class="p">(</span><span class="n">ρpath</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="n">title!</span><span class="p">(</span><span class="s">&quot;Prostrate Data: Solution Path via Constrained Lasso&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="" src="../data/prostate.svg" /></p>
+<p>Below, we solve the same problem using <code>GLMNet.jl</code> package. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">GLMNet</span><span class="p">;</span>  
+<span class="n">path</span> <span class="o">=</span> <span class="n">glmnet</span><span class="p">(</span><span class="n">Xz</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">intercept</span><span class="o">=</span><span class="kc">false</span><span class="p">);</span>
+<span class="n">path</span><span class="o">.</span><span class="n">betas</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>8×70 GLMNet.CompressedPredictorMatrix:
+ 0.0  0.075317  0.143943  0.206473  …   0.660413   0.660823   0.661201 
+ 0.0  0.0       0.0       0.0           0.264962   0.265099   0.265223 
+ 0.0  0.0       0.0       0.0          -0.153231  -0.153657  -0.154055 
+ 0.0  0.0       0.0       0.0           0.137859   0.138074   0.138272 
+ 0.0  0.0       0.0       0.0           0.310435   0.310849   0.311241 
+ 0.0  0.0       0.0       0.0       …  -0.136715  -0.137682  -0.138598 
+ 0.0  0.0       0.0       0.0           0.033943   0.034123   0.0342689
+ 0.0  0.0       0.0       0.0           0.121233   0.121575   0.121916
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">lambda</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">betas</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> 
+        <span class="n">xaxis</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;λ&quot;</span><span class="p">),</span> <span class="n">yaxis</span><span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(λ)&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p><img alt="" src="../data/prostate2.svg" /></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../sim/" title="Path algorithm" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Path algorithm
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../references/" title="References" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                References
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-1d6ee6ee6c.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
