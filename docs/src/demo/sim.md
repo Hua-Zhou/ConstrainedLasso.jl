@@ -183,7 +183,7 @@ plot(ρpath1, β̂path1', label="", xaxis = ("ρ", (minimum(ρpath1),
       maximum(ρpath1))), yaxis = ("β̂(ρ)"), width=0.5) 
 title!("Simulation 1: Solution Path via Constrained Lasso") 
 ```
-![](sumtozero.svg)
+
 
 
 ## Non-negativity constraint 
@@ -382,6 +382,3 @@ plot(ρpath2, β̂path2', label="", xaxis = ("ρ", (minimum(ρpath2),
 title!("Simulation 2: Solution Path via Constrained Lasso") 
 ```
 
-
-
-![](nonneg.svg)
