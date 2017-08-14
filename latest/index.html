@@ -440,16 +440,16 @@
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1 \\
 & \text{ subject to} \hspace{0.5em} \boldsymbol{A\beta}=\boldsymbol{b} \text{ and } \boldsymbol{C\beta} \leq \boldsymbol{d}
 \end{split}
 </script>
 </p>
-<p>where $\boldsymbol{y} \in \mathbb{R}^n$ is the response vector, $\boldsymbol{X}\in \mathbb{R}^{n\times p}$ is the design matrix of predictor or covariates, $\boldsymbol{\beta} \in \mathbb{R}^p$ is the vector of unknown regression coefficients, and $\rho \geq 0$ is a tuning parameter that controls the amount of regularization.</p>
+<p>where (\boldsymbol{y} \in \mathbb{R}^n) is the response vector, (\boldsymbol{X}\in \mathbb{R}^{n\times p}) is the design matrix of predictor or covariates, $\boldsymbol{\beta} \in \mathbb{R}^p$ is the vector of unknown regression coefficients, and $\rho \geq 0$ is a tuning parameter that controls the amount of regularization.</p>
 <p><a id='Installation-1'></a></p>
 <h2 id="installation">Installation</h2>
-<p>Within Julia, use the package manager to install <strong>ConstainedLasso</strong>:</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/Hua-Zhou/ConstrainedLasso.git&quot;</span><span class="p">)</span>
+<p>Within Julia, use the package manager to install <strong>ConstrainedLasso</strong>:</p>
+<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;git://github.com/Hua-Zhou/ConstrainedLasso.git&quot;</span><span class="p">)</span>
 </pre></div>
 
 
