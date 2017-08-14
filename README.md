@@ -22,7 +22,7 @@ where <a href="http://www.codecogs.com/eqnedit.php?latex=\inline&space;\boldsymb
 Within Julia, use the package manager to install **ConstainedLasso**:
 
 ```{julia}
-Pkg.clone("https://github.com/Hua-Zhou/ConstrainedLasso.jl.git")
+Pkg.clone("git://github.com/Hua-Zhou/ConstrainedLasso.jl.git")
 ```
 
 This package supports Julia v0.6.
