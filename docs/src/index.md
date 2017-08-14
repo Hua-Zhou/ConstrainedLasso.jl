@@ -13,9 +13,9 @@ where \(\boldsymbol{y} \in \mathbb{R}^n\) is the response vector, \(\boldsymbol{
 
 ## Installation
 
-Within Julia, use the package manager to install **ConstainedLasso**:
+Within Julia, use the package manager to install **ConstrainedLasso**:
 
-```{julia}
+```julia
 Pkg.clone("git://github.com/Hua-Zhou/ConstrainedLasso.git")
 ```
 
