@@ -38,6 +38,7 @@ pages:
 - Interface: interface.md
 - Example:
      - 'Fixed Tuning Parameter Value': demo/fixedparam.md
+     - 'ADMM': demo/admm.md
      - 'Path Algorithm': demo/path.md
 - 'Real Data Applications':
      - 'Prostate Data': demo/prostate.md
