@@ -10,6 +10,10 @@ Functions exported from `ConstrainedLasso`:
 ```
 
 ```@docs
+	lsq_constrsparsereg_admm
+```
+
+```@docs
 	lsq_classopath
 ```
 
