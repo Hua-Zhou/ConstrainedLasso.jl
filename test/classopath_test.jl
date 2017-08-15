@@ -45,7 +45,6 @@ solver = ECOSSolver(verbose=0, maxit=1e8)
 
 # NOT WORKING!!
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver=solver)
-#@test all(β̂path2 .>= -0.5)
 
 @testset "non-negativity" begin
 for i in reshape(β̂path2, p * length(ρpath2), 1)
