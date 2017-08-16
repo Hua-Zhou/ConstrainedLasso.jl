@@ -249,6 +249,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../admm/" title="ADMM" class="md-nav__link">
+      ADMM
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../path/" title="Path Algorithm" class="md-nav__link">
       Path Algorithm
     </a>
@@ -406,8 +418,9 @@
 </script>
 </p>
 <p>where </p>
-<p>$$
-\boldsymbol{D} = <script type="math/tex; mode=display">\begin{pmatrix} 
+<p>
+<script type="math/tex; mode=display">
+\boldsymbol{D} = \begin{pmatrix} 
 1 & -1 &     &        &       &     & \\
   & 1  & -1  &        &         &   & \\
   &    &  1  & -1     &         &   & \\
@@ -419,8 +432,9 @@
   &     &          & & \ddots & & \\
   &     &            &      &       & 1 & \\
   &     &       &        &              &  & 1\\  
-\end{pmatrix}</script> \in \mathbb{R}^{(2P-1)\times p}.</p>
-<p>$$</p>
+\end{pmatrix} \in \mathbb{R}^{(2P-1)\times p}.
+</script>
+</p>
 <p>As discussed in <a href="../../references/">Gaines, B.R. and Zhou, H., (2016)</a>, the sparse fused lasso can be reformulated and solved as a constrained lasso problem. The generalized lasso problem $(2)$ is equivalent to </p>
 <p>
 <script type="math/tex; mode=display">
@@ -430,7 +444,7 @@
 \end{split}
 </script>
 </p>
-<p>where $\widetilde{\boldsymbol{y}} = (\boldsymbol{I}-\boldsymbol{P}<em _boldsymbol_XV="\boldsymbol{XV">{\boldsymbol{XV}_2})\boldsymbol{y},  \hspace{0.5em} \widetilde{\boldsymbol{X}} = (\boldsymbol{I}-\boldsymbol{P}</em>_2})\boldsymbol{XD}^+$. Note $D^+$ is the Moore-Penrose inverse of the matrix $\boldsymbol{D}.$ and $\boldsymbol{U_2}, \boldsymbol{V_2}$ are obtained from singular value decomposition (SVD) of $\boldsymbol{D}$ matrix. Then, the solution path $\widehat{\boldsymbol{\alpha}}(\rho)$ can be translated back to that of the original generalized lasso problem via </p>
+<p>where $\widetilde{\boldsymbol{y}} = (\boldsymbol{I}-\boldsymbol{P}<em _boldsymbol_XV="\boldsymbol{XV">{\boldsymbol{XV}_2})\boldsymbol{y}, \hspace{0.5em} \widetilde{\boldsymbol{X}} = (\boldsymbol{I}-\boldsymbol{P}</em>_2})\boldsymbol{XD}^+$. Note $D^+$ is the Moore-Penrose inverse of the matrix $\boldsymbol{D}.$ and $\boldsymbol{U_2}, \boldsymbol{V_2}$ are obtained from singular value decomposition (SVD) of $\boldsymbol{D}$ matrix. Then, the solution path $\widehat{\boldsymbol{\alpha}}(\rho)$ can be translated back to that of the original generalized lasso problem via </p>
 <p>
 <script type="math/tex; mode=display">
 \widehat{\boldsymbol{\beta}}(\rho) = [\boldsymbol{I}-\boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}]\boldsymbol{D}^+\hat{\boldsymbol{\alpha}}(\rho)+ \boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{y}

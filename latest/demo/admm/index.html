@@ -20,7 +20,7 @@
     
     
       
-        <title>Fixed Tuning Parameter Value - ConstrainedLasso.jl</title>
+        <title>ADMM - ConstrainedLasso.jl</title>
       
     
     
@@ -87,7 +87,7 @@
                 </span>
               
             
-            Fixed Tuning Parameter Value
+            ADMM
           
         </span>
       </div>
@@ -237,6 +237,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../fixedparam/" title="Fixed Tuning Parameter Value" class="md-nav__link">
+      Fixed Tuning Parameter Value
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -248,11 +260,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        Fixed Tuning Parameter Value
+        ADMM
       </label>
     
-    <a href="./" title="Fixed Tuning Parameter Value" class="md-nav__link md-nav__link--active">
-      Fixed Tuning Parameter Value
+    <a href="./" title="ADMM" class="md-nav__link md-nav__link--active">
+      ADMM
     </a>
     
       
@@ -266,15 +278,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#single-tuning-parameter-value" title="Single tuning parameter value" class="md-nav__link">
-    Single tuning parameter value
+  <a href="#sum-to-zero-constraint" title="sum-to-zero constraint" class="md-nav__link">
+    sum-to-zero constraint
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#multiple-tuning-parameter-values" title="Multiple tuning parameter values" class="md-nav__link">
-    Multiple tuning parameter values
+  <a href="#non-negativity-constraint" title="Non-negativity constraint" class="md-nav__link">
+    Non-negativity constraint
   </a>
   
 </li>
@@ -285,18 +297,6 @@
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../admm/" title="ADMM" class="md-nav__link">
-      ADMM
-    </a>
   </li>
 
         
@@ -422,15 +422,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#single-tuning-parameter-value" title="Single tuning parameter value" class="md-nav__link">
-    Single tuning parameter value
+  <a href="#sum-to-zero-constraint" title="sum-to-zero constraint" class="md-nav__link">
+    sum-to-zero constraint
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#multiple-tuning-parameter-values" title="Multiple tuning parameter values" class="md-nav__link">
-    Multiple tuning parameter values
+  <a href="#non-negativity-constraint" title="Non-negativity constraint" class="md-nav__link">
+    Non-negativity constraint
   </a>
   
 </li>
@@ -449,23 +449,32 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/fixedparam.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/edit/master/docs/demo/admm.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                <p><a id='Optimize-at-fixed-tuning-parameter-value(s)-1'></a></p>
-<h1 id="optimize-at-fixed-tuning-parameter-values">Optimize at fixed tuning parameter value(s)</h1>
-<p><code>lsq_constrsparsereg.jl</code> fits constrained lasso</p>
+                <p><a id='ADMM-1'></a></p>
+<h1 id="admm">ADMM</h1>
+<p>In this section, we apply the alternating direction method of multipliers (ADMM) algorithm to the constrained lasso problem. Following is the ADMM algorithm for solving the constrained lasso. </p>
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
-& \text{ subject to} \hspace{0.5em} \boldsymbol{A\beta}=\boldsymbol{b} \text{ and } \boldsymbol{C\beta} \leq \boldsymbol{d}
-\end{split}
+1 & \text{Initialize } \boldsymbol{\beta}^{(0)} = \boldsymbol{z}^{(0)} = \boldsymbol{\beta}^{0}, \boldsymbol{u}^{(0)} = \boldsymbol{0}, \tau > 0 \\
+2 & \text{\textbf{repeat}}\\ 
+3 & |  \boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1; \\
+4 & |  \boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)}) \\
+5 & |  \boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)} \\
+6 & \text{\textbf{until} \underline{convergence criterion is met}}
+\end{split} 
 </script>
 </p>
-<p>at a fixed tuning parameter value $\rho$ or several tuning parameter values provided by user.</p>
-<p><a id='Single-tuning-parameter-value-1'></a></p>
-<h3 id="single-tuning-parameter-value">Single tuning parameter value</h3>
+<p>where $\text{proj}_{\mathcal{C}}$ is a projection onto </p>
+<p>
+<script type="math/tex; mode=display">
+\mathcal{C} = \{\boldsymbol{\beta}\in \mathbb{R}^p: \boldsymbol{A\beta}=\boldsymbol{b}, \boldsymbol{C\beta} \leq \boldsymbol{d} \}.
+</script>
+</p>
+<p><a id='sum-to-zero-constraint-1'></a></p>
+<h2 id="sum-to-zero-constraint">sum-to-zero constraint</h2>
 <p>We demonstrate using a sum-to-zero constraint example</p>
 <p>
 <script type="math/tex; mode=display">
@@ -479,7 +488,7 @@
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">Test</span>
 
 <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>  
-<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
 <span class="n">β</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">β</span><span class="p">[(</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="mi">3</span><span class="n">p</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -518,7 +527,7 @@
 </pre></div>
 
 
-<p>Next we generate data based on the true parameter <code>β</code>.</p>
+<p>Next we generate data based on the true parameter β.</p>
 <div class="codehilite"><pre><span></span><span class="n">srand</span><span class="p">(</span><span class="mi">41</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 </pre></div>
@@ -588,28 +597,209 @@
 </pre></div>
 
 
-<p>Since the equality constraint can be written as </p>
-<p>
-<script type="math/tex; mode=display">
-\begin{split}
-\begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \beta = 0,
-\end{split}
-</script>
-</p>
-<p>we define the constraint as below.</p>
-<div class="codehilite"><pre><span></span><span class="n">beq</span>   <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
-<span class="n">Aeq</span>   <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<p>Now we estimate coefficients at fixed tuning parameter value using ADMM alogrithm. </p>
+<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">β̂admm</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg_admm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">proj</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span>1×100 Array{Float64,2}:
- 1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0  …  1.0  1.0  1.0  1.0  1.0  1.0  1.0
+<div class="codehilite"><pre><span></span><span class="n">β̂admm</span>
 </pre></div>
 
 
-<p>Now we are ready to fit the constrained lasso problem, say at <code>ρ=10</code>.</p>
-<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">10.0</span>
-<span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">);</span>
+<div class="codehilite"><pre><span></span>100×1 GLMNet.CompressedPredictorMatrix:
+  0.0     
+  0.174344
+  0.0     
+ -0.421288
+  0.0     
+  0.0     
+  0.0     
+  0.0     
+  0.324233
+ -0.15384 
+  0.0     
+  0.0     
+  0.0     
+  ⋮       
+ -0.397027
+ -0.32079 
+  0.0     
+  0.0     
+ -0.868508
+ -0.992272
+ -0.571755
+  0.0     
+ -1.16568 
+  0.0     
+  0.0     
+  0.0
+</pre></div>
+
+
+<p>Now let's compare the estimated coefficients with those obtained using quadratic programming. </p>
+<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">2.0</span> 
+<span class="n">beq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Aeq</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="k">using</span> <span class="n">ECOS</span><span class="p">;</span> <span class="n">solver</span><span class="o">=</span><span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">);</span>
+<span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span><span class="p">)</span> 
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">hcat</span><span class="p">(</span><span class="n">β̂admm</span><span class="p">,</span> <span class="n">β̂</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×2 Array{Float64,2}:
+  0.0        1.51451e-8 
+  0.174344   0.178717   
+  0.0       -1.02944e-9 
+ -0.421288  -0.414043   
+  0.0       -3.33221e-10
+  0.0       -4.14188e-10
+  0.0        3.28018e-11
+  0.0        8.38037e-11
+  0.324233   0.335375   
+ -0.15384   -0.157908   
+  0.0       -2.44739e-9 
+  0.0       -8.79003e-10
+  0.0       -8.17787e-10
+  ⋮                     
+ -0.397027  -0.391635   
+ -0.32079   -0.33352    
+  0.0       -5.51459e-9 
+  0.0        1.09637e-9 
+ -0.868508  -0.867639   
+ -0.992272  -0.999583   
+ -0.571755  -0.577743   
+  0.0       -8.93601e-10
+ -1.16568   -1.16862    
+  0.0        2.29367e-9 
+  0.0       -1.52035e-9 
+  0.0        2.71896e-9
+</pre></div>
+
+
+<p><a id='Non-negativity-constraint-1'></a></p>
+<h2 id="non-negativity-constraint">Non-negativity constraint</h2>
+<p>Here we look at the non-negativity constraint. First let's generate <code>X</code> and <code>y</code>.</p>
+<div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>   
+<span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">β</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">10</span>
+<span class="n">srand</span><span class="p">(</span><span class="mi">41</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50×100 Array{Float64,2}:
+  1.21212    -0.153889    0.141533  …  -0.458125    0.0951976  -2.14019   
+  0.345895    1.30676     1.60944      -0.409901    0.323719    0.989333  
+ -1.27859    -1.18894     0.512064      1.80509     1.62606    -1.44251   
+  0.230616    2.54741    -0.523533      2.73358     1.07999     0.432834  
+ -1.17103    -0.39082     0.441921     -0.179239   -0.158189   -0.640611  
+  1.67135     0.0829011   0.964089  …  -0.720038    1.99359    -0.671572  
+ -0.614717    2.16204    -0.0602       -0.324456   -0.616887    1.11243   
+ -0.810535    0.974719   -0.045405      0.881578    1.29611     0.696869  
+ -1.10879    -1.32489    -1.18272       0.579381   -0.971269   -0.687591  
+ -0.219752   -0.447897   -0.974186     -0.880804   -0.480702   -1.36887   
+  0.0952544  -0.126203   -0.273737  …  -0.264421    0.565684   -0.798719  
+  1.4126      0.295896   -0.213161     -1.46343    -1.27144    -0.0589753 
+ -0.418407   -0.479389    0.324243      1.96976     0.867659   -1.2999    
+  ⋮                                 ⋱                                     
+  0.504861   -1.03911    -0.357771      0.815027    0.919037    1.07463   
+ -0.820358   -0.955319    0.097768      0.553219    1.56424     0.10535   
+  1.39684     1.93183     0.706641  …  -0.0222014   0.987281   -0.0646814 
+ -1.55206     0.446778    1.48206      -1.42384    -1.04209     0.0460478 
+  0.928527    0.933087   -0.641975     -1.16347    -0.313851   -1.20434   
+  0.380879   -0.144713    1.54374      -0.605637    0.408246    0.632131  
+ -1.30233    -2.31664     1.51324       0.765034   -0.515553    0.984551  
+  1.36747     1.34059    -0.114778  …   0.846682   -0.565511   -0.539113  
+ -2.82496    -0.0447351   0.426242     -0.353497   -0.14583    -0.00304009
+ -0.847741    1.49306     1.15522       0.637659    1.70818     0.641035  
+ -0.22286    -0.43932    -0.373259      0.788337    0.223785   -0.343495  
+  1.32145     0.104516   -0.993017     -0.272744   -0.133748    0.968627
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">β</span> <span class="o">+</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>50-element Array{Float64,1}:
+  12.6173  
+  40.3776  
+   2.2169  
+  27.4631  
+  38.592   
+   7.82023 
+  22.7367  
+   7.88475 
+  -7.47037 
+   0.621035
+  -4.91899 
+ -14.9363  
+   8.26901 
+   ⋮       
+   7.83882 
+  -9.30699 
+ -29.7205  
+  15.2482  
+ -19.1784  
+  14.9865  
+   2.32728 
+  -9.11988 
+ -15.3472  
+  22.9679  
+  -0.997964
+  42.6068
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">β̂admm</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg_admm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">proj</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">clamp</span><span class="o">.</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Inf</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">β̂admm</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>100×1 GLMNet.CompressedPredictorMatrix:
+ 0.611673  
+ 2.17111   
+ 2.65667   
+ 4.05568   
+ 4.72435   
+ 5.87293   
+ 6.6957    
+ 8.36528   
+ 8.61945   
+ 9.80517   
+ 1.18896e-6
+ 0.0       
+ 0.0       
+ ⋮         
+ 0.100613  
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 0.0       
+ 6.84603e-7
+ 0.0593872
+</pre></div>
+
+
+<p>Again we compare the estimates with those from quadratic programming. Here we use <code>ECOS</code> solver instead of the default <code>SCS</code>. </p>
+<div class="codehilite"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">2.0</span> 
+<span class="n">bineq</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">Aineq</span> <span class="o">=</span> <span class="o">-</span> <span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="k">using</span> <span class="n">ECOS</span><span class="p">;</span> <span class="n">solver</span><span class="o">=</span><span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">);</span>
+<span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">Aineq</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">bineq</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span><span class="p">)</span> 
 </pre></div>
 
 
@@ -618,103 +808,36 @@
 
 
 <div class="codehilite"><pre><span></span>100×1 Array{Float64,2}:
-  0.0334671 
- -1.1128e-5 
-  5.40916e-6
- -0.394908  
-  5.69496e-6
-  1.17002e-5
- -3.90243e-6
- -1.91365e-5
-  0.288553  
-  2.05743e-6
-  1.12622e-5
-  1.6712e-5 
- -2.17275e-6
-  ⋮         
- -0.188179  
- -3.52148e-6
-  3.50838e-6
-  9.58236e-6
- -0.844097  
- -0.645805  
- -0.257241  
- -4.90509e-6
- -1.13326   
- -7.28399e-6
-  4.69294e-6
- -8.90143e-6
+  0.610587   
+  2.17169    
+  2.65765    
+  4.05601    
+  4.72551    
+  5.87414    
+  6.69414    
+  8.36632    
+  8.62049    
+  9.80458    
+ -1.18573e-10
+ -8.86515e-11
+ -5.48968e-11
+  ⋮          
+  0.10151    
+  1.08588e-9 
+  3.51552e-10
+ -4.42556e-11
+ -8.01753e-11
+  1.40626e-10
+ -1.58472e-11
+  2.50567e-10
+ -4.76544e-11
+  3.28495e-10
+ -7.49201e-11
+  0.0602764
 </pre></div>
 
 
-<p>We see if the sum of estimated $\beta$ coefficients equal to 0.</p>
-<div class="codehilite"><pre><span></span><span class="nd">@test</span> <span class="n">sum</span><span class="p">(</span><span class="n">β̂</span><span class="p">)</span><span class="n">≈0</span><span class="o">.</span><span class="mi">0</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-4</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>Test Passed
-</pre></div>
-
-
-<p><a id='Multiple-tuning-parameter-values-1'></a></p>
-<h3 id="multiple-tuning-parameter-values">Multiple tuning parameter values</h3>
-<p>Define <code>ρlist</code> to be a sequence of values from 1 to 10.</p>
-<div class="codehilite"><pre><span></span><span class="n">ρlist</span> <span class="o">=</span> <span class="mf">152.0</span><span class="o">:-</span><span class="mf">15.0</span><span class="o">:</span><span class="mf">2.0</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span><span class="mf">152.0</span><span class="p">:-</span><span class="mf">15.0</span><span class="s s-Atom">:</span><span class="mf">2.0</span>
-</pre></div>
-
-
-<p>Using the same equality constraints, we fit the constrained lasso.</p>
-<div class="codehilite"><pre><span></span><span class="n">β̂</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_constrsparsereg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ρlist</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">);</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span><span class="n">β̂</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>100×11 Array{Float64,2}:
-  1.01071e-5  -8.27382e-6  -9.98518e-7  …   2.24039e-6  -1.73712e-8
- -9.20705e-6  -1.73958e-5  -2.05881e-6     -2.60796e-5   0.178782  
- -5.63613e-6  -1.75901e-5  -1.8899e-6      -1.01686e-5   3.41563e-8
- -1.15136e-5  -1.29555e-5  -1.18262e-6     -0.331097    -0.413631  
- -1.60099e-5  -1.38074e-5  -1.11624e-6     -1.1681e-5    4.44159e-8
-  1.6582e-5   -8.67409e-6  -7.82383e-7  …   2.73047e-5   1.19985e-7
- -1.06227e-5  -1.47899e-5  -7.36221e-7      4.90329e-6   5.63884e-8
- -5.7368e-6   -1.48341e-5  -1.65699e-6     -9.84382e-8   3.01081e-8
-  1.42761e-5  -7.54447e-6  -9.46132e-7      0.205789     0.33502   
- -1.35551e-6  -1.40007e-5  -1.15001e-6      2.14801e-5  -0.158037  
- -8.39911e-6  -1.04558e-5  -1.59023e-6  …   4.57889e-6   1.88987e-8
-  1.88431e-6  -1.34713e-5  -1.75855e-6     -2.03643e-6  -2.39007e-8
- -2.78397e-6  -9.21455e-6  -7.11068e-7     -1.14052e-6   3.91139e-8
-  ⋮                                     ⋱                ⋮         
- -7.31054e-6  -1.5138e-5   -1.6294e-6      -0.137376    -0.392134  
- -2.28865e-6  -1.4119e-5   -1.41117e-6     -8.14484e-7  -0.333912  
- -3.48868e-6  -1.27998e-5  -1.60242e-6  …   2.18783e-5   3.13386e-9
- -2.87686e-6  -1.96206e-5  -2.75763e-6      3.14833e-7   7.63403e-8
- -2.14002e-5  -0.0184219   -0.152241       -0.914608    -0.867679  
- -1.57276e-5  -1.80525e-5  -1.42057e-6     -0.218999    -1.00031   
- -1.09405e-5  -1.16499e-5  -1.0991e-6      -0.237285    -0.578412  
- -5.97059e-6  -6.69791e-6  -1.30652e-6  …  -4.20856e-6  -3.80778e-8
- -1.95746e-5  -1.11737e-5  -1.27845e-6     -1.0569      -1.16938   
-  5.18594e-6  -1.26231e-5  -1.82091e-6     -1.37675e-5  -2.69827e-8
- -7.37912e-6  -1.58805e-5  -1.69692e-6     -7.48234e-6  -1.00642e-7
-  8.30253e-6  -7.94538e-6  -7.58241e-7      1.17015e-5   3.21803e-8
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">ρlist</span><span class="p">,</span> <span class="n">β̂</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρlist</span><span class="p">),</span>
-      <span class="n">maximum</span><span class="p">(</span><span class="n">ρlist</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
-<span class="n">title!</span><span class="p">(</span><span class="s">&quot;Solution Path at Fixed Parameter Values&quot;</span><span class="p">)</span> 
-</pre></div>
-
-
-<p><img alt="" src="../misc/fixed.svg" /></p>
-<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/fixedparam.ipynb">link</a> to access the .ipynb file of this page.</em></p>
+<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/admm.ipynb">link</a> to access the .ipynb file of this page.</em></p>
                 
                   
                 
@@ -733,7 +856,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../../interface/" title="Interface" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../fixedparam/" title="Fixed Tuning Parameter Value" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -742,19 +865,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Interface
+                Fixed Tuning Parameter Value
               </span>
             </div>
           </a>
         
         
-          <a href="../admm/" title="ADMM" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../path/" title="Path Algorithm" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                ADMM
+                Path Algorithm
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
