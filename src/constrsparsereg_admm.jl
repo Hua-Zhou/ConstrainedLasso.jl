@@ -57,6 +57,10 @@ function lsq_constrsparsereg_admm(
     v = similar(β)
     zold = similar(z)
 
+    # allocate working arrays
+    Xaug = [X; eye(p)]
+    yaug = [y; ones(p)]
+
     for iter in 1:admmmaxite
 
         # Use Josh Day's sparseReg.jl package
@@ -66,8 +70,14 @@ function lsq_constrsparsereg_admm(
         # s = SModel(obs, L1Penalty(), LinearRegression(), (ρ/size(obs, 1)) .* penwt)
         # β = learn!(s, ProxGrad(obs), MaxIter(50), Converged(coef)).β
 
+        # update Xaug, yaug
+        admmscaleinv = 1 / √admmscale
+        for j in 1:p
+            Xaug[n + j, j] = admmscaleinv
+            yaug[n + j] = (z[j] - u[j]) * admmscaleinv
+        end
         # update β - lasso
-        path = glmnet([X; eye(p) ./ √admmscale], [y; (z-u) ./ √admmscale][:, 1];
+        path = glmnet(Xaug, yaug;
                 weights = [obswt; ones(p, 1)][:, 1], lambda = [ρ / (n+p)],
                 penalty_factor = penwt, standardize = false, intercept = false)
         β = path.betas
@@ -85,6 +95,7 @@ function lsq_constrsparsereg_admm(
                 + admmreltol * max(vecnorm(β), vecnorm(z))) &&
                 (dualresnorm <= √n * admmabstol
                 + admmreltol * vecnorm(u / admmscale))
+            println(iter)
             break
         end
         # update ADMM scale parameter if requested
