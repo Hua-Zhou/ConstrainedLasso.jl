@@ -3,23 +3,18 @@
 
 In this section, we apply the alternating direction method of multipliers (ADMM) algorithm to the constrained lasso problem. Following is the ADMM algorithm for solving the constrained lasso. 
 
-```math
-\begin{split}
-1 & \text{Initialize } \boldsymbol{\beta}^{(0)} = \boldsymbol{z}^{(0)} = \boldsymbol{\beta}^{0}, \boldsymbol{u}^{(0)} = \boldsymbol{0}, \tau > 0 \\
-2 & \text{\textbf{repeat}}\\ 
-3 & |  \boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1; \\
-4 & |  \boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)}) \\
-5 & |  \boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)} \\
-6 & \text{\textbf{until} \underline{convergence criterion is met}}
-\end{split} 
-```
+> 1. Initialize $\boldsymbol{\beta}^{(0)} = \boldsymbol{z}^{(0)} = \boldsymbol{\beta}^{0}, \boldsymbol{u}^{(0)} = \boldsymbol{0}, \tau > 0$    
+> 2. Repeat the following until convergence criterion is met 
+> 	- $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$
+> 	- $\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$
+> 	- $\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$
+
 
 where $\text{proj}_{\mathcal{C}}$ is a projection onto 
 
 ```math
 \mathcal{C} = \{\boldsymbol{\beta}\in \mathbb{R}^p: \boldsymbol{A\beta}=\boldsymbol{b}, \boldsymbol{C\beta} \leq \boldsymbol{d} \}.
 ```
-
 
 ## sum-to-zero constraint 
 
