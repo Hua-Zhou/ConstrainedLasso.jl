@@ -66,12 +66,12 @@ function lsq_constrsparsereg_admm(
     for iter in 1:admmmaxite
 
         # update working arrays
-        if iter == 1 || admmvaryscale
+        for j in 1:p
           admmscaleinv = 1 / √admmscale
-          for j in 1:p
+          if iter == 1 || admmvaryscale
             Xaug[n+j, j] = admmscaleinv
-            yaug[n+j] = (z[j] - u[j]) * admmscaleinv
           end
+          yaug[n+j] = (z[j] - u[j]) * admmscaleinv
         end
         # update β - lasso
         path = glmnet(Xaug, yaug;
