@@ -57,19 +57,26 @@ function lsq_constrsparsereg_admm(
     v = similar(β)
     zold = similar(z)
 
+    # allocate working arrays
+    Xaug = vcat(X, eye(p))
+    yaug = vcat(y, fill(1, p))
+    obswtaug = vcat(obswt, fill(1, p))
+    λ = [ρ / (n + p)]
+
     for iter in 1:admmmaxite
 
-        # Use Josh Day's sparseReg.jl package
-
-        # obs = Obs([X; eye(p) ./ √admmscale], [y; (z-u) ./ √admmscale],
-        #      [obswt; ones(p,1)])
-        # s = SModel(obs, L1Penalty(), LinearRegression(), (ρ/size(obs, 1)) .* penwt)
-        # β = learn!(s, ProxGrad(obs), MaxIter(50), Converged(coef)).β
-
+        # update working arrays
+        if iter == 1 || admmvaryscale
+          admmscaleinv = 1 / √admmscale
+          for j in 1:p
+            Xaug[n+j, j] = admmscaleinv
+            yaug[n+j] = (z[j] - u[j]) * admmscaleinv
+          end
+        end
         # update β - lasso
-        path = glmnet([X; eye(p) ./ √admmscale], [y; (z-u) ./ √admmscale][:, 1];
-                weights = [obswt; ones(p, 1)][:, 1], lambda = [ρ / (n+p)],
-                penalty_factor = penwt, standardize = false, intercept = false)
+        path = glmnet(Xaug, yaug;
+                weights = obswtaug, lambda = λ, penalty_factor = penwt,
+                standardize = false, intercept = false)
         β = path.betas
         # update z - projection to constraint set
         v = β + u
