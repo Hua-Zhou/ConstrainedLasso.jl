@@ -465,9 +465,17 @@
 <p><em>Repeat</em> the following until <em>convergence criterion is met</em></p>
 </li>
 </ol>
-<p><code>* $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$       
- * $\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$     
- * $\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$</code></p>
+<p>```
+  * $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$  </p>
+<ul>
+<li>
+<p>$\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$     </p>
+</li>
+<li>
+<p>$\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$
+```</p>
+</li>
+</ul>
 </blockquote>
 <p>where $\text{proj}_{\mathcal{C}}$ is a projection onto </p>
 <p>
