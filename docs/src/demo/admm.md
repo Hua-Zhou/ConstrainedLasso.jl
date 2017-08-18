@@ -7,9 +7,11 @@ In this section, we apply the alternating direction method of multipliers (ADMM)
 > 
 > 1. Initialize $\boldsymbol{\beta}^{(0)} = \boldsymbol{z}^{(0)} = \boldsymbol{\beta}^{0}, \boldsymbol{u}^{(0)} = \boldsymbol{0}, \tau > 0$     
 > - *Repeat* the following until *convergence criterion is met*   
-> 	 * $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$       
-> 	 * $\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$     
-> 	 * $\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$     
+> 	 	* $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$  
+>      
+> 	 	* $\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$     
+> 
+> 	 	* $\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$     
 
 
 where $\text{proj}_{\mathcal{C}}$ is a projection onto 
