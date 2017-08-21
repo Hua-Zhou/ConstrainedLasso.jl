@@ -1,26 +1,9 @@
 
 # ADMM 
 
-In this section, we apply the alternating direction method of multipliers (ADMM) algorithm to the constrained lasso problem. Below is the ADMM algorithm for solving the constrained lasso. 
+In this section, we solve the same constrained lasso problem using the alternating direction method of multipliers (ADMM) algorithm. ADMM algorithm is advantageous since it can scale to larger size problems and is not restricted to linear constraints. See [Gaines and Zhou (2016)](../references.md#3) for details. 
 
-> **Algorithm:** ADMM for solving the constrained lasso 
-> 
-> 1. Initialize $\boldsymbol{\beta}^{(0)} = \boldsymbol{z}^{(0)} = \boldsymbol{\beta}^{0}, \boldsymbol{u}^{(0)} = \boldsymbol{0}, \tau > 0$     
-> - *Repeat* the following until *convergence criterion is met*   
-> 
-> 	 	* $\boldsymbol{\beta}^{(t+1)} \leftarrow \text{argmin} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \frac{1}{2\tau}||\boldsymbol{\beta} + \boldsymbol{z}^{(t)} + \boldsymbol{u}^{(t)}||_2^2 + \rho||\boldsymbol{\beta}||_1$  
->      
-> 	 	* $\boldsymbol{z}^{(t+1)} \leftarrow \text{proj}_{\mathcal{C}}(\boldsymbol{\beta}^{(t+1)}+\boldsymbol{u}^{(t)})$     
-> 
-> 	 	* $\boldsymbol{u}^{(t+1)} \leftarrow \boldsymbol{u}^{(t)} + \boldsymbol{\beta}^{(t+1)} + \boldsymbol{z}^{(t+1)}$
->      
-
-
-where $\text{proj}_{\mathcal{C}}$ is a projection onto 
-
-```math
-\mathcal{C} = \{\boldsymbol{\beta}\in \mathbb{R}^p: \boldsymbol{A\beta}=\boldsymbol{b}, \boldsymbol{C\beta} \leq \boldsymbol{d} \}.
-```
+In order to use the algorithm, user needs to supply a projection function onto the constraint set. Some simple examples are discussed below. 
 
 ## sum-to-zero constraint 
 
@@ -29,11 +12,16 @@ We demonstrate using a sum-to-zero constraint example
 ```math
 \begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
-& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0
+& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0.
 \end{split}
 ```
+For this constraint, the appropriate projection operator would be 
 
-First, let's define a true parameter `β` such that `sum(β) = 0`.
+```math
+\text{proj}(\boldsymbol{x}) = \boldsymbol{x} - \bar{\boldsymbol{x}}= \boldsymbol{x} - \sum_{j=1}^n x_j.
+```
+
+Now let's define a true parameter `β` such that `sum(β) = 0`.
 
 
 ```julia
@@ -257,7 +245,17 @@ hcat(β̂admm, β̂)
 
 ## Non-negativity constraint 
 
-Here we look at the non-negativity constraint. First let's generate `X` and `y`.
+Here we look at the non-negativity constraint. For the constraint $\beta_j \geq 0 \forall j$, the appropriate projection function is 
+
+```math 
+\text{proj}(x) = \begin{cases}
+x, & \text{if } x \geq 0 
+0, & \text{else }. 
+\end{cases}
+
+```
+
+Now let's generate `X` and `y`.
 
 
 ```julia
