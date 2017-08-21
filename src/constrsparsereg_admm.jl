@@ -38,7 +38,7 @@ alternating direction method of multipliers (ADMM) algorithm.
 function lsq_constrsparsereg_admm(
     X::AbstractMatrix{T},
     y::AbstractVector{N},
-    ρ::Number = zero(eltype(X));
+    ρ::Number        = zero(eltype(X));
     proj::Function   = x -> x,
     obswt::Vector{N} = ones(eltype(y), length(y)),
     penwt::Vector{T} = ones(eltype(X), size(X, 2)),
@@ -48,7 +48,7 @@ function lsq_constrsparsereg_admm(
     admmreltol::Float64   = 1e-4,
     admmscale::Float64    = 1 / length(y),
     admmvaryscale::Bool   = false
-    ) where T where N 
+    ) where T where N
 
     n, p = size(X)
     β = copy(β0)
@@ -77,7 +77,7 @@ function lsq_constrsparsereg_admm(
         path = glmnet(Xaug, yaug;
                 weights = obswtaug, lambda = λ, penalty_factor = penwt,
                 standardize = false, intercept = false)
-        β = path.betas::Vector{T}
+        β = path.betas[:]
         # update z - projection to constraint set
         v = β .+ u
         copy!(zold, z)
