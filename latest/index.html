@@ -448,7 +448,7 @@
                 
                 <p><a id='ConstrainedLasso-1'></a></p>
 <h1 id="constrainedlasso">ConstrainedLasso</h1>
-<p><strong>ConstrainedLasso</strong> estimates the following constrained lasso problem</p>
+<p><strong>ConstrainedLasso</strong> solves the following problem</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
@@ -457,7 +457,13 @@
 \end{split}
 </script>
 </p>
-<p>where $\boldsymbol{y} \in \mathbb{R}^n$ is the response vector, $\boldsymbol{X}\in \mathbb{R}^{n\times p}$ is the design matrix of predictor or covariates, $\boldsymbol{\beta} \in \mathbb{R}^p$ is the vector of unknown regression coefficients, and $\rho \geq 0$ is a tuning parameter that controls the amount of regularization.</p>
+<p>where</p>
+<ul>
+<li>$\boldsymbol{y} \in \mathbb{R}^n$: the response vector</li>
+<li>$\boldsymbol{X}\in \mathbb{R}^{n\times p}$: the design matrix of predictor or covariates</li>
+<li>$\boldsymbol{\beta} \in \mathbb{R}^p$: the vector of unknown regression coefficients,</li>
+<li>$\rho \geq 0$: a tuning parameter that controls the amount of regularization.</li>
+</ul>
 <p><a id='Installation-1'></a></p>
 <h2 id="installation">Installation</h2>
 <p>Within Julia, use the package manager to install <strong>ConstrainedLasso</strong>:</p>
@@ -468,10 +474,10 @@
 <p>This package supports Julia v0.6.</p>
 <p><a id='Citation-1'></a></p>
 <h2 id="citation">Citation</h2>
-<p>If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:</p>
-<p><em>B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <a href="https://arxiv.org/abs/1611.01511">https://arxiv.org/abs/1611.01511</a></em></p>
 <p>Original method paper on the constrained lasso is</p>
 <p><em>G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <a href="http://www-bcf.usc.edu/~gareth/research/PAC.pdf">http://www-bcf.usc.edu/~gareth/research/PAC.pdf</a></em></p>
+<p>If you use <strong>ConstrainedLasso</strong> package in your research, please cite the following paper on the algorithms:</p>
+<p><em>B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <a href="https://arxiv.org/abs/1611.01511">https://arxiv.org/abs/1611.01511</a></em></p>
                 
                   
                 
