@@ -36,19 +36,19 @@ alternating direction method of multipliers (ADMM) algorithm.
 """
 
 function lsq_constrsparsereg_admm(
-    X::AbstractMatrix,
-    y::AbstractVector,
+    X::AbstractMatrix{T},
+    y::AbstractVector{N},
     ρ::Number = zero(eltype(X));
-    proj                  = x -> x,
-    obswt::AbstractVector = ones(eltype(y), length(y)),
-    penwt::AbstractVector = ones(eltype(X), size(X, 2)),
-    β0::AbstractVector    = zeros(eltype(X), size(X, 2)),
-    admmmaxite::Number    = 10000,
-    admmabstol::Number    = 1e-4,
-    admmreltol::Number    = 1e-4,
-    admmscale::Number     = 1 / length(y),
+    proj::Function   = x -> x,
+    obswt::Vector{N} = ones(eltype(y), length(y)),
+    penwt::Vector{T} = ones(eltype(X), size(X, 2)),
+    β0::Vector{T}    = zeros(eltype(X), size(X, 2)),
+    admmmaxite::Int       = 10000,
+    admmabstol::Float64   = 1e-4,
+    admmreltol::Float64   = 1e-4,
+    admmscale::Float64    = 1 / length(y),
     admmvaryscale::Bool   = false
-    )
+    ) where T where N 
 
     n, p = size(X)
     β = copy(β0)
@@ -77,16 +77,16 @@ function lsq_constrsparsereg_admm(
         path = glmnet(Xaug, yaug;
                 weights = obswtaug, lambda = λ, penalty_factor = penwt,
                 standardize = false, intercept = false)
-        β = path.betas
+        β = path.betas::Vector{T}
         # update z - projection to constraint set
-        v = β + u
+        v = β .+ u
         copy!(zold, z)
         z = proj(v)
         # update scaled dual variables u
         dualresnorm = norm((z - zold) / admmscale)
-        primalres = β - z
+        primalres = β .- z
         primalresnorm = norm(primalres)
-        u = u + primalres
+        u += primalres
         # check convergence criterion
         if (primalresnorm <= √p * admmabstol
                 + admmreltol * max(vecnorm(β), vecnorm(z))) &&
