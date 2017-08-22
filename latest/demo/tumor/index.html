@@ -401,11 +401,11 @@
 <h1 id="brain-tumor-data">Brain Tumor Data</h1>
 <p>Here we estimate a generalized lasso model (sparse fused lasso) via the constrained lasso. </p>
 <p>In this example, we use a version of the comparative genomic hybridization (CGH) data from <a href="../../references/#2">Bredel et al. (2005)</a> that was modified and studied by <a href="../../references/#6">Tibshirani and Wang (2008)</a></p>
-<p>The dataset here contains CGH measurements from 2 glioblastoma multiforme (GBM) brain tumors. Tibshirani and Wang (2008) proposed using the sparse fused lasso to approximate the CGH signal by a sparse, piecewise constant function in order to determine the areas with non-zero values, as positive (negative) CGH values correspond to possible gains (losses). The sparse fused lasso (Tibshirani et al., 2005) is given by</p>
+<p>The dataset here contains CGH measurements from 2 glioblastoma multiforme (GBM) brain tumors. <a href="../../references/#6">Tibshirani and Wang (2008)</a> proposed using the sparse fused lasso to approximate the CGH signal by a sparse, piecewise constant function in order to determine the areas with non-zero values, as positive (negative) CGH values correspond to possible gains (losses). The sparse fused lasso (<a href="../../references/#5">Tibshirani et al., 2005</a>) is given by</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
-\text{minimize} \hspace{1em} \frac 12 ||\boldsymbol{y}-\boldsymbol{\beta}||_2^2 + \rho_1||\boldsymbol{\beta}||_1 + \rho_2\sum_{j=2}^p |\beta_j - \beta_{j-1}| \hspace{5em} (1)
+\text{minimize} \hspace{1em} \frac{1}{2} ||\boldsymbol{y}-\boldsymbol{\beta}||_2^2 + \rho_1||\boldsymbol{\beta}||_1 + \rho_2\sum_{j=2}^p |\beta_j - \beta_{j-1}| \hspace{5em} (1)
 \end{split}
 </script>
 </p>
@@ -413,7 +413,7 @@
 <p>
 <script type="math/tex; mode=display">
 \begin{split} 
-\text{minimize} \hspace{1em} \frac 12 ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \rho ||\boldsymbol{D\beta}||_1 \hspace{5em} (2)
+\text{minimize} \hspace{1em} \frac{1}{2} ||\boldsymbol{y}-\boldsymbol{X\beta}||_2^2 + \rho ||\boldsymbol{D\beta}||_1 \hspace{5em} (2)
 \end{split}
 </script>
 </p>
@@ -435,29 +435,13 @@
 \end{pmatrix} \in \mathbb{R}^{(2P-1)\times p}.
 </script>
 </p>
-<p>As discussed in <a href="../../references/">Gaines, B.R. and Zhou, H., (2016)</a>, the sparse fused lasso can be reformulated and solved as a constrained lasso problem. The generalized lasso problem $(2)$ is equivalent to </p>
-<p>
-<script type="math/tex; mode=display">
-\begin{split}
-& \text{minimize} \hspace{1em} \frac 12 ||\widetilde{\boldsymbol{y}} -\widetilde{\boldsymbol{X}}\boldsymbol{\alpha}||_2^2 + \rho||\boldsymbol{\alpha}||_1 \hspace{5em} (3) \\
-& \text{subject to} \hspace{1em} \boldsymbol{U}^T_2\boldsymbol{\alpha} = \boldsymbol{0}
-\end{split}
-</script>
-</p>
-<p>where $\widetilde{\boldsymbol{y}} = (\boldsymbol{I}-\boldsymbol{P}<em _boldsymbol_XV="\boldsymbol{XV">{\boldsymbol{XV}_2})\boldsymbol{y}$ and $\widetilde{\boldsymbol{X}} = (\boldsymbol{I}-\boldsymbol{P}</em>_2})\boldsymbol{XD}^+$. Note $D^+$ is the Moore-Penrose inverse of the matrix $\boldsymbol{D}.$ and $\boldsymbol{U_2}, \boldsymbol{V_2}$ are obtained from singular value decomposition (SVD) of $\boldsymbol{D}$ matrix. Then, the solution path $\widehat{\boldsymbol{\alpha}}(\rho)$ can be translated back to that of the original generalized lasso problem via </p>
-<p>
-<script type="math/tex; mode=display">
-\widehat{\boldsymbol{\beta}}(\rho) = [\boldsymbol{I}-\boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}]\boldsymbol{D}^+\hat{\boldsymbol{\alpha}}(\rho)+ \boldsymbol{V}_2(\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{V}_2)^-\boldsymbol{V}_2^T\boldsymbol{X}^T\boldsymbol{y}
-</script>
-</p>
-<p>where $\boldsymbol{X}^-$ denotes the generalized inverse of a matrix $\boldsymbol{X}$.</p>
-<p>Details are found in Section 2 of [<a href="../../references/">3</a>]. </p>
+<p>As discussed in <a href="../../references/">Gaines, B.R. and Zhou, H., (2016)</a>, the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [<a href="../../references/">3</a>]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using $genlasso.jl$ in <strong>ConstrainedLasso</strong> package. </p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span>
 </pre></div>
 
 
 <p>We load and organize the data first. Here, <code>y</code> is the response vector. The design matrix <code>X</code> is an identity matrix since the objective function in $(1)$ does not involve <code>X</code>. </p>
-<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;misc/tumor.txt&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span> <span class="s">&quot;docs/src/demo/misc/tumor.txt&quot;</span><span class="p">))</span>
 </pre></div>
 
 
@@ -561,107 +545,11 @@
 </pre></div>
 
 
-<p>Now we transform the problem to the constrained lasso problem. We do the singular value decomposition on <code>D</code> and extract singular values and necessary submatrices.  </p>
-<div class="codehilite"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">F</span> <span class="o">=</span> <span class="n">svdfact!</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">thin</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span>
-<span class="n">singvals</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">S</span><span class="p">]</span>
-<span class="n">rankD</span> <span class="o">=</span> <span class="n">countnz</span><span class="p">(</span><span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">S</span><span class="p">]</span> <span class="o">.&gt;</span> <span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">S</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">eps</span><span class="p">(</span><span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">S</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">maximum</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">D</span><span class="p">)))</span>
-
-<span class="n">V1</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">V</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="n">rankD</span><span class="p">]</span>
-<span class="n">V2</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">V</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="n">rankD</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">]</span>
-<span class="n">U1</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">U</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="n">rankD</span><span class="p">]</span>
-<span class="n">U2</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">U</span><span class="p">][</span><span class="o">:</span><span class="p">,</span> <span class="n">rankD</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span> <span class="o">=</span> <span class="n">genlasso</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 
 
-<p>Now we calculate the Moore-Penrose inverse of <code>D</code>, which is $D^+$ in $(3)$, and transform the design matrix by multiplying by $D^+$. </p>
-<div class="codehilite"><pre><span></span><span class="n">Dplus</span> <span class="o">=</span> <span class="n">V1</span> <span class="o">*</span> <span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">U1</span><span class="o">&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="n">F</span><span class="p">[</span><span class="o">:</span><span class="n">S</span><span class="p">])</span>
-<span class="n">XDplus</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">Dplus</span><span class="p">;</span>
-</pre></div>
-
-
-<p>In the following code snippet, <code>Pxv2</code> is a projection matrix onto <code>C(XV2)</code> and <code>Mxv2</code> is the orthogonal projection matrix. Then we obtain the design matrix and response vector in their tilde form as shown in $(3)$. </p>
-<div class="codehilite"><pre><span></span><span class="n">XV2</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">V2</span>
-<span class="n">Pxv2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dot</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">XV2</span><span class="p">))</span> <span class="o">*</span> <span class="n">A_mul_Bt</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">XV2</span><span class="p">)</span>
-<span class="n">Mxv2</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">Pxv2</span>
-<span class="n">ỹ</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">Mxv2</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>990-element Array{Float64,1}:
-  0.351554   
- -0.134946   
-  0.119377   
- -0.0163198  
-  0.362654   
-  0.169001   
-  0.816211   
-  0.300646   
-  0.134125   
- -0.214281   
- -0.736685   
-  1.08552    
-  0.000500562
-  ⋮          
- -0.152933   
- -0.143933   
- -0.331094   
-  0.0166656  
- -0.203529   
-  0.570688   
- -0.585536   
- -0.430014   
- -0.299676   
- -0.71031    
- -0.487701   
- -0.129769
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span><span class="n">X̃</span> <span class="o">=</span> <span class="n">Mxv2</span> <span class="o">*</span> <span class="n">XDplus</span>
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>990×989 Array{Float64,2}:
-  0.99899     0.99798     0.99697    …   0.0030303   0.0020202   0.0010101
- -0.0010101   0.99798     0.99697        0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202   0.99697        0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303  …   0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303  …   0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
-  ⋮                                  ⋱                                    
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303  …   0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303  …   0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303      0.0030303   0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303     -0.99697     0.0020202   0.0010101
- -0.0010101  -0.0020202  -0.0030303     -0.99697    -0.99798     0.0010101
- -0.0010101  -0.0020202  -0.0030303     -0.99697    -0.99798    -0.99899
-</pre></div>
-
-
-<p>We solve the constrained lasso problem and obtain $\widehat{\boldsymbol{\alpha}}(\rho)$.</p>
-<div class="codehilite"><pre><span></span><span class="n">α̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X̃</span><span class="p">,</span> <span class="n">ỹ</span><span class="p">;</span> <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span>
-</pre></div>
-
-
-<p>Now we need to transform $\widehat{\boldsymbol{\alpha}} (\rho)$ back to $\widehat{\boldsymbol{\beta}} (\rho)$ as seen in (3).</p>
-<div class="codehilite"><pre><span></span><span class="c"># transform back to beta</span>
-<span class="n">β̂path</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">LinAlg</span><span class="o">.</span><span class="n">BLAS</span><span class="o">.</span><span class="n">ger!</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vec</span><span class="p">(</span><span class="n">V2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dot</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">XV2</span><span class="p">))</span> <span class="o">*</span> 
-        <span class="n">At_mul_B</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">y</span><span class="p">))),</span> <span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">ρpath</span><span class="p">)),</span> <span class="p">(</span><span class="n">eye</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">V2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> 
-        <span class="n">V2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dot</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">XV2</span><span class="p">))</span> <span class="o">*</span> <span class="n">At_mul_B</span><span class="p">(</span><span class="n">XV2</span><span class="p">,</span> <span class="n">X</span><span class="p">)))</span> <span class="o">*</span> <span class="n">Dplus</span> <span class="o">*</span> <span class="n">α̂path</span> <span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">β̂path</span>
 </pre></div>
 
 
@@ -695,30 +583,135 @@
 </pre></div>
 
 
+<div class="codehilite"><pre><span></span><span class="n">ρpath</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>989-element Array{Float64,1}:
+ 138.641      
+ 135.983      
+ 112.914      
+  86.7231     
+  38.6934     
+  33.6742     
+  33.4223     
+  29.0274     
+  16.4677     
+  14.8989     
+  13.7994     
+  11.5303     
+   7.45317    
+   ⋮          
+   0.00336078 
+   0.00319116 
+   0.00312939 
+   0.0022499  
+   0.00129357 
+   0.00118782 
+   0.000983542
+   0.000623544
+   0.000246343
+   0.00017132 
+   0.000145322
+   0.0
+</pre></div>
+
+
 <p>We plot the constrained lasso solution path below. </p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span> <span class="c"># hide</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">ρpath</span><span class="p">,</span> <span class="n">β̂path</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρpath</span><span class="p">),</span>
-      <span class="n">maximum</span><span class="p">(</span><span class="n">ρpath</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Plots</span><span class="p">;</span> <span class="n">pyplot</span><span class="p">();</span> 
+<span class="n">ρnewpath</span> <span class="o">=</span> <span class="n">ρpath</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c"># exclude ρ=0</span>
+<span class="n">βnewpath</span> <span class="o">=</span> <span class="n">β̂path</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="p">(</span><span class="n">ρnewpath</span><span class="p">),</span> <span class="n">βnewpath</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;log(ρ)&quot;</span><span class="p">),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">title!</span><span class="p">(</span><span class="s">&quot;Brain Tumor Data: Solution Path via Constrained Lasso&quot;</span><span class="p">)</span>
 </pre></div>
 
 
 <p><img alt="" src="../misc/tumor1.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/tumor1.svg&quot;</span><span class="p">);</span>
+</pre></div>
+
+
 <p>Now let's compare our estimates with those from generalized lasso.  </p>
 <p>Variables <code>lambda_path</code> and <code>beta_path_fused</code> are lambda values and estimated beta coefficients, respectively, obtained from <code>genlasso</code> package in <code>R</code>. </p>
-<div class="codehilite"><pre><span></span><span class="n">lambda_path</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;misc/lambda_path.txt&quot;</span><span class="p">)</span>
-<span class="n">beta_path_fused</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;misc/beta_path_fused.txt&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">,</span> <span class="o">:</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><span class="n">lambda_path</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span><span class="s">&quot;docs/src/demo/misc/lambda_path.txt&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>989×1 Array{Float64,2}:
+ 138.641      
+ 135.983      
+ 112.914      
+  86.7231     
+  38.6934     
+  33.6742     
+  33.4223     
+  29.0274     
+  16.4677     
+  14.8989     
+  13.7994     
+  11.5303     
+   7.45317    
+   ⋮          
+   0.00336078 
+   0.00319116 
+   0.00312939 
+   0.0022499  
+   0.00129357 
+   0.00118782 
+   0.000983542
+   0.000623544
+   0.000246343
+   0.00017132 
+   0.000145321
+   1.7577e-5
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="n">beta_path_fused</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span><span class="s">&quot;docs/src/demo/misc/beta_path_fused.txt&quot;</span><span class="p">))[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">,</span> <span class="o">:</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>990×989 Array{Float64,2}:
+ -0.0178926  -0.0046696   0.118694    0.258754   …   0.333516     0.333644  
+ -0.0178926  -0.0046696   0.118694    0.258754      -0.152548    -0.152803  
+ -0.0178926  -0.0046696   0.118694    0.258754       0.101194     0.10145   
+ -0.0178926  -0.0046696   0.118694    0.258754      -0.0339217   -0.0341772 
+ -0.0178926  -0.0046696   0.118694    0.258754       0.344471     0.344726  
+ -0.0178926  -0.0046696   0.118694    0.258754   …   0.151399     0.151143  
+ -0.0178926  -0.0046696   0.118694    0.258754       0.798027     0.798283  
+ -0.0178926  -0.0046696   0.118694    0.258754       0.282754     0.282754  
+ -0.0178926  -0.0046696   0.118694    0.258754       0.116233     0.116233  
+ -0.0178926  -0.0046696   0.118694    0.258754      -0.232173    -0.232173  
+ -0.0178926  -0.0046696   0.118694    0.258754   …  -0.754287    -0.754542  
+ -0.0178926  -0.0046696   0.118694    0.258754       1.06733      1.06759   
+ -0.0178926  -0.0046696   0.118694    0.258754      -0.0171014   -0.0173569 
+  ⋮                                              ⋱                          
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.170535    -0.17079   
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.162116    -0.161861  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215  …  -0.348696    -0.348952  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.00151764  -0.00126215
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.221131    -0.221386  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215      0.552504     0.55276   
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.603138    -0.603394  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215  …  -0.447907    -0.447907  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.31786     -0.317604  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.727912    -0.728167  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.505593    -0.505593  
+ -0.0178926  -0.0212612  -0.0504995  -0.0838215     -0.147807    -0.147679
 </pre></div>
 
 
 <p>The following figure plots generalized lasso solution path. </p>
-<div class="codehilite"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">lambda_path</span><span class="p">,</span> <span class="n">beta_path_fused</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;λ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">lambda_path</span><span class="p">),</span>
-      <span class="n">maximum</span><span class="p">(</span><span class="n">lambda_path</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(λ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="p">(</span><span class="n">lambda_path</span><span class="p">),</span> <span class="n">beta_path_fused</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;log(λ)&quot;</span><span class="p">),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(λ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">title!</span><span class="p">(</span><span class="s">&quot;Brain Tumor Data: Generalized Lasso Solution Path&quot;</span><span class="p">)</span>
 </pre></div>
 
 
 <p><img alt="" src="../misc/tumor2.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/tumor2.svg&quot;</span><span class="p">)</span>
+</pre></div>
+
+
 <p>Now we extract common values of $\rho$ and compare estimates at those values. </p>
 <div class="codehilite"><pre><span></span><span class="n">sameρ</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">round</span><span class="o">.</span><span class="p">(</span><span class="n">ρpath</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">round</span><span class="o">.</span><span class="p">(</span><span class="n">lambda_path</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">sameρ_err</span> <span class="o">=</span> <span class="p">[]</span>
@@ -771,7 +764,7 @@
 </pre></div>
 
 
-<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/tumor.ipynb">link</a> to access the .ipynb file of this page.</em></p>
+<p><em>Follow the <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/tumor.ipynb">link</a> to access the .ipynb file of this page.</em></p>
                 
                   
                 
