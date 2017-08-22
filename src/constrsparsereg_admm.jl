@@ -161,7 +161,7 @@ alternating direction method of multipliers (ADMM) algorithm.
 function lsq_constrsparsereg_admm(
     X::AbstractMatrix{T},
     y::AbstractVector{T},
-    ρlist::Vector;
+    ρlist;
     proj::Function   = x -> x,
     obswt::Vector = ones(T, length(y)),
     penwt::Vector = ones(T, size(X, 2)),

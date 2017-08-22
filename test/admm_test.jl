@@ -23,10 +23,10 @@ y = X * β + randn(n)
 info("Test lsq_constrsparsereg_admm: sum-to-zero constraint (multiple param values)")
 # fit at fixed parameter values
 ρ = 1.0:2.0:20.0
-β̂admm1 = lsq_constrsparsereg_admm(X, y, ρ; proj = x -> x - mean(x))
+β̂admm2 = lsq_constrsparsereg_admm(X, y, ρ; proj = x -> x - mean(x))
 @testset "zero-sum for multiple param values" begin
-for si in sum(β̂admm1, 1)
-    @test si≈0.0 atol=1e-3 # SCS does not pass the test using 1e-4 tolerance
+for si in sum(β̂admm2, 1)
+    @test si≈0.0 atol=1e-5
 end
 end
 
@@ -42,8 +42,8 @@ X = randn(n, p)
 y = X * β + randn(n)
 # fit at the fixed parameter value; admmvaryscale=true
 ρ = 3
-β̂admm2 = lsq_constrsparsereg_admm(X, y, ρ; proj = x -> clamp.(x, 0, Inf),
+β̂admm3 = lsq_constrsparsereg_admm(X, y, ρ; proj = x -> clamp.(x, 0, Inf),
         admmvaryscale = true)
-@test all(β̂admm2 .>= 0)
+@test all(β̂admm3 .>= 0)
 
 end # end of module
