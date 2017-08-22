@@ -1,4 +1,3 @@
-
 # ADMM 
 
 In this section, we solve the same constrained lasso problem using the alternating direction method of multipliers (ADMM) algorithm. ADMM algorithm is advantageous since it can scale to larger size problems and is not restricted to linear constraints. See [Gaines and Zhou (2016)](../references.md#3) for details. 
@@ -9,24 +8,26 @@ In order to use the algorithm, user needs to supply a projection function onto t
 
 We demonstrate using a sum-to-zero constraint example
 
-```math
-\begin{split}
+
+$$\begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
-& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0.
-\end{split}
-```
-For this constraint, the appropriate projection operator would be 
+& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0
+\end{split}$$
 
-```math
-\text{proj}(\boldsymbol{x}) = \boldsymbol{x} - \bar{\boldsymbol{x}}= \boldsymbol{x} - \sum_{j=1}^n x_j.
-```
+For this constraint, the appropriate projection function for $\boldsymbol{x} = (x_1, \cdots, x_p)^T$ would be 
 
-Now let's define a true parameter `β` such that `sum(β) = 0`.
+$$\text{proj}(\boldsymbol{x}) = \boldsymbol{x} - \bar{\boldsymbol{x}}= \boldsymbol{x} - \sum_{j=1}^p x_j.$$
+
+
+First, let's define a true parameter `β` such that `sum(β) = 0`.
 
 
 ```julia
 using ConstrainedLasso, Base.Test
+```
 
+
+```julia
 n, p = 50, 100  
 β = zeros(p);
 β[1:round(Int, p / 4)] = 0
@@ -164,7 +165,7 @@ Now we estimate coefficients at fixed tuning parameter value using ADMM alogrith
 
 
 
-    100×1 GLMNet.CompressedPredictorMatrix:
+    100-element Array{Float64,1}:
       0.0     
       0.174344
       0.0     
@@ -199,10 +200,9 @@ Now let's compare the estimated coefficients with those obtained using quadratic
 
 ```julia
 ρ = 2.0 
-beq = [0]
+beq = [0.0]
 Aeq = ones(1, p)
-using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
-β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq, solver = solver) 
+β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq) 
 ```
 
 
@@ -245,15 +245,16 @@ hcat(β̂admm, β̂)
 
 ## Non-negativity constraint 
 
-Here we look at the non-negativity constraint. For the constraint $\beta_j \geq 0 \forall j$, the appropriate projection function is 
+Here we look at the non-negativity constraint. For the non-negativity constraint 
 
-```math 
-\text{proj}(x) = \begin{cases}
-x, & \text{if } x \geq 0 
-0, & \text{else }. 
-\end{cases}
+$$\beta_j \geq 0 \hspace{0.8em} \forall j,$$
 
-```
+the appropriate projection function for $\boldsymbol{x} = (x_1, \cdots, x_p)^T$ is 
+ 
+$$\text{proj}(\boldsymbol{x})_j = \begin{cases}
+x_j & \text{if } x_j \geq 0  \\
+0 & \text{else}
+\end{cases} \hspace{0.8em} \text{where } j = 1, \cdots, p.$$
 
 Now let's generate `X` and `y`.
 
@@ -337,9 +338,11 @@ y = X * β + randn(n)
 
 
 
+This time, we feed a sequence of tuning parameter values into the `lsq_constrsparsereg_admm` function. 
+
 
 ```julia
-ρ = 2.0
+ρ = linspace(1.0, 70.0, 10)
 β̂admm = lsq_constrsparsereg_admm(X, y, ρ; proj = x -> clamp.(x, 0, Inf))
 ```
 
@@ -351,45 +354,43 @@ y = X * β + randn(n)
 
 
 
-    100×1 GLMNet.CompressedPredictorMatrix:
-     0.611673  
-     2.17111   
-     2.65667   
-     4.05568   
-     4.72435   
-     5.87293   
-     6.6957    
-     8.36528   
-     8.61945   
-     9.80517   
-     1.18896e-6
-     0.0       
-     0.0       
-     ⋮         
-     0.100613  
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     0.0       
-     6.84603e-7
-     0.0593872 
+    100×10 Array{Float64,2}:
+      0.653843    0.490395    0.277812    …  0.0      0.0      0.0      0.0    
+      2.21572     2.07051     1.96482        1.41607  1.26061  1.10519  0.94974
+      2.77145     2.52934     2.36727        1.77875  1.64644  1.51417  1.38186
+      4.13883     3.90272     3.70409        2.99234  2.82268  2.65297  2.4833 
+      4.84074     4.56198     4.29935        3.31819  3.06715  2.81613  2.5651 
+      5.8787      5.69235     5.49622     …  4.46134  4.18054  3.89969  3.61888
+      6.7637      6.55971     6.34682        5.68324  5.54216  5.40096  5.25987
+      8.51065     8.03277     7.8351         6.87417  6.61797  6.36169  6.10549
+      8.7451      8.33258     8.02948        6.94937  6.68847  6.42749  6.16659
+      9.77876     9.76788     9.6326         9.12581  9.02118  8.91651  8.81187
+      1.65481e-6  2.65614e-5  5.75666e-5  …  0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0            0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0            0.0      0.0      0.0      0.0    
+      ⋮                                   ⋱                                    
+      0.170999    1.06392e-5  0.0            0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0            0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0         …  0.0      0.0      0.0      0.0    
+     -5.9382e-7   0.0         0.0            0.0      0.0      0.0      0.0    
+      0.0         2.57367e-5  3.98409e-5     0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0            0.0      0.0      0.0      0.0    
+      0.0         1.69146e-5  0.0            0.0      0.0      0.0      0.0    
+      0.0         0.0         0.0         …  0.0      0.0      0.0      0.0    
+      0.0         0.0         3.45786e-5     0.0      0.0      0.0      0.0    
+      0.0141037   0.0         0.0            0.0      0.0      0.0      0.0    
+      0.0         2.39758e-5  3.62464e-5     0.0      0.0      0.0      0.0    
+      0.0503145   0.0553623   0.0339917      0.0      0.0      0.0      0.0    
 
 
 
-Again we compare the estimates with those from quadratic programming. Here we use `ECOS` solver instead of the default `SCS`. 
+Again we compare with the estimates from quadratic programming.
 
 
 ```julia
-ρ = 2.0 
 bineq = zeros(p)
 Aineq = - eye(p)
-using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
-β̂, = lsq_constrsparsereg(X, y, ρ; Aineq = Aineq, bineq = bineq, solver = solver) 
+β̂, = lsq_constrsparsereg(X, y, ρ; Aineq = Aineq, bineq = bineq) 
 ```
 
 
@@ -400,33 +401,34 @@ using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
 
 
 
-    100×1 Array{Float64,2}:
-      0.610587   
-      2.17169    
-      2.65765    
-      4.05601    
-      4.72551    
-      5.87414    
-      6.69414    
-      8.36632    
-      8.62049    
-      9.80458    
-     -1.18573e-10
-     -8.86515e-11
-     -5.48968e-11
-      ⋮          
-      0.10151    
-      1.08588e-9 
-      3.51552e-10
-     -4.42556e-11
-     -8.01753e-11
-      1.40626e-10
-     -1.58472e-11
-      2.50567e-10
-     -4.76544e-11
-      3.28495e-10
-     -7.49201e-11
-      0.0602764  
-      
+    100×10 Array{Float64,2}:
+      0.652004      0.489105      0.277863     …   2.00626e-9    8.58265e-9 
+      2.2179        2.07061       1.9648           1.105         0.949582   
+      2.77457       2.52826       2.36721          1.51391       1.38162    
+      4.13788       3.9009        3.70426          2.65333       2.48359    
+      4.84588       4.56136       4.29938          2.81596       2.56492    
+      5.87904       5.69159       5.49619      …   3.89993       3.61905    
+      6.75881       6.55723       6.34731          5.40177       5.26053    
+      8.51202       8.03199       7.83528          6.36216       6.10583    
+      8.74756       8.32936       8.02991          6.42804       6.16702    
+      9.77692       9.76675       9.63278          8.91676       8.81211    
+     -2.48584e-10  -2.61442e-10  -2.8615e-10   …  -9.64613e-11  -7.2806e-10 
+     -1.30999e-10  -3.24647e-10  -3.6769e-10      -1.54375e-10  -8.53117e-10
+     -1.68134e-10   3.14662e-10   6.39206e-10      6.38157e-10   4.18343e-9 
+      ⋮                                        ⋱                            
+      0.172384      5.34512e-9    2.48272e-9       1.24417e-9    7.18092e-9 
+      8.77676e-9    2.44647e-9    2.84651e-9       2.01956e-9    1.09825e-8 
+      6.75785e-9    2.44624e-10   4.79165e-10  …   2.79034e-10   1.6273e-9  
+     -7.91733e-11   4.07951e-10   6.78723e-10      8.17503e-10   5.9523e-9  
+     -1.49319e-10  -1.68014e-10  -6.97805e-11      2.31588e-10   1.52119e-9 
+      4.53248e-10   5.12964e-10   1.57423e-9       3.93055e-9    3.06738e-8 
+     -1.56445e-10   1.21443e-9    1.45145e-9       1.89669e-9    1.22688e-8 
+      1.43742e-9    1.20569e-9    1.0833e-9    …   9.42889e-10   6.01223e-9 
+      1.90626e-10  -1.41852e-10   3.12113e-11      1.8946e-10    1.17163e-9 
+      0.0162573     9.37889e-10   8.29365e-10      7.05427e-10   4.91352e-9 
+     -1.94284e-10   1.46358e-10   4.19363e-10      6.81323e-10   4.51758e-9 
+      0.0522645     0.055839      0.0336149        3.45354e-9    1.57129e-8 
 
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/admm.ipynb) to access the .ipynb file of this page.*
+
+
+As expected, estimated coefficient values are quite close. 
