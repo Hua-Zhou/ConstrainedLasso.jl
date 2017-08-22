@@ -1,6 +1,6 @@
 module constrsparsereg_test
 
-using Base.Test, ConstrainedLasso, SCS
+using Base.Test, ConstrainedLasso, ECOS
 
 info("Test lsq_constrsparsereg: sum-to-zero constraint")
 
@@ -19,26 +19,21 @@ y = X * β + randn(n)
 Aeq = ones(1, p)
 beq = [0.0]
 penwt  = ones(p)
-solver = SCSSolver(verbose=0)
-# solver = ECOSSolver()
-# using Mosek; solver = MosekSolver(MSK_IPAR_BI_MAX_ITERATIONS=10e8);
-# using Gurobi; solver = GurobiSolver(OutputFlag=1)
+solver = ECOSSolver(maxit=10e8, verbose=0)
 
 info("Optimize at a single tuning parameter value")
 ρ = 10.0
 β̂, = lsq_constrsparsereg(X, y, ρ; Aeq = Aeq, beq = beq,
     penwt = penwt, solver = solver)
-@test sum(β̂)≈0.0 atol=1e-5
-
+@test sum(β̂)≈0.0 atol=1e-6
 
 info("Optimize at multiple tuning parameter values")
 ρlist = [0.0:10.0; Inf]
 β̂, = lsq_constrsparsereg(X, y, ρlist; Aeq = Aeq, beq = beq,
     penwt = penwt, solver = solver)
-#@show sum(β̂, 1)
 @testset "zero-sum for multiple param values" begin
 for si in sum(β̂, 1)
-    @test si≈0.0 atol=1e-3 # SCS does not pass the test using 1e-4 tolerance
+    @test si≈0.0 atol=1e-6
 end
 end
 
@@ -48,9 +43,8 @@ info("Optimize at multiple tuning parameter values (warm start)")
 #@show sum(β̂ws, 1)
 @testset "zero-sum for multiple param values" begin
 for si in sum(β̂ws, 1)
-    @test si≈0.0 atol=1e-3 # SCS does not pass the test using 1e-4 tolerance
+    @test si≈0.0 atol=1e-6
 end
 end
 
-
-end # end of module 
+end # end of module

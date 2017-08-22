@@ -7,7 +7,7 @@
       bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
       ρridge :: Number = zero(eltype(X)),
       penidx ::Array{Bool} = fill(true, size(X, 2)),
-      solver = SCSSolver(verbose=0, max_iters=10e8)
+      solver = ECOSSolver(maxit=10e8, verbose=0)
       )
 
 Calculate the solution path of the constrained lasso problem that minimizes
@@ -16,35 +16,35 @@ subject to linear constraints.
 ```
 
 ### Arguments
-- `X`       : predictor matrix
-- `y`       : response vector
+- `X`       : predictor matrix.
+- `y`       : response vector.
 
 ### Optional arguments
-- `Aeq`     : equality constraint matrix
-- `beq`     : equality constraint vector
-- `Aineq`   : inequality constraint matrix
-- `bineq`   : inequality constraint vector
+- `Aeq`     : equality constraint matrix.
+- `beq`     : equality constraint vector.
+- `Aineq`   : inequality constraint matrix.
+- `bineq`   : inequality constraint vector.
 - `ρridge`  : tuning parameter for ridge penalty. Default is 0.
-- `penidx`  : a logical vector indicating penalized coefficients
-- `solver`  : a solver Convex.jl supports. Default is SCS.
-              Note that Mosek and Gurobi are more robust than SCS. Unlike SCS or
-              ECOS, both Mosek and Gurobi require a license (free for academic
+- `penidx`  : a logical vector indicating penalized coefficients.
+- `solver`  : a solver Convex.jl supports. Default is ECOS.
+              Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or
+              SCS, both Mosek and Gurobi require a license (free for academic
               use). <http://convexjl.readthedocs.io/en/latest/solvers.html>
 ### Examples
    See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
 """
 
 function lsq_classopath(
-    X::AbstractMatrix,
-    y::AbstractVector;
-    Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
-    beq::AbstractVector   = zeros(eltype(X), size(Aeq, 1)),
-    Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-    ρridge::Number        = zero(eltype(X)),
+    X::AbstractMatrix{T},
+    y::AbstractVector{T};
+    Aeq::AbstractMatrix   = zeros(T, 0, size(X, 2)),
+    beq::AbstractVector   = zeros(T, size(Aeq, 1)),
+    Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
+    bineq::AbstractVector = zeros(T, size(Aineq, 1)),
+    ρridge::Number        = zero(T),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = SCSSolver(verbose=0, max_iters=10e8)
-    )
+    solver = ECOSSolver(maxit=10e8, verbose=0)
+    ) where T
 
     T = promote_type(eltype(X), eltype(y))
     n, p = size(X)
