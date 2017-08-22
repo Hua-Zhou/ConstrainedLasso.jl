@@ -437,7 +437,7 @@
       <span class="nt">Aeq</span>       <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
       <span class="nt">beq</span>       <span class="o">::</span> <span class="nt">Union</span><span class="p">{</span><span class="err">AbstractVector,</span> <span class="err">T</span><span class="p">}</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aeq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
       <span class="nt">Aineq</span>     <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
-      <span class="nt">bineq</span>     <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aineq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
+      <span class="nt">bineq</span>     <span class="o">::</span> <span class="nt">Union</span><span class="p">{</span><span class="err">AbstractVector,</span> <span class="err">T</span><span class="p">}</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aineq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
       <span class="nt">obswt</span>     <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">ones</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">length</span><span class="o">(</span><span class="nt">y</span><span class="o">)),</span>
       <span class="nt">penwt</span>     <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">ones</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
       <span class="nt">warmstart</span> <span class="o">::</span> <span class="nt">Bool</span> <span class="o">=</span> <span class="nt">false</span><span class="o">,</span>
@@ -458,13 +458,14 @@
 </ul>
 <p><strong>Optional arguments</strong></p>
 <ul>
-<li><code>Aeq</code>     : equality constraint matrix.</li>
-<li><code>beq</code>     : equality constraint vector.</li>
-<li><code>Aineq</code>   : inequality constraint matrix.</li>
-<li><code>bineq</code>   : inequality constraint vector.</li>
-<li><code>obswt</code>   : observation weights. Default is <code>[1 1 1 ... 1]</code>.</li>
-<li><code>penwt</code>   : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
-<li><code>solver</code>  : a solver Convex.jl supports. Default is ECOS.             Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or             SCS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+<li><code>Aeq</code>       : equality constraint matrix.</li>
+<li><code>beq</code>       : equality constraint vector.</li>
+<li><code>Aineq</code>     : inequality constraint matrix.</li>
+<li><code>bineq</code>     : inequality constraint vector.</li>
+<li><code>obswt</code>     : observation weights. Default is <code>[1 1 1 ... 1]</code>.</li>
+<li><code>penwt</code>     : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
+<li><code>warmstart</code> :</li>
+<li><code>solver</code>    : a solver Convex.jl supports. Default is ECOS.             Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or             SCS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
@@ -472,7 +473,7 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/dcbcb24c37ee3dcfc00fef45e0080a208ae206df/src/constrsparsereg.jl#L1-L40' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/4bab0522099ce2369233fa36f742815cf060e7ab/src/constrsparsereg.jl#L1-L41' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_constrsparsereg_admm' href='#ConstrainedLasso.lsq_constrsparsereg_admm'>#</a>
 <strong><code>ConstrainedLasso.lsq_constrsparsereg_admm</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
@@ -515,7 +516,7 @@
 <ul>
 <li><code>β</code>       : estimated coefficents.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/dcbcb24c37ee3dcfc00fef45e0080a208ae206df/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/4bab0522099ce2369233fa36f742815cf060e7ab/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
     X             :: AbstractMatrix{T},
     y             :: AbstractVector{T},
@@ -554,14 +555,14 @@
 <ul>
 <li><code>βpath</code>       : estimated coefficents along the grid of <code>ρ</code> values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/dcbcb24c37ee3dcfc00fef45e0080a208ae206df/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/4bab0522099ce2369233fa36f742815cf060e7ab/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
 <strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  <span class="nt">lsq_classopath</span><span class="o">(</span><span class="nt">X</span><span class="p">::</span><span class="nd">AbstractMatrix</span><span class="p">{</span><span class="err">T</span><span class="p">}</span><span class="o">,</span> <span class="nt">y</span><span class="p">::</span><span class="nd">AbstractVector</span><span class="p">{</span><span class="err">T</span><span class="p">}</span><span class="o">;</span>
     <span class="nt">Aeq</span>    <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
-    <span class="nt">beq</span>    <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aeq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
+    <span class="nt">beq</span>    <span class="o">::</span> <span class="nt">Union</span><span class="p">{</span><span class="err">AbstractVector,</span> <span class="err">T</span><span class="p">}</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aeq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
     <span class="nt">Aineq</span>  <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
-    <span class="nt">bineq</span>  <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aineq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
+    <span class="nt">bineq</span>  <span class="o">::</span> <span class="nt">Union</span><span class="p">{</span><span class="err">AbstractVector,</span> <span class="err">T</span><span class="p">}</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aineq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
     <span class="err">ρ</span><span class="nt">ridge</span> <span class="o">::</span> <span class="nt">Number</span> <span class="o">=</span> <span class="nt">zero</span><span class="o">(</span><span class="nt">T</span><span class="o">),</span>
     <span class="nt">penidx</span> <span class="o">::</span> <span class="nt">Array</span><span class="p">{</span><span class="err">Bool</span><span class="p">}</span> <span class="o">=</span> <span class="nt">fill</span><span class="o">(</span><span class="nt">true</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
     <span class="nt">solver</span> <span class="o">=</span> <span class="nt">ECOSSolver</span><span class="o">(</span><span class="nt">maxit</span><span class="o">=</span><span class="nt">10e8</span><span class="o">,</span> <span class="nt">verbose</span><span class="o">=</span><span class="nt">0</span><span class="o">)</span>
@@ -586,26 +587,27 @@
 <li><code>bineq</code>   : inequality constraint vector.</li>
 <li><code>ρridge</code>  : tuning parameter for ridge penalty. Default is 0.</li>
 <li><code>penidx</code>  : a logical vector indicating penalized coefficients.</li>
-<li><code>solver</code>  : a solver Convex.jl supports. Default is ECOS.             Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or             SCS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
+<li><code>solver</code>  : a solver Convex.jl supports. Default is ECOS.             Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or             SCS, both Mosek and Gurobi require a license (free for academic             use). For details, see <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a>.</li>
 </ul>
 <p><strong>Examples</strong></p>
-<p>See tutorial examples at <a href="https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/">https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/</a></p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/dcbcb24c37ee3dcfc00fef45e0080a208ae206df/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
+<p>See tutorial examples at <a href="https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/">https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/</a>.</p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/4bab0522099ce2369233fa36f742815cf060e7ab/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
 <p>Private function in <code>ConstrainedLasso</code>:</p>
 <p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
 <strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  find_ρmax(X, y;
-      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
-      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-      penidx :: Array{Bool} = fill(true, size(X, 2)),
-      solver = ECOSSolver(maxit=10e8, verbose=0)
+    Aeq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+    beq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aeq, 1)),
+    Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+    bineq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aineq, 1)),
+    penidx::Array{Bool} = fill(true, size(X, 2)),
+    solver = ECOSSolver(maxit=10e8, verbose=0)
+    )
 </pre></div>
 
 
 <p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/dcbcb24c37ee3dcfc00fef45e0080a208ae206df/src/classopath.jl#L651-L662' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/4bab0522099ce2369233fa36f742815cf060e7ab/src/classopath.jl#L651-L663' class='documenter-source'>source</a><br></p>
                 
                   
                 

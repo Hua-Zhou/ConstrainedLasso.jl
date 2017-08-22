@@ -400,7 +400,7 @@
                 <p><a id='Brain-Tumor-Data-1'></a></p>
 <h1 id="brain-tumor-data">Brain Tumor Data</h1>
 <p>Here we estimate a generalized lasso model (sparse fused lasso) via the constrained lasso. </p>
-<p>In this example, we use a version of the comparative genomic hybridization (CGH) data from <a href="../../references/#2">Bredel et al. (2005)</a> that was modified and studied by <a href="../../references/#6">Tibshirani and Wang (2008)</a></p>
+<p>In this example, we use a version of the comparative genomic hybridization (CGH) data from <a href="../../references/#2">Bredel et al. (2005)</a> that was modified and studied by <a href="../../references/#6">Tibshirani and Wang (2008)</a>.</p>
 <p>The dataset here contains CGH measurements from 2 glioblastoma multiforme (GBM) brain tumors. <a href="../../references/#6">Tibshirani and Wang (2008)</a> proposed using the sparse fused lasso to approximate the CGH signal by a sparse, piecewise constant function in order to determine the areas with non-zero values, as positive (negative) CGH values correspond to possible gains (losses). The sparse fused lasso (<a href="../../references/#5">Tibshirani et al., 2005</a>) is given by</p>
 <p>
 <script type="math/tex; mode=display">
@@ -435,7 +435,7 @@
 \end{pmatrix} \in \mathbb{R}^{(2P-1)\times p}.
 </script>
 </p>
-<p>As discussed in <a href="../../references/">Gaines, B.R. and Zhou, H., (2016)</a>, the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [<a href="../../references/">3</a>]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using $genlasso.jl$ in <strong>ConstrainedLasso</strong> package. </p>
+<p>As discussed in <a href="../../references/">Gaines, B.R. and Zhou, H., (2016)</a>, the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [<a href="../../references/">3</a>]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using <code>genlasso.jl</code> in <strong>ConstrainedLasso</strong> package. </p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span>
 </pre></div>
 
