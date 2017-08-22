@@ -1,14 +1,14 @@
 # References
 
-- <a name="1">[1] Altenbuchinger, M., Rehberg, T., Zacharias, H.U., Stämmler, F., Dettmer, K., Weber, D., Hiergeist, A., Gessner, A., Holler, E., Oefner, P.J. and Spang, R. (2016). Reference point insensitive molecular data analysis. *Bioinformatics*, 33(2):219-226.</a>
+- [1] Altenbuchinger, M., Rehberg, T., Zacharias, H.U., Stämmler, F., Dettmer, K., Weber, D., Hiergeist, A., Gessner, A., Holler, E., Oefner, P.J. and Spang, R. (2016). Reference point insensitive molecular data analysis. *Bioinformatics*, 33(2):219-226.
 
-- <a name="2">[2] Bredel, M., Bredel, C., Juric, D., Harsh, G. R., Vogel, H., Recht, L. D., and Sikic, B. I. (2005). High-resolution genome-wide mapping of genetic alterations in human glial brain tumors. *Cancer Research*, 65:4088–4096.</a>
+- [2] Bredel, M., Bredel, C., Juric, D., Harsh, G. R., Vogel, H., Recht, L. D., and Sikic, B. I. (2005). High-resolution genome-wide mapping of genetic alterations in human glial brain tumors. *Cancer Research*, 65:4088–4096.
 
 - [3] Gaines, B.R. and Zhou, H. (2016). Algorithms for fitting the constrained lasso. arXiv preprint arXiv:1611.01511.
 
 - [4] Stamey, T.A., Kabalin, J.N., McNeal, J.E., Johnstone, I.M., Freiha, F., Redwine, E.A. and Yang, N. (1989). Prostate specific antigen in the diagnosis and treatment of adenocarcinoma of the prostate: II. radical prostatectomy treated patients. *Journal of Urology* 141(5):1076–1083.
 
-- <a name="5">[5] Tibshirani, R., Saunders, M., Rosset, S., Zhu, J., and Knight, K. (2005), “Sparsity and Smoothness via the Fused Lasso,” Journal of the Royal Statistical Society: Series B (Statistical Methodology), 67, 91–108.</a>
+- [5] Tibshirani, R., Saunders, M., Rosset, S., Zhu, J., and Knight, K. (2005), “Sparsity and Smoothness via the Fused Lasso,” Journal of the Royal Statistical Society: Series B (Statistical Methodology), 67, 91–108.
 
 - [6] Tibshirani, R. and Wang, P. (2008). Spatial smoothing and hot spot detection for CGH data using the fused lasso. *Biostatistics*, 9:18–29.
 

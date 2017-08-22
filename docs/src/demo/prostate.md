@@ -1,3 +1,4 @@
+
 # Prostate Data  
 
 This demonstration solves a regular, unconstrained lasso problem using
@@ -18,10 +19,15 @@ Let's load and organize the `prostate` data. Since we are interested in the foll
 
 The response variable is `lpsa`, which is log(prostate specific antigen). 
 
+
 ```julia
 using ConstrainedLasso 
-prostate = readcsv("misc/prostate.csv", header=true)
-tmp = []
+```
+
+
+```julia
+prostate = readcsv(joinpath(Pkg.dir("ConstrainedLasso"), "docs/src/demo/misc/prostate.csv"), header=true)
+tmp = Int[]
 labels = ["lcavol" "lweight" "age" "lbph" "svi" "lcp" "gleason" "pgg45"]
 for i in labels
     push!(tmp, find(x -> x == i, prostate[2])[1])
@@ -100,9 +106,8 @@ y = Array{Float64}(prostate[1][:, end-1])
 
 
 
-
-
 First we standardize the data by subtracting its mean and dividing by its standard deviation. 
+
 
 ```julia
 n, p = size(Xz)
@@ -146,11 +151,15 @@ Xz
 
 
 
-
 Now we solve the problem using solution path algorithm. 
+
 
 ```julia
 βpath, ρpath, = lsq_classopath(Xz, y);
+```
+
+
+```julia
 βpath
 ```
 
@@ -158,30 +167,31 @@ Now we solve the problem using solution path algorithm.
 
 
     8×9 Array{Float64,2}:
-     0.0  0.421131  0.461588   0.557453  …   0.597269    0.602923    0.665147 
-     0.0  0.0       0.0        0.171805      0.232686    0.246293    0.26648  
-     0.0  0.0       0.0        0.0          -0.0598626  -0.0937415  -0.158195 
-     0.0  0.0       0.0        0.0           0.088065    0.108124    0.140311 
-     0.0  0.0       0.0404563  0.182941      0.2436      0.252692    0.315329 
-     0.0  0.0       0.0        0.0       …   0.0         0.0        -0.148286 
-     0.0  0.0       0.0        0.0           0.0         0.0123116   0.0355492
-     0.0  0.0       0.0        0.0           0.0645835   0.0700037   0.12572  
+     0.000197119  0.421559  0.461915   …   0.597645    0.603245    0.665561 
+     0.0          0.0       0.0            0.232715    0.246191    0.266408 
+     0.0          0.0       0.0           -0.0601318  -0.0936838  -0.158234 
+     0.0          0.0       0.0            0.0882392   0.108105    0.14034  
+     0.0          0.0       0.0403562      0.243534    0.252539    0.315269 
+     0.0          0.0       0.0        …   0.0         0.0        -0.148508 
+     0.0          0.0       0.0            0.0         0.0121929   0.0354652
+     0.0          0.0       0.0            0.0646193   0.0699873   0.125787 
 
 
 
 We plot the solution path below. 
+
 
 ```julia
 using Plots; pyplot(); 
 colors = [:green :orange :black :purple :red :grey :brown :blue] 
 plot(ρpath, βpath', xaxis = ("ρ", (minimum(ρpath),
       maximum(ρpath))), yaxis = ("β̂(ρ)"), label=labels, color=colors)
-title!("Prostrate Data: Solution Path via Constrained Lasso")
+title!("Prostate Data: Solution Path via Constrained Lasso")
 ```
-
 ![](misc/prostate.svg)
 
 Below, we solve the same problem using `GLMNet.jl` package. 
+
 
 ```julia
 using GLMNet;  
@@ -190,28 +200,11 @@ path.betas
 ```
 
 
-
-
-    8×70 GLMNet.CompressedPredictorMatrix:
-     0.0  0.075317  0.143943  0.206473  …   0.660413   0.660823   0.661201 
-     0.0  0.0       0.0       0.0           0.264962   0.265099   0.265223 
-     0.0  0.0       0.0       0.0          -0.153231  -0.153657  -0.154055 
-     0.0  0.0       0.0       0.0           0.137859   0.138074   0.138272 
-     0.0  0.0       0.0       0.0           0.310435   0.310849   0.311241 
-     0.0  0.0       0.0       0.0       …  -0.136715  -0.137682  -0.138598 
-     0.0  0.0       0.0       0.0           0.033943   0.034123   0.0342689
-     0.0  0.0       0.0       0.0           0.121233   0.121575   0.121916 
-
-
-
-
 ```julia
 plot(path.lambda, path.betas', color=colors, label=labels, 
 		xaxis=("λ"), yaxis= ("β̂(λ)"))
+title!("Prostate Data: Solution Path via GLMNet.jl")
 ```
-
 ![](misc/prostate2.svg)
 
-
-
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/prostate.ipynb) to access the .ipynb file of this page.*
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/prostate.ipynb) to access the .ipynb file of this page.*
