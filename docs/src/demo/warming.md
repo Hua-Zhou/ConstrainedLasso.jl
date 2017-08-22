@@ -1,17 +1,16 @@
 
 # Global Warming Data  
 
-Here we consider the annual data on temperature anomalies. As has been previously noted in the literature on isotonic regression, in general temperature appears to increase monotonically over the time period of 1850 to 2015 ([Wu et al., 2001](../references.md#8); [Tibshirani et al., 2011](../references.md#5)). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:
+Here we consider the annual data on temperature anomalies. In general, temperature appears to increase monotonically over the time period of 1850 to 2015 ([Wu et al., 2001](../references.md#8); [Tibshirani et al., 2011](../references.md#5)). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:
 
-```math
-\begin{split}
+$$\begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
 & \text{ subject to} \hspace{1em} \boldsymbol{C\beta} \leq \boldsymbol{d} 
-\end{split}
-```
+\end{split}$$
+
 where 
 
-```math
+$$
 \boldsymbol{C} = \begin{pmatrix} 
 1 & -1 &     &    	  &       & 	& \\
   & 1  & -1  &    	  &  		&	& \\
@@ -19,54 +18,55 @@ where
   &		&		& \ddots & \ddots &  & \\
   &		&		&		 &			& 1 & -1 \\
 \end{pmatrix}
-```
-and ``\boldsymbol{d} = \boldsymbol{0}.``
+$$
+
+and $\boldsymbol{d} = \boldsymbol{0}.$
 
 
 ```julia
 using ConstrainedLasso 
-using ECOS
 ```
 
 First we load and organize the data. 
 
 
 ```julia
-warming = readcsv("misc/warming.csv", header=true)[1]
+warming = readcsv(joinpath(Pkg.dir("ConstrainedLasso"),"docs/src/demo/misc/warming.csv"), header=true)[1]
 year = warming[:, 1]
 y    = warming[:, 2]
+hcat(year, y)
 ```
 
 
 
 
-    166-element Array{Float64,1}:
-     -0.375
-     -0.223
-     -0.224
-     -0.271
-     -0.246
-     -0.271
-     -0.352
-     -0.46 
-     -0.466
-     -0.286
-     -0.346
-     -0.409
-     -0.522
-      ⋮    
-      0.45 
-      0.544
-      0.505
-      0.493
-      0.395
-      0.506
-      0.559
-      0.422
-      0.47 
-      0.499
-      0.567
-      0.746
+    166×2 Array{Float64,2}:
+     1850.0  -0.375
+     1851.0  -0.223
+     1852.0  -0.224
+     1853.0  -0.271
+     1854.0  -0.246
+     1855.0  -0.271
+     1856.0  -0.352
+     1857.0  -0.46 
+     1858.0  -0.466
+     1859.0  -0.286
+     1860.0  -0.346
+     1861.0  -0.409
+     1862.0  -0.522
+        ⋮          
+     2004.0   0.45 
+     2005.0   0.544
+     2006.0   0.505
+     2007.0   0.493
+     2008.0   0.395
+     2009.0   0.506
+     2010.0   0.559
+     2011.0   0.422
+     2012.0   0.47 
+     2013.0   0.499
+     2014.0   0.567
+     2015.0   0.746
 
 
 
@@ -187,11 +187,11 @@ d = zeros(size(C, 1))
 
 
 
-Then we estimate constrained lasso solution path. Here we use `ECOS` solver rather than the default `SCS` solver. 
+Then we estimate constrained lasso solution path. 
 
 
 ```julia
-β̂path, ρpath, = lsq_classopath(X, y; Aineq = C, bineq = d, solver = ECOSSolver(verbose=0, maxit=1e8)); 
+β̂path, ρpath, = lsq_classopath(X, y; Aineq = C, bineq = d); 
 ```
 
 
@@ -232,12 +232,12 @@ Then we estimate constrained lasso solution path. Here we use `ECOS` solver rath
 
 
 
-In this formulation, isotonic regression is a special case of the constrained lasso with ``\rho=0.``
+In this formulation, isotonic regression is a special case of the constrained lasso with $\rho=0.$
 Below, `monoreg` is coefficient estimates obtained using isotonic regression. 
 
 
 ```julia
-monoreg = readdlm("misc/monoreg.txt")
+monoreg = readdlm(joinpath(Pkg.dir("ConstrainedLasso"),"docs/src/demo/misc/monoreg.txt"))
 ```
 
 
@@ -303,9 +303,12 @@ yaxis!("Temperature anomalies")
 title!("Global Warming Data")
 ```
 
+
+```julia
+savefig("misc/warming.svg")
+```
+
 ![](misc/warming.svg)
 
 
-
-
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb) to access the .ipynb file of this page.*
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb) to access the .ipynb file of this page.*
