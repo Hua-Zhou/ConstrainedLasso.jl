@@ -3,7 +3,7 @@
 
 Here we estimate a generalized lasso model (sparse fused lasso) via the constrained lasso. 
 
-In this example, we use a version of the comparative genomic hybridization (CGH) data from [Bredel et al. (2005)](../references.md#2) that was modified and studied by [Tibshirani and Wang (2008)](../references.md#6)
+In this example, we use a version of the comparative genomic hybridization (CGH) data from [Bredel et al. (2005)](../references.md#2) that was modified and studied by [Tibshirani and Wang (2008)](../references.md#6).
 
 The dataset here contains CGH measurements from 2 glioblastoma multiforme (GBM) brain tumors. [Tibshirani and Wang (2008)](../references.md#6) proposed using the sparse fused lasso to approximate the CGH signal by a sparse, piecewise constant function in order to determine the areas with non-zero values, as positive (negative) CGH values correspond to possible gains (losses). The sparse fused lasso ([Tibshirani et al., 2005](../references.md#5)) is given by
 
@@ -34,7 +34,7 @@ $$\boldsymbol{D} = \begin{pmatrix}
   &		&		&		 &			    &  & 1\\  
 \end{pmatrix} \in \mathbb{R}^{(2P-1)\times p}.$$
 
-As discussed in [Gaines, B.R. and Zhou, H., (2016)](../references.md), the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [[3](../references.md)]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using ``genlasso.jl`` in **ConstrainedLasso** package. 
+As discussed in [Gaines, B.R. and Zhou, H., (2016)](../references.md), the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [[3](../references.md)]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using `genlasso.jl` in **ConstrainedLasso** package. 
 
 
 
