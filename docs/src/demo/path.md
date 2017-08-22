@@ -1,26 +1,23 @@
+
 # Path algorithm  
 
+The solution path algorithm is useful when the user does not have a pre-specified grid of tuning parameter values and the cofficient estimates at more than a handful of values of the tuning parameter are desired.  
 
 ## Sum-to-zero constraint 
 
 In this example, we will solve a problem defined by 
 
-```math 
-\begin{split}
+$$\begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1  \\
 & \text{subject to} \hspace{1em} \sum_j \beta_j = 0
-\end{split}
-```
-Note that we can re-write the constraint as 
-$\boldsymbol{A\beta} = \boldsymbol{b}$
+\end{split}$$
 
-where 
+Note that we can re-write the constraint as $\boldsymbol{A\beta} = \boldsymbol{b}$ where 
 
-```math
-\boldsymbol{A} = \begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \text{ and } \boldsymbol{b} = 0.
-```
+$$\boldsymbol{A} = \begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \text{ and } \boldsymbol{b} = 0.$$
 
 First let's generate the predictor matrix `X` and response vector `y`. To do so, we need a true parameter vector `β` whose sum equals to 0. Note `n` is the number of observations `n` and `p` is the number of predictors. 
+
 
 ```julia
 n, p = 50, 100  
@@ -103,10 +100,12 @@ y = X * β + randn(n)
       14.2473  
 
 
+
 Since the problem has equality constraints only, we define the constraints as below. 
 
+
 ```julia
-beq = [0]
+beq = 0.0
 Aeq = ones(1, p)
 ```
 
@@ -124,7 +123,8 @@ using ConstrainedLasso
 β̂path1, ρpath1, objpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq);
 ```
 
-Now we are ready to obtain the solution path using the path algorithm. By default, we use the solver SCS. 
+Now we are ready to obtain the solution path using the path algorithm. 
+
 
 ```julia
 β̂path1
@@ -134,38 +134,40 @@ Now we are ready to obtain the solution path using the path algorithm. By defaul
 
 
     100×64 Array{Float64,2}:
-     0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.206561   0.212696   0.22402 
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0          -0.378352  -0.411385  -0.41288 
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.325283   0.3467     0.357212
-     0.0  0.0   0.0         0.0          -0.19861   -0.181371  -0.181397
-     0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     ⋮                                ⋱                                 
-     0.0  0.0   0.0         0.0          -0.46258   -0.452943  -0.458164
-     0.0  0.0   0.0         0.0          -0.401578  -0.359423  -0.358849
-     0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0  -0.0558231  -0.101399     -0.850614  -0.874227  -0.881474
-     0.0  0.0   0.0         0.0          -1.07203   -1.05001   -1.06761 
-     0.0  0.0   0.0         0.0          -0.674324  -0.621432  -0.622139
-     0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0          -1.25239   -1.20357   -1.2081  
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
-     0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.2093     0.215544   0.222576
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0           -0.375203  -0.411589  -0.41253 
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.326206   0.349339   0.355867
+     0.0  0.0   0.0         0.0           -0.199751  -0.18084   -0.180896
+     0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     ⋮                                 ⋱                                 
+     0.0  0.0   0.0         0.0           -0.466409  -0.455344  -0.458507
+     0.0  0.0   0.0         0.0           -0.40513   -0.358767  -0.358448
+     0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0  -0.0558231  -0.0953907     -0.852347  -0.877741  -0.88212 
+     0.0  0.0   0.0         0.0           -1.08109   -1.05576   -1.06659 
+     0.0  0.0   0.0         0.0           -0.679306  -0.621053  -0.621533
+     0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0           -1.25803   -1.20411   -1.20696 
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
+     0.0  0.0   0.0         0.0            0.0        0.0        0.0     
 
 
-Let's see if sums of coefficients at all ``\rho`` values are approximately 0. 
+
+Let's see if sums of coefficients at all $\rho$ values are approximately 0. 
+
 
 ```julia
-all(abs.(sum(β̂path1, 1)) .< 1e-6)
+all(abs.(sum(β̂path1, 1)) .< 1e-8)
 ```
 
 
@@ -177,38 +179,42 @@ all(abs.(sum(β̂path1, 1)) .< 1e-6)
 
 We plot the solution path below. 
 
+
 ```julia
 using Plots; pyplot();
 plot(ρpath1, β̂path1', label="", xaxis = ("ρ", (minimum(ρpath1),
       maximum(ρpath1))), yaxis = ("β̂(ρ)"), width=0.5) 
 title!("Simulation 1: Solution Path via Constrained Lasso") 
 ```
-
 ![](misc/sumtozero.svg)
+
+```julia
+savefig("misc/sumtozero.svg")
+```
+
+Note the figure above is markedly more smooth than in the [figure](fixedparam.md#figparam) obtained from passing in a sequence of tuning parameter values. This is because the solution path algorithm captures all events. 
 
 ## Non-negativity constraint 
 
 In this example, the problem is defined by 
 
-```math 
-\begin{split}
+ 
+$$\begin{split}
 & \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\boldsymbol{\beta}||_1  \\
 & \text{subject to} \hspace{1em} \beta_j \geq 0 \forall j
-\end{split}
-```
+\end{split}$$
 
 We can re-write the inequality constraint as
 $\boldsymbol{C\beta} \leq \boldsymbol{d}$ where 
 
-```math
-\boldsymbol{C} = \begin{pmatrix} 
+
+$$\boldsymbol{C} = \begin{pmatrix} 
 -1 & & & \\
 	& -1 & & \\
 	&   & \ddots & \\
 	& 	& 	& -1
 \end{pmatrix}
-\text{ and } \boldsymbol{d} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}
-```
+\text{ and } \boldsymbol{d} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}$$
 
 First we define a true parameter vector `β` that is sparse with a few non-zero coefficients. Let `n` and `p` be the number of observations and predictors, respectively. 
 
@@ -291,7 +297,9 @@ y = X * β + randn(n)
       42.6068  
 
 
+
 Now set up the inequality constraint for the problem.
+
 
 ```julia
 bineq = zeros(p)
@@ -330,11 +338,12 @@ Aineq = - eye(p)
      -0.0  -0.0  -0.0  -0.0  -0.0  -0.0     -0.0  -0.0  -0.0  -0.0  -0.0  -1.0
 
 
-Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver `ECOS` for `Convex.jl`. 
+
+Now we are ready to obtain the solution path using the path algorithm.
+
 
 ```julia
-using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
-β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver = solver) 
+β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq) 
 ```
 
 
@@ -374,16 +383,17 @@ using ECOS; solver=ECOSSolver(verbose=0, maxit=1e8);
      0.0         0.0      0.0      0.0         0.0        0.0        0.0      
 
 
+
 We plot the solution path below. 
+
 
 ```julia
 plot(ρpath2, β̂path2', label="", xaxis = ("ρ", (minimum(ρpath2),
       maximum(ρpath2))), yaxis = ("β̂(ρ)"), width=0.5) 
 title!("Simulation 2: Solution Path via Constrained Lasso") 
+savefig("misc/nonneg.svg")
 ```
 
 ![](misc/nonneg.svg)
 
-
-
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/path.ipynb) to access the .ipynb file of this page.*
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/path.ipynb) to access the .ipynb file of this page.*
