@@ -4,7 +4,7 @@
       Aeq       :: AbstractMatrix = zeros(T, 0, size(X, 2)),
       beq       :: Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
       Aineq     :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-      bineq     :: AbstractVector = zeros(T, size(Aineq, 1)),
+      bineq     :: Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
       obswt     :: AbstractVector = ones(T, length(y)),
       penwt     :: AbstractVector = ones(T, size(X, 2)),
       warmstart :: Bool = false,
@@ -22,13 +22,14 @@ subject to linear constraints, using `Convex.jl`.
 - `ρ`       : tuning parameter. Can be a number or a list of numbers. Default 0.
 
 ### Optional arguments
-- `Aeq`     : equality constraint matrix.
-- `beq`     : equality constraint vector.
-- `Aineq`   : inequality constraint matrix.
-- `bineq`   : inequality constraint vector.
-- `obswt`   : observation weights. Default is `[1 1 1 ... 1]`.
-- `penwt`   : predictor penalty weights. Default is `[1 1 1 ... 1]`.
-- `solver`  : a solver Convex.jl supports. Default is ECOS.
+- `Aeq`       : equality constraint matrix.
+- `beq`       : equality constraint vector.
+- `Aineq`     : inequality constraint matrix.
+- `bineq`     : inequality constraint vector.
+- `obswt`     : observation weights. Default is `[1 1 1 ... 1]`.
+- `penwt`     : predictor penalty weights. Default is `[1 1 1 ... 1]`.
+- `warmstart` :
+- `solver`    : a solver Convex.jl supports. Default is ECOS.
               Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or
               SCS, both Mosek and Gurobi require a license (free for academic
               use). <http://convexjl.readthedocs.io/en/latest/solvers.html>
@@ -46,7 +47,7 @@ function lsq_constrsparsereg(
     Aeq::AbstractMatrix = zeros(T, 0, size(X, 2)),
     beq::Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq::AbstractVector = zeros(T, size(Aineq, 1)),
+    bineq::Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
     obswt::AbstractVector = ones(T, length(y)),
     penwt::AbstractVector = ones(T, size(X, 2)),
     warmstart::Bool = false,

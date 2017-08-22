@@ -2,9 +2,9 @@
 ```
   lsq_classopath(X::AbstractMatrix{T}, y::AbstractVector{T};
     Aeq    :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-    beq    :: AbstractVector = zeros(T, size(Aeq, 1)),
+    beq    :: Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
     Aineq  :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq  :: AbstractVector = zeros(T, size(Aineq, 1)),
+    bineq  :: Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
     ρridge :: Number = zero(T),
     penidx :: Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
@@ -40,7 +40,7 @@ function lsq_classopath(
     Aeq::AbstractMatrix   = zeros(T, 0, size(X, 2)),
     beq::Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq::AbstractVector = zeros(T, size(Aineq, 1)),
+    bineq::Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
     ρridge::Number        = zero(T),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
@@ -651,25 +651,26 @@ end # end of the function
 """
 ```
   find_ρmax(X, y;
-      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
-      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-      penidx :: Array{Bool} = fill(true, size(X, 2)),
-      solver = ECOSSolver(maxit=10e8, verbose=0)
+    Aeq    :: AbstractMatrix = zeros(N, 0, size(X, 2)),
+    beq    :: Union{AbstractVector, N} = zeros(N, size(Aeq, 1)),
+    Aineq  :: AbstractMatrix = zeros(N, 0, size(X, 2)),
+    bineq  :: Union{AbstractVector, N} = zeros(N, size(Aineq, 1)),
+    penidx :: Array{Bool} = fill(true, size(X, 2)),
+    solver = ECOSSolver(maxit=10e8, verbose=0)
+    )
 ```
 Find the maximum tuning parameter value `ρmax` to kick-start the solution path.
 """
 function find_ρmax(
-    X::AbstractMatrix,
-    y::AbstractVector;
-    Aeq::AbstractMatrix   = zeros(eltype(X), 0, size(X, 2)),
-    beq::AbstractVector   = zeros(eltype(X), size(Aeq, 1)),
-    Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-    penidx::Array{Bool}   = fill(true, size(X, 2)),
+    X::AbstractMatrix{N},
+    y::AbstractVector{N};
+    Aeq::AbstractMatrix = zeros(N, 0, size(X, 2)),
+    beq::Union{AbstractVector, N} = zeros(N, size(Aeq, 1)),
+    Aineq::AbstractMatrix = zeros(N, 0, size(X, 2)),
+    bineq::Union{AbstractVector, N} = zeros(N, size(Aineq, 1)),
+    penidx::Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
-    )
+    ) wehre N
 
     p = size(X, 2)
 
@@ -691,8 +692,8 @@ function find_ρmax(
     β = x.value
     redirect_stdout(TT) # restore STDOUT
 
-    λeq = zeros(eltype(X), 0, 1)
-    μineq = zeros(eltype(X), 0, 1)
+    λeq = zeros(N, 0, 1)
+    μineq = zeros(N, 0, 1)
 
     for i in 1:min(2, length(problem.constraints))
       if eval((problem.constraints[i]).head) == ==
