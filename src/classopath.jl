@@ -670,7 +670,7 @@ function find_ρmax(
     bineq::Union{AbstractVector, N} = zeros(N, size(Aineq, 1)),
     penidx::Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
-    ) wehre N
+    ) where N
 
     p = size(X, 2)
 
