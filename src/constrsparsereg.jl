@@ -10,10 +10,11 @@
       warmstart :: Bool = false,
       solver = ECOSSolver(maxit=10e8, verbose=0)
     )
-```
+
 Fit constrained lasso at fixed tuning parameter value(s) by minimizing
     `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
 subject to linear constraints, using `Convex.jl`.
+```
 
 ### Arguments
 - `X`       : predictor matrix.

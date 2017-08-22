@@ -31,7 +31,7 @@ subject to linear constraints.
               SCS, both Mosek and Gurobi require a license (free for academic
               use). <http://convexjl.readthedocs.io/en/latest/solvers.html>
 ### Examples
-   See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso
+See tutorial examples at <https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/>
 """
 
 function lsq_classopath(
@@ -103,10 +103,7 @@ function lsq_classopath(
     # calculate at ρmax
     βpath[:, 1], objvalpath[1], problem = lsq_constrsparsereg(X, y, ρpath[1];
               Aeq = Aeq, beq = beq, Aineq = Aineq, bineq = bineq,
-              penwt = penidx, solver = solver); # jk
-
-    # λpatheq[:, 1] = problem.constraints[1].dual
-    # μpathineq[:, 1] = problem.constraints[2].dual
+              penwt = penidx, solver = solver);
 
     for i in 1:min(2, length(problem.constraints))
       if eval((problem.constraints[i]).head) == ==
@@ -115,7 +112,6 @@ function lsq_classopath(
         μpathineq[:, 1] = problem.constraints[i].dual
       end
     end
-
 
     μpathineq[μpathineq .< 0] = 0
     setActive = (abs.(βpath[:, 1]) .> 1e-4) .| (.~penidx)
@@ -660,7 +656,7 @@ end # end of the function
       Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
       bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
       penidx :: Array{Bool} = fill(true, size(X, 2)),
-      solver = SCSSolver(verbose=0, max_iters=10e8)
+      solver = ECOSSolver(maxit=10e8, verbose=0)
 ```
 Find the maximum tuning parameter value `ρmax` to kick-start the solution path.
 """
@@ -672,7 +668,7 @@ function find_ρmax(
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
     bineq::AbstractVector = zeros(eltype(X), size(Aineq, 1)),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
-    solver = SCSSolver(verbose=0, max_iters=10e8)
+    solver = ECOSSolver(maxit=10e8, verbose=0)
     )
 
     p = size(X, 2)
