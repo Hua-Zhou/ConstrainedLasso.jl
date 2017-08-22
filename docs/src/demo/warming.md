@@ -4,21 +4,19 @@
 Here we consider the annual data on temperature anomalies. In general, temperature appears to increase monotonically over the time period of 1850 to 2015 ([Wu et al., 2001](../references.md#8); [Tibshirani et al., 2011](../references.md#5)). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:
 
 $$\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{minimize} \hspace{1em} \frac{1}{2} ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
 & \text{ subject to} \hspace{1em} \boldsymbol{C\beta} \leq \boldsymbol{d} 
 \end{split}$$
 
 where 
 
-$$
-\boldsymbol{C} = \begin{pmatrix} 
+$$\boldsymbol{C} = \begin{pmatrix} 
 1 & -1 &     &    	  &       & 	& \\
   & 1  & -1  &    	  &  		&	& \\
   &    &  1  & -1 	  & 		& 	& \\
   &		&		& \ddots & \ddots &  & \\
   &		&		&		 &			& 1 & -1 \\
-\end{pmatrix}
-$$
+\end{pmatrix}$$
 
 and $\boldsymbol{d} = \boldsymbol{0}.$
 
@@ -26,6 +24,7 @@ and $\boldsymbol{d} = \boldsymbol{0}.$
 ```julia
 using ConstrainedLasso 
 ```
+
 
 First we load and organize the data. 
 
@@ -194,7 +193,6 @@ Then we estimate constrained lasso solution path.
 β̂path, ρpath, = lsq_classopath(X, y; Aineq = C, bineq = d); 
 ```
 
-
 ```julia
 β̂path
 ```
@@ -304,11 +302,6 @@ title!("Global Warming Data")
 ```
 
 
-```julia
-savefig("misc/warming.svg")
-```
-
 ![](misc/warming.svg)
-
 
 *Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb) to access the .ipynb file of this page.*
