@@ -1,18 +1,21 @@
 """
 ```
-  lsq_constrsparsereg_admm(X, y, ρ::Number = zero(eltype(X));
-    proj         = x -> x,
-    obswt        :: AbstractVector = ones(eltype(y), length(y)),
-    penwt        :: AbstractVector = ones(eltype(X), size(X, 2)),
-    β0           :: AbstractVector = zeros(eltype(X), size(X, 2)),
-    admmmaxite   :: Number = 10000,
-    admmabstol   :: Number = 1e-4,
-    admmreltol   :: Number = 1e-4,
-    admmscale    :: Number = 1 / length(y),
-    admmvaryscale:: Bool = false
+  lsq_constrsparsereg_admm(
+    X             :: AbstractMatrix{T},
+    y             :: AbstractVector{T},
+    ρ             :: Number = zero(T);
+    proj          :: Function = x -> x,
+    obswt         :: Vector{T} = ones(T, length(y)),
+    penwt         :: Vector{T} = ones(T, size(X, 2)),
+    β0            :: Vector{T} = zeros(T, size(X, 2)),
+    admmmaxite    :: Int = 10000,
+    admmabstol    :: Float64 = 1e-4,
+    admmreltol    :: Float64 = 1e-4,
+    admmscale     :: Float64 = 1 / length(y),
+    admmvaryscale :: Bool = false
     )
 ```
-Fit constrained lasso at fixed tuning parameter value by applying the
+Fit constrained lasso at a fixed tuning parameter value by applying the
 alternating direction method of multipliers (ADMM) algorithm.
 
 ### Arguments
@@ -21,8 +24,8 @@ alternating direction method of multipliers (ADMM) algorithm.
 - `ρ`       : tuning parameter. Default 0.
 
 ### Optional arguments
-- `proj`         : projection onto the constraint set. Default is identity.
-- `obswt`        : observation weights.
+- `proj`         : projection onto the constraint set. Default is identity (no constraint).
+- `obswt`        : observation weights. Default is `[1 1 1 ... 1]`.
 - `penwt`        : predictor penalty weights. Default is `[1 1 1 ... 1]`.
 - `β0`           : starting point.
 - `admmmaxite`   : maximum number of iterations for ADMM. Default is `10000`.
@@ -37,18 +40,18 @@ alternating direction method of multipliers (ADMM) algorithm.
 
 function lsq_constrsparsereg_admm(
     X::AbstractMatrix{T},
-    y::AbstractVector{N},
-    ρ::Number        = zero(eltype(X));
+    y::AbstractVector{T},
+    ρ::Number        = zero(T);
     proj::Function   = x -> x,
-    obswt::Vector{N} = ones(eltype(y), length(y)),
-    penwt::Vector{T} = ones(eltype(X), size(X, 2)),
-    β0::Vector{T}    = zeros(eltype(X), size(X, 2)),
+    obswt::Vector{T} = ones(T, length(y)),
+    penwt::Vector{T} = ones(T, size(X, 2)),
+    β0::Vector{T}    = zeros(T, size(X, 2)),
     admmmaxite::Int       = 10000,
     admmabstol::Float64   = 1e-4,
     admmreltol::Float64   = 1e-4,
     admmscale::Float64    = 1 / length(y),
     admmvaryscale::Bool   = false
-    ) where T where N
+    ) where T <: Union{Float64}
 
     n, p = size(X)
     β = copy(β0)
@@ -56,6 +59,7 @@ function lsq_constrsparsereg_admm(
     u = β - z
     v = similar(β)
     zold = similar(z)
+    primalres = similar(z)
 
     # allocate working arrays
     Xaug = vcat(X, eye(p))
@@ -77,16 +81,21 @@ function lsq_constrsparsereg_admm(
         path = glmnet(Xaug, yaug;
                 weights = obswtaug, lambda = λ, penalty_factor = penwt,
                 standardize = false, intercept = false)
-        β = path.betas[:]
+        copy!(β, path.betas)
         # update z - projection to constraint set
-        v = β .+ u
+        v .= β .+ u
         copy!(zold, z)
-        z = proj(v)
+        z = proj(v) ## could not do in-place; z = proj!(v) not working
         # update scaled dual variables u
         dualresnorm = norm((z - zold) / admmscale)
-        primalres = β .- z
+        # dualresnorm = 0.0
+        # for j in 1:p
+        #   dualresnorm += ((z[j] - zold[j]) / admmscale)^2
+        # end
+        # dualresnorm ^= 1/2
+        primalres .= β .- z
         primalresnorm = norm(primalres)
-        u += primalres
+        u .+= primalres
         # check convergence criterion
         if (primalresnorm <= √p * admmabstol
                 + admmreltol * max(vecnorm(β), vecnorm(z))) &&
@@ -109,3 +118,66 @@ function lsq_constrsparsereg_admm(
     return β
 
 end # end of function
+
+
+"""
+```
+  lsq_constrsparsereg_admm(
+    X             :: AbstractMatrix{T},
+    y             :: AbstractVector{T},
+    ρlist         :: Vector;
+    proj          :: Function = x -> x,
+    obswt         :: Vector{T} = ones(T, length(y)),
+    penwt         :: Vector{T} = ones(T, size(X, 2)),
+    admmmaxite    :: Int = 10000,
+    admmabstol    :: Float64 = 1e-4,
+    admmreltol    :: Float64 = 1e-4,
+    admmscale     :: Float64 = 1 / length(y),
+    admmvaryscale :: Bool = false
+    )
+```
+Fit constrained lasso at fixed tuning parameter values by applying the
+alternating direction method of multipliers (ADMM) algorithm.
+
+### Arguments
+- `X`       : predictor matrix.
+- `y`       : response vector.
+- `ρlist`   : a vector of tuning parameter values.
+
+### Optional arguments
+- `proj`         : projection onto the constraint set. Default is identity (no constraint).
+- `obswt`        : observation weights. Default is `[1 1 1 ... 1]`.
+- `penwt`        : predictor penalty weights. Default is `[1 1 1 ... 1]`.
+- `admmmaxite`   : maximum number of iterations for ADMM. Default is `10000`.
+- `admmabstol`   : absolute tolerance for ADMM.
+- `admmreltol`   : relative tolerance for ADMM.
+- `admmscale`    : ADMM scale parameter. Default is `1/n`.
+- `admmvaryscale`: dynamically chance the ADMM scale parameter. Default is false.
+
+### Returns
+- `βpath`       : estimated coefficents along the grid of `ρ` values.
+"""
+
+function lsq_constrsparsereg_admm(
+    X::AbstractMatrix{T},
+    y::AbstractVector{T},
+    ρlist::Vector;
+    proj::Function   = x -> x,
+    obswt::Vector = ones(T, length(y)),
+    penwt::Vector = ones(T, size(X, 2)),
+    admmmaxite::Int       = 10000,
+    admmabstol::Float64   = 1e-4,
+    admmreltol::Float64   = 1e-4,
+    admmscale::Float64    = 1 / length(y),
+    admmvaryscale::Bool   = false
+    ) where T
+
+    βpath = zeros(T, size(X, 2), length(ρ))
+    for i in eachindex(ρlist)
+      βpath[:, i] = lsq_constrsparsereg_admm(X, y, ρlist[i]; proj = proj,
+            obswt = obswt, penwt = penwt, admmmaxite = admmmaxite,
+            admmabstol = admmabstol, admmreltol = admmreltol,
+            admmscale = admmscale, admmvaryscale = admmvaryscale)
+    end
+    return βpath
+end
