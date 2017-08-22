@@ -443,10 +443,13 @@
       <span class="nt">warmstart</span> <span class="o">::</span> <span class="nt">Bool</span> <span class="o">=</span> <span class="nt">false</span><span class="o">,</span>
       <span class="nt">solver</span> <span class="o">=</span> <span class="nt">ECOSSolver</span><span class="o">(</span><span class="nt">maxit</span><span class="o">=</span><span class="nt">10e8</span><span class="o">,</span> <span class="nt">verbose</span><span class="o">=</span><span class="nt">0</span><span class="o">)</span>
     <span class="o">)</span>
+
+<span class="nt">Fit</span> <span class="nt">constrained</span> <span class="nt">lasso</span> <span class="nt">at</span> <span class="nt">fixed</span> <span class="nt">tuning</span> <span class="nt">parameter</span> <span class="nt">value</span><span class="o">(</span><span class="nt">s</span><span class="o">)</span> <span class="nt">by</span> <span class="nt">minimizing</span>
+    <span class="err">`</span><span class="nt">0</span><span class="p">.</span><span class="nc">5sumabs2</span><span class="o">(</span><span class="err">√</span><span class="nt">obswt</span> <span class="o">.*</span> <span class="o">(</span><span class="nt">y</span> <span class="nt">-</span> <span class="nt">X</span> <span class="o">*</span> <span class="err">β</span><span class="o">))</span> <span class="o">+</span> <span class="err">ρ</span> <span class="o">*</span> <span class="nt">sumabs</span><span class="o">(</span><span class="nt">penwt</span> <span class="o">.*</span> <span class="err">β</span><span class="o">)</span><span class="err">`</span>
+<span class="nt">subject</span> <span class="nt">to</span> <span class="nt">linear</span> <span class="nt">constraints</span><span class="o">,</span> <span class="nt">using</span> <span class="err">`</span><span class="nt">Convex</span><span class="p">.</span><span class="nc">jl</span><span class="err">`</span><span class="o">.</span>
 </pre></div>
 
 
-<p>Fit constrained lasso at fixed tuning parameter value(s) by minimizing     <code>0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)</code> subject to linear constraints, using <code>Convex.jl</code>.</p>
 <p><strong>Arguments</strong></p>
 <ul>
 <li><code>X</code>       : predictor matrix.</li>
@@ -469,7 +472,7 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8394152b2a47a6fc02833b3d6d2c090a7f6c47a8/src/constrsparsereg.jl#L1-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8cd4e1a547bbb11fce5d2ac92e27dd92c2f40f80/src/constrsparsereg.jl#L1-L40' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_constrsparsereg_admm' href='#ConstrainedLasso.lsq_constrsparsereg_admm'>#</a>
 <strong><code>ConstrainedLasso.lsq_constrsparsereg_admm</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
@@ -512,7 +515,7 @@
 <ul>
 <li><code>β</code>       : estimated coefficents.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8394152b2a47a6fc02833b3d6d2c090a7f6c47a8/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8cd4e1a547bbb11fce5d2ac92e27dd92c2f40f80/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
     X             :: AbstractMatrix{T},
     y             :: AbstractVector{T},
@@ -551,22 +554,22 @@
 <ul>
 <li><code>βpath</code>       : estimated coefficents along the grid of <code>ρ</code> values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8394152b2a47a6fc02833b3d6d2c090a7f6c47a8/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8cd4e1a547bbb11fce5d2ac92e27dd92c2f40f80/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
 <strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>  lsq_classopath(X, y;
-      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
-      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-      ρridge :: Number = zero(eltype(X)),
-      penidx ::Array{Bool} = fill(true, size(X, 2)),
-      solver = ECOSSolver(maxit=10e8, verbose=0)
-      )
+<div class="codehilite"><pre><span></span>  <span class="nt">lsq_classopath</span><span class="o">(</span><span class="nt">X</span><span class="p">::</span><span class="nd">AbstractMatrix</span><span class="p">{</span><span class="err">T</span><span class="p">}</span><span class="o">,</span> <span class="nt">y</span><span class="p">::</span><span class="nd">AbstractVector</span><span class="p">{</span><span class="err">T</span><span class="p">}</span><span class="o">;</span>
+    <span class="nt">Aeq</span>    <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
+    <span class="nt">beq</span>    <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aeq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
+    <span class="nt">Aineq</span>  <span class="o">::</span> <span class="nt">AbstractMatrix</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
+    <span class="nt">bineq</span>  <span class="o">::</span> <span class="nt">AbstractVector</span> <span class="o">=</span> <span class="nt">zeros</span><span class="o">(</span><span class="nt">T</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">Aineq</span><span class="o">,</span> <span class="nt">1</span><span class="o">)),</span>
+    <span class="err">ρ</span><span class="nt">ridge</span> <span class="o">::</span> <span class="nt">Number</span> <span class="o">=</span> <span class="nt">zero</span><span class="o">(</span><span class="nt">T</span><span class="o">),</span>
+    <span class="nt">penidx</span> <span class="o">::</span> <span class="nt">Array</span><span class="p">{</span><span class="err">Bool</span><span class="p">}</span> <span class="o">=</span> <span class="nt">fill</span><span class="o">(</span><span class="nt">true</span><span class="o">,</span> <span class="nt">size</span><span class="o">(</span><span class="nt">X</span><span class="o">,</span> <span class="nt">2</span><span class="o">)),</span>
+    <span class="nt">solver</span> <span class="o">=</span> <span class="nt">ECOSSolver</span><span class="o">(</span><span class="nt">maxit</span><span class="o">=</span><span class="nt">10e8</span><span class="o">,</span> <span class="nt">verbose</span><span class="o">=</span><span class="nt">0</span><span class="o">)</span>
+    <span class="o">)</span>
 
-Calculate the solution path of the constrained lasso problem that minimizes
-    `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
-subject to linear constraints.
+<span class="nt">Calculate</span> <span class="nt">the</span> <span class="nt">solution</span> <span class="nt">path</span> <span class="nt">of</span> <span class="nt">the</span> <span class="nt">constrained</span> <span class="nt">lasso</span> <span class="nt">problem</span> <span class="nt">that</span> <span class="nt">minimizes</span>
+    <span class="err">`</span><span class="nt">0</span><span class="p">.</span><span class="nc">5sumabs2</span><span class="o">(</span><span class="err">√</span><span class="nt">obswt</span> <span class="o">.*</span> <span class="o">(</span><span class="nt">y</span> <span class="nt">-</span> <span class="nt">X</span> <span class="o">*</span> <span class="err">β</span><span class="o">))</span> <span class="o">+</span> <span class="err">ρ</span> <span class="o">*</span> <span class="nt">sumabs</span><span class="o">(</span><span class="nt">penwt</span> <span class="o">.*</span> <span class="err">β</span><span class="o">)</span><span class="err">`</span>
+<span class="nt">subject</span> <span class="nt">to</span> <span class="nt">linear</span> <span class="nt">constraints</span><span class="o">.</span>
 </pre></div>
 
 
@@ -586,8 +589,8 @@ subject to linear constraints.
 <li><code>solver</code>  : a solver Convex.jl supports. Default is ECOS.             Note that Mosek and Gurobi are more robust than ECOS. Unlike ECOS or             SCS, both Mosek and Gurobi require a license (free for academic             use). <a href="http://convexjl.readthedocs.io/en/latest/solvers.html">http://convexjl.readthedocs.io/en/latest/solvers.html</a></li>
 </ul>
 <p><strong>Examples</strong></p>
-<p>See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8394152b2a47a6fc02833b3d6d2c090a7f6c47a8/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
+<p>See tutorial examples at <a href="https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/">https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/</a></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8cd4e1a547bbb11fce5d2ac92e27dd92c2f40f80/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
 <p>Private function in <code>ConstrainedLasso</code>:</p>
 <p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
 <strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
@@ -597,12 +600,12 @@ subject to linear constraints.
       Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
       bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
       penidx :: Array{Bool} = fill(true, size(X, 2)),
-      solver = SCSSolver(verbose=0, max_iters=10e8)
+      solver = ECOSSolver(maxit=10e8, verbose=0)
 </pre></div>
 
 
 <p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8394152b2a47a6fc02833b3d6d2c090a7f6c47a8/src/classopath.jl#L655-L666' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8cd4e1a547bbb11fce5d2ac92e27dd92c2f40f80/src/classopath.jl#L651-L662' class='documenter-source'>source</a><br></p>
                 
                   
                 

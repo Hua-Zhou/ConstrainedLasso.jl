@@ -399,7 +399,7 @@
                 
                 <p><a id='Global-Warming-Data-1'></a></p>
 <h1 id="global-warming-data">Global Warming Data</h1>
-<p>Here we consider the annual data on temperature anomalies. As has been previously noted in the literature on isotonic regression, in general temperature appears to increase monotonically over the time period of 1850 to 2015 (<a href="../../references/#8">Wu et al., 2001</a>; <a href="../../references/#5">Tibshirani et al., 2011</a>). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:</p>
+<p>Here we consider the annual data on temperature anomalies. In general, temperature appears to increase monotonically over the time period of 1850 to 2015 (<a href="../../references/#8">Wu et al., 2001</a>; <a href="../../references/#5">Tibshirani et al., 2011</a>). This monotonicity can be imposed on the coeffcient estimates using the constrained lasso with the inequality constraint matrix:</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
@@ -409,57 +409,53 @@
 </script>
 </p>
 <p>where </p>
-<p>
-<script type="math/tex; mode=display">
-\boldsymbol{C} = \begin{pmatrix} 
-1 & -1 &     &        &       &     & \\
-  & 1  & -1  &        &         &   & \\
-  &    &  1  & -1     &         &   & \\
-  &     &       & \ddots & \ddots &  & \\
-  &     &       &        &          & 1 & -1 \\
-\end{pmatrix}
-</script>
-</p>
+<p>:$</p>
+<p>\boldsymbol{C} = <script type="math/tex; mode=display">\begin{pmatrix}  1 & -1 &     &          &       &     & \
+  & 1  & -1  &        &         &   & \
+  &    &  1  & -1     &         &   & \
+  &     &       & \ddots & \ddots &  & \
+  &     &       &        &          & 1 & -1 \
+\end{pmatrix}</script> :$</p>
 <p>and $\boldsymbol{d} = \boldsymbol{0}.$</p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span> 
-<span class="k">using</span> <span class="n">ECOS</span>
 </pre></div>
 
 
 <p>First we load and organize the data. </p>
-<div class="codehilite"><pre><span></span><span class="n">warming</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;misc/warming.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><span class="n">warming</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span><span class="s">&quot;docs/src/demo/misc/warming.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">year</span> <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">y</span>    <span class="o">=</span> <span class="n">warming</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">hcat</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span>166-element Array{Float64,1}:
- -0.375
- -0.223
- -0.224
- -0.271
- -0.246
- -0.271
- -0.352
- -0.46 
- -0.466
- -0.286
- -0.346
- -0.409
- -0.522
-  ⋮    
-  0.45 
-  0.544
-  0.505
-  0.493
-  0.395
-  0.506
-  0.559
-  0.422
-  0.47 
-  0.499
-  0.567
-  0.746
+<div class="codehilite"><pre><span></span>166×2 Array{Float64,2}:
+ 1850.0  -0.375
+ 1851.0  -0.223
+ 1852.0  -0.224
+ 1853.0  -0.271
+ 1854.0  -0.246
+ 1855.0  -0.271
+ 1856.0  -0.352
+ 1857.0  -0.46 
+ 1858.0  -0.466
+ 1859.0  -0.286
+ 1860.0  -0.346
+ 1861.0  -0.409
+ 1862.0  -0.522
+    ⋮          
+ 2004.0   0.45 
+ 2005.0   0.544
+ 2006.0   0.505
+ 2007.0   0.493
+ 2008.0   0.395
+ 2009.0   0.506
+ 2010.0   0.559
+ 2011.0   0.422
+ 2012.0   0.47 
+ 2013.0   0.499
+ 2014.0   0.567
+ 2015.0   0.746
 </pre></div>
 
 
@@ -567,8 +563,8 @@
 </pre></div>
 
 
-<p>Then we estimate constrained lasso solution path. Here we use <code>ECOS</code> solver rather than the default <code>SCS</code> solver. </p>
-<div class="codehilite"><pre><span></span><span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">C</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">));</span> 
+<p>Then we estimate constrained lasso solution path. </p>
+<div class="codehilite"><pre><span></span><span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">C</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">d</span><span class="p">);</span> 
 </pre></div>
 
 
@@ -607,7 +603,7 @@
 
 
 <p>In this formulation, isotonic regression is a special case of the constrained lasso with $\rho=0.$ Below, <code>monoreg</code> is coefficient estimates obtained using isotonic regression. </p>
-<div class="codehilite"><pre><span></span><span class="n">monoreg</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;misc/monoreg.txt&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">monoreg</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span><span class="s">&quot;docs/src/demo/misc/monoreg.txt&quot;</span><span class="p">))</span>
 </pre></div>
 
 
@@ -664,8 +660,12 @@
 </pre></div>
 
 
+<div class="codehilite"><pre><span></span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/warming.svg&quot;</span><span class="p">)</span>
+</pre></div>
+
+
 <p><img alt="" src="../misc/warming.svg" /></p>
-<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb">link</a> to access the .ipynb file of this page.</em></p>
+<p><em>Follow the <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/warming.ipynb">link</a> to access the .ipynb file of this page.</em></p>
                 
                   
                 
