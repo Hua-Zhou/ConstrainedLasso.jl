@@ -45,9 +45,9 @@ function lsq_constrsparsereg(
     y::AbstractVector{T},
     ρ = zero(T);
     Aeq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    beq::Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
+    beq::Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq::Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
+    bineq::Union{AbstractVector, Number} = zeros(T, size(Aineq, 1)),
     obswt::AbstractVector = ones(T, length(y)),
     penwt::AbstractVector = ones(T, size(X, 2)),
     warmstart::Bool = false,
