@@ -46,7 +46,7 @@ function lsq_classopath(
     solver = ECOSSolver(maxit=10e8, verbose=0)
     ) where T
 
-    T = promote_type(eltype(X), eltype(y))
+    # T = promote_type(eltype(X), eltype(y))
     n, p = size(X)
 
     if n < p
