@@ -470,24 +470,27 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/a3938c24b54643e23760fbb584474475f278dce4/src/constrsparsereg.jl#L1-L41' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/2fe3c64b9dbf50240ef9e9b3482b61136c67e6ef/src/constrsparsereg.jl#L1-L41' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_constrsparsereg_admm' href='#ConstrainedLasso.lsq_constrsparsereg_admm'>#</a>
 <strong><code>ConstrainedLasso.lsq_constrsparsereg_admm</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(X, y, ρ::Number = zero(eltype(X));
-    proj         = x -&gt; x,
-    obswt        :: AbstractVector = ones(eltype(y), length(y)),
-    penwt        :: AbstractVector = ones(eltype(X), size(X, 2)),
-    β0           :: AbstractVector = zeros(eltype(X), size(X, 2)),
-    admmmaxite   :: Number = 10000,
-    admmabstol   :: Number = 1e-4,
-    admmreltol   :: Number = 1e-4,
-    admmscale    :: Number = 1 / length(y),
-    admmvaryscale:: Bool = false
+<div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
+    X             :: AbstractMatrix{T},
+    y             :: AbstractVector{T},
+    ρ             :: Number = zero(T);
+    proj          :: Function = x -&gt; x,
+    obswt         :: Vector{T} = ones(T, length(y)),
+    penwt         :: Vector{T} = ones(T, size(X, 2)),
+    β0            :: Vector{T} = zeros(T, size(X, 2)),
+    admmmaxite    :: Int = 10000,
+    admmabstol    :: Float64 = 1e-4,
+    admmreltol    :: Float64 = 1e-4,
+    admmscale     :: Float64 = 1 / length(y),
+    admmvaryscale :: Bool = false
     )
 </pre></div>
 
 
-<p>Fit constrained lasso at fixed tuning parameter value by applying the alternating direction method of multipliers (ADMM) algorithm.</p>
+<p>Fit constrained lasso at a fixed tuning parameter value by applying the alternating direction method of multipliers (ADMM) algorithm.</p>
 <p><strong>Arguments</strong></p>
 <ul>
 <li><code>X</code>       : predictor matrix.</li>
@@ -496,8 +499,8 @@
 </ul>
 <p><strong>Optional arguments</strong></p>
 <ul>
-<li><code>proj</code>         : projection onto the constraint set. Default is identity.</li>
-<li><code>obswt</code>        : observation weights.</li>
+<li><code>proj</code>         : projection onto the constraint set. Default is identity (no constraint).</li>
+<li><code>obswt</code>        : observation weights. Default is <code>[1 1 1 ... 1]</code>.</li>
 <li><code>penwt</code>        : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
 <li><code>β0</code>           : starting point.</li>
 <li><code>admmmaxite</code>   : maximum number of iterations for ADMM. Default is <code>10000</code>.</li>
@@ -510,7 +513,46 @@
 <ul>
 <li><code>β</code>       : estimated coefficents.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/a3938c24b54643e23760fbb584474475f278dce4/src/constrsparsereg_admm.jl#L1-L36' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/2fe3c64b9dbf50240ef9e9b3482b61136c67e6ef/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
+    X             :: AbstractMatrix{T},
+    y             :: AbstractVector{T},
+    ρlist         :: Vector;
+    proj          :: Function = x -&gt; x,
+    obswt         :: Vector{T} = ones(T, length(y)),
+    penwt         :: Vector{T} = ones(T, size(X, 2)),
+    admmmaxite    :: Int = 10000,
+    admmabstol    :: Float64 = 1e-4,
+    admmreltol    :: Float64 = 1e-4,
+    admmscale     :: Float64 = 1 / length(y),
+    admmvaryscale :: Bool = false
+    )
+</pre></div>
+
+
+<p>Fit constrained lasso at fixed tuning parameter values by applying the alternating direction method of multipliers (ADMM) algorithm.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><code>X</code>       : predictor matrix.</li>
+<li><code>y</code>       : response vector.</li>
+<li><code>ρlist</code>   : a vector of tuning parameter values.</li>
+</ul>
+<p><strong>Optional arguments</strong></p>
+<ul>
+<li><code>proj</code>         : projection onto the constraint set. Default is identity (no constraint).</li>
+<li><code>obswt</code>        : observation weights. Default is <code>[1 1 1 ... 1]</code>.</li>
+<li><code>penwt</code>        : predictor penalty weights. Default is <code>[1 1 1 ... 1]</code>.</li>
+<li><code>admmmaxite</code>   : maximum number of iterations for ADMM. Default is <code>10000</code>.</li>
+<li><code>admmabstol</code>   : absolute tolerance for ADMM.</li>
+<li><code>admmreltol</code>   : relative tolerance for ADMM.</li>
+<li><code>admmscale</code>    : ADMM scale parameter. Default is <code>1/n</code>.</li>
+<li><code>admmvaryscale</code>: dynamically chance the ADMM scale parameter. Default is false.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>βpath</code>       : estimated coefficents along the grid of <code>ρ</code> values.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/2fe3c64b9dbf50240ef9e9b3482b61136c67e6ef/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
 <strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_classopath(X, y;
@@ -546,7 +588,7 @@ subject to linear constraints.
 </ul>
 <p><strong>Examples</strong></p>
 <p>See tutorial examples at https://github.com/Hua-Zhou/ConstrainedLasso</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/a3938c24b54643e23760fbb584474475f278dce4/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/2fe3c64b9dbf50240ef9e9b3482b61136c67e6ef/src/classopath.jl#L1-L35' class='documenter-source'>source</a><br></p>
 <p>Private function in <code>ConstrainedLasso</code>:</p>
 <p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
 <strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
@@ -561,7 +603,7 @@ subject to linear constraints.
 
 
 <p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/a3938c24b54643e23760fbb584474475f278dce4/src/classopath.jl#L655-L666' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/2fe3c64b9dbf50240ef9e9b3482b61136c67e6ef/src/classopath.jl#L655-L666' class='documenter-source'>source</a><br></p>
                 
                   
                 
