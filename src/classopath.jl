@@ -1,14 +1,14 @@
 """
 ```
-  lsq_classopath(X, y;
-      Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      beq    :: AbstractVector = zeros(eltype(X), size(Aeq, 1)),
-      Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-      bineq  :: AbstractVector = zeros(eltype(X), size(Aineq, 1)),
-      ρridge :: Number = zero(eltype(X)),
-      penidx ::Array{Bool} = fill(true, size(X, 2)),
-      solver = ECOSSolver(maxit=10e8, verbose=0)
-      )
+  lsq_classopath(X::AbstractMatrix{T}, y::AbstractVector{T};
+    Aeq    :: AbstractMatrix = zeros(T, 0, size(X, 2)),
+    beq    :: AbstractVector = zeros(T, size(Aeq, 1)),
+    Aineq  :: AbstractMatrix = zeros(T, 0, size(X, 2)),
+    bineq  :: AbstractVector = zeros(T, size(Aineq, 1)),
+    ρridge :: Number = zero(T),
+    penidx :: Array{Bool} = fill(true, size(X, 2)),
+    solver = ECOSSolver(maxit=10e8, verbose=0)
+    )
 
 Calculate the solution path of the constrained lasso problem that minimizes
     `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
