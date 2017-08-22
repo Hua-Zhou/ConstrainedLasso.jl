@@ -172,7 +172,7 @@ function lsq_constrsparsereg_admm(
     admmvaryscale::Bool   = false
     ) where T
 
-    βpath = zeros(T, size(X, 2), length(ρ))
+    βpath = zeros(T, size(X, 2), length(ρlist))
     for i in eachindex(ρlist)
       βpath[:, i] = lsq_constrsparsereg_admm(X, y, ρlist[i]; proj = proj,
             obswt = obswt, penwt = penwt, admmmaxite = admmmaxite,
