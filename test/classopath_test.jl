@@ -1,6 +1,6 @@
 module classopath_test
 
-using Base.Test, ConstrainedLasso, SCS, ECOS
+using Base.Test, ConstrainedLasso, ECOS
 
 info("Test lsq_classopath: sum-to-zero constraint")
 

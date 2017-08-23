@@ -1,20 +1,22 @@
 """
 ```
-  lsq_constrsparsereg(X::AbstractMatrix{T}, y::AbstractVector{T}, ρ = zero(T);
+  lsq_constrsparsereg(
+      X         :: AbstractMatrix{T},
+      y         :: AbstractVector{T},
+      ρ         :: Union{AbstractVector, Number} = zero(T);
       Aeq       :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-      beq       :: Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
+      beq       :: Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
       Aineq     :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-      bineq     :: Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
+      bineq     :: Union{AbstractVector, number} = zeros(T, size(Aineq, 1)),
       obswt     :: AbstractVector = ones(T, length(y)),
       penwt     :: AbstractVector = ones(T, size(X, 2)),
       warmstart :: Bool = false,
       solver = ECOSSolver(maxit=10e8, verbose=0)
     )
-
+```
 Fit constrained lasso at fixed tuning parameter value(s) by minimizing
     `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
 subject to linear constraints, using `Convex.jl`.
-```
 
 ### Arguments
 - `X`       : predictor matrix.
@@ -43,7 +45,7 @@ subject to linear constraints, using `Convex.jl`.
 function lsq_constrsparsereg(
     X::AbstractMatrix{T},
     y::AbstractVector{T},
-    ρ = zero(T);
+    ρ::Union{AbstractVector, Number} = zero(T);
     Aeq::AbstractMatrix = zeros(T, 0, size(X, 2)),
     beq::Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),

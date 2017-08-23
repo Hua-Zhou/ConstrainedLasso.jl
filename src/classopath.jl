@@ -1,19 +1,20 @@
 """
 ```
-  lsq_classopath(X::AbstractMatrix{T}, y::AbstractVector{T};
+  lsq_classopath(
+    X      :: AbstractMatrix{T},
+    y      :: AbstractVector{T};
     Aeq    :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-    beq    :: Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
+    beq    :: Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
     Aineq  :: AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq  :: Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
+    bineq  :: Union{AbstractVector, Number} = zeros(T, size(Aineq, 1)),
     ρridge :: Number = zero(T),
     penidx :: Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
     )
-
+```
 Calculate the solution path of the constrained lasso problem that minimizes
     `0.5sumabs2(√obswt .* (y - X * β)) + ρ * sumabs(penwt .* β)`
 subject to linear constraints.
-```
 
 ### Arguments
 - `X`       : predictor matrix.
@@ -38,9 +39,9 @@ function lsq_classopath(
     X::AbstractMatrix{T},
     y::AbstractVector{T};
     Aeq::AbstractMatrix   = zeros(T, 0, size(X, 2)),
-    beq::Union{AbstractVector, T} = zeros(T, size(Aeq, 1)),
+    beq::Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq::Union{AbstractVector, T} = zeros(T, size(Aineq, 1)),
+    bineq::Union{AbstractVector, Number} = zeros(T, size(Aineq, 1)),
     ρridge::Number        = zero(T),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
@@ -650,12 +651,14 @@ end # end of the function
 
 """
 ```
-  find_ρmax(X, y;
-    Aeq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    beq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aeq, 1)),
-    Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    bineq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aineq, 1)),
-    penidx::Array{Bool} = fill(true, size(X, 2)),
+  find_ρmax(
+    X      :: AbstractMatrix,
+    y      :: AbstractVector;
+    Aeq    :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+    beq    :: Union{AbstractVector, Number} = zeros(eltype(X), size(Aeq, 1)),
+    Aineq  :: AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
+    bineq  :: Union{AbstractVector, Number} = zeros(eltype(X), size(Aineq, 1)),
+    penidx :: Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
     )
 ```

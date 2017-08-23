@@ -1,3 +1,4 @@
+
 # ADMM 
 
 In this section, we solve the same constrained lasso problem using the alternating direction method of multipliers (ADMM) algorithm. ADMM algorithm is advantageous since it can scale to larger size problems and is not restricted to linear constraints. See [Gaines and Zhou (2016)](../references.md#3) for details. 
@@ -10,7 +11,7 @@ We demonstrate using a sum-to-zero constraint example
 
 
 $$\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{minimize} \hspace{1em} \frac{1}{2}||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
 & \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0
 \end{split}$$
 
@@ -432,3 +433,5 @@ Aineq = - eye(p)
 
 
 As expected, estimated coefficient values are quite close. 
+
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/admm.ipynb) to access the .ipynb file of this page.*
