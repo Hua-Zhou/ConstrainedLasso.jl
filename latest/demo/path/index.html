@@ -454,7 +454,6 @@
                 
                 <p><a id='Path-algorithm-1'></a></p>
 <h1 id="path-algorithm">Path algorithm</h1>
-<p>The solution path algorithm is useful when the user does not have a pre-specified grid of tuning parameter values and the cofficient estimates at more than a handful of values of the tuning parameter are desired.  </p>
 <p><a id='Sum-to-zero-constraint-1'></a></p>
 <h2 id="sum-to-zero-constraint">Sum-to-zero constraint</h2>
 <p>In this example, we will solve a problem defined by </p>
@@ -466,7 +465,8 @@
 \end{split}
 </script>
 </p>
-<p>Note that we can re-write the constraint as $\boldsymbol{A\beta} = \boldsymbol{b}$ where </p>
+<p>Note that we can re-write the constraint as  $\boldsymbol{A\beta} = \boldsymbol{b}$</p>
+<p>where </p>
 <p>
 <script type="math/tex; mode=display">
 \boldsymbol{A} = \begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \text{ and } \boldsymbol{b} = 0.
@@ -549,7 +549,7 @@
 
 
 <p>Since the problem has equality constraints only, we define the constraints as below. </p>
-<div class="codehilite"><pre><span></span><span class="n">beq</span> <span class="o">=</span> <span class="mf">0.0</span>
+<div class="codehilite"><pre><span></span><span class="n">beq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">Aeq</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 </pre></div>
 
@@ -564,43 +564,43 @@
 </pre></div>
 
 
-<p>Now we are ready to obtain the solution path using the path algorithm. </p>
+<p>Now we are ready to obtain the solution path using the path algorithm. By default, we use the solver SCS. </p>
 <div class="codehilite"><pre><span></span><span class="n">β̂path1</span>
 </pre></div>
 
 
 <div class="codehilite"><pre><span></span>100×64 Array{Float64,2}:
- 0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.2093     0.215544   0.222576
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0           -0.375203  -0.411589  -0.41253 
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.326206   0.349339   0.355867
- 0.0  0.0   0.0         0.0           -0.199751  -0.18084   -0.180896
- 0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- ⋮                                 ⋱                                 
- 0.0  0.0   0.0         0.0           -0.466409  -0.455344  -0.458507
- 0.0  0.0   0.0         0.0           -0.40513   -0.358767  -0.358448
- 0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0  -0.0558231  -0.0953907     -0.852347  -0.877741  -0.88212 
- 0.0  0.0   0.0         0.0           -1.08109   -1.05576   -1.06659 
- 0.0  0.0   0.0         0.0           -0.679306  -0.621053  -0.621533
- 0.0  0.0   0.0         0.0        …   0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0           -1.25803   -1.20411   -1.20696 
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0     
- 0.0  0.0   0.0         0.0            0.0        0.0        0.0
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.206561   0.212696   0.22402 
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0          -0.378352  -0.411385  -0.41288 
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.325283   0.3467     0.357212
+ 0.0  0.0   0.0         0.0          -0.19861   -0.181371  -0.181397
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ ⋮                                ⋱                                 
+ 0.0  0.0   0.0         0.0          -0.46258   -0.452943  -0.458164
+ 0.0  0.0   0.0         0.0          -0.401578  -0.359423  -0.358849
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0  -0.0558231  -0.101399     -0.850614  -0.874227  -0.881474
+ 0.0  0.0   0.0         0.0          -1.07203   -1.05001   -1.06761 
+ 0.0  0.0   0.0         0.0          -0.674324  -0.621432  -0.622139
+ 0.0  0.0   0.0         0.0       …   0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0          -1.25239   -1.20357   -1.2081  
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0     
+ 0.0  0.0   0.0         0.0           0.0        0.0        0.0
 </pre></div>
 
 
 <p>Let's see if sums of coefficients at all $\rho$ values are approximately 0. </p>
-<div class="codehilite"><pre><span></span><span class="n">all</span><span class="p">(</span><span class="n">abs</span><span class="o">.</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">β̂path1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">.&lt;</span> <span class="mf">1e-8</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">all</span><span class="p">(</span><span class="n">abs</span><span class="o">.</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">β̂path1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">.&lt;</span> <span class="mf">1e-6</span><span class="p">)</span>
 </pre></div>
 
 
@@ -617,11 +617,6 @@
 
 
 <p><img alt="" src="../misc/sumtozero.svg" /></p>
-<div class="codehilite"><pre><span></span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/sumtozero.svg&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<p>Note the figure above is markedly more smooth than in the <a href="../fixedparam/#figparam">figure</a> obtained from passing in a sequence of tuning parameter values. This is because the solution path algorithm captures all events. </p>
 <p><a id='Non-negativity-constraint-1'></a></p>
 <h2 id="non-negativity-constraint">Non-negativity constraint</h2>
 <p>In this example, the problem is defined by </p>
@@ -754,8 +749,9 @@
 </pre></div>
 
 
-<p>Now we are ready to obtain the solution path using the path algorithm.</p>
-<div class="codehilite"><pre><span></span><span class="n">β̂path2</span><span class="p">,</span> <span class="n">ρpath2</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">Aineq</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">bineq</span><span class="p">)</span> 
+<p>Now we are ready to obtain the solution path using the path algorithm. Here, let's try using different solver <code>ECOS</code> for <code>Convex.jl</code>. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ECOS</span><span class="p">;</span> <span class="n">solver</span><span class="o">=</span><span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">);</span>
+<span class="n">β̂path2</span><span class="p">,</span> <span class="n">ρpath2</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aineq</span> <span class="o">=</span> <span class="n">Aineq</span><span class="p">,</span> <span class="n">bineq</span> <span class="o">=</span> <span class="n">bineq</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span><span class="p">)</span> 
 </pre></div>
 
 
@@ -797,12 +793,11 @@
 <div class="codehilite"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">,</span> <span class="n">β̂path2</span><span class="o">&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;ρ&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">minimum</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">),</span>
       <span class="n">maximum</span><span class="p">(</span><span class="n">ρpath2</span><span class="p">))),</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;β̂(ρ)&quot;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
 <span class="n">title!</span><span class="p">(</span><span class="s">&quot;Simulation 2: Solution Path via Constrained Lasso&quot;</span><span class="p">)</span> 
-<span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/nonneg.svg&quot;</span><span class="p">)</span>
 </pre></div>
 
 
 <p><img alt="" src="../misc/nonneg.svg" /></p>
-<p><em>Follow the <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/path.ipynb">link</a> to access the .ipynb file of this page.</em></p>
+<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/path.ipynb">link</a> to access the .ipynb file of this page.</em></p>
                 
                   
                 
