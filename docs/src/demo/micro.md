@@ -2,13 +2,13 @@
 # Microbiome Data
 
 
-   This real data application uses microbiome data [[7](../references.md#7)]. The dataset itself contains information on 160 bacteria genera from 37 patients. The bacteria counts were $\log_2$-transformed and normalized to have a constant average across samples.
+   This real data application uses microbiome data [[8](../references.md#8)]. The dataset itself contains information on 160 bacteria genera from 37 patients. The bacteria counts were $\log_2$-transformed and normalized to have a constant average across samples.
 
 First, let's load and organize data.
 
 
 ```julia
-zerosum = readcsv("misc/zerosum.csv", header=true)[1]
+zerosum = readcsv(joinpath(Pkg.dir("ConstrainedLasso"), "docs/src/demo/misc/zerosum.csv"), header=true)[1]
 y = zerosum[:, 1]
 ```
 
@@ -85,14 +85,13 @@ X = zerosum[:, 2:end]
 
 [Altenbuchinger et al.](../references.md#1) demonstrated that a sum-to-zero constraint is useful anytime the normalization of data relative to some reference point results in proportional data, as is often the case in biological applications, since the analysis using the constraint is insensitive to the choice of the reference. [Altenbuchinger et al.](../references.md#1) derived a coordinate descent algorithm for the elastic net with a zero-sum constraint, 
 
-```math
-\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
+$$\begin{split}
+& \text{minimize} \hspace{1em} \frac{1}{2} ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
 & \text{subject to} \hspace{1em} \sum_j \beta_j = 0
-\end{split}
-```
+\end{split}$$
 
-but the focus of their analysis corresponds to ``\alpha = 1``. Hence the problem is reduced to the constrained lasso.
+
+but the focus of their analysis corresponds to $\alpha = 1$. Hence the problem is reduced to the constrained lasso.
 
 We set up the zero-sum constraint.
 
@@ -100,7 +99,7 @@ We set up the zero-sum constraint.
 ```julia
 n, p = size(X)
 Aeq = ones(1, p)
-beq = [0]
+beq = 0.0
 m1 = size(Aeq, 1);
 ```
 
@@ -109,9 +108,7 @@ Now we estimate the constrained lasso solution path using path algorithm.
 
 ```julia
 using ConstrainedLasso
-using ECOS
-solver = ECOSSolver(verbose=0, maxit=1e8);
-β̂path, ρpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq, solver = solver)
+β̂path, ρpath, = lsq_classopath(X, y; Aeq = Aeq, beq = beq)
 ```
 
 
@@ -152,7 +149,7 @@ solver = ECOSSolver(verbose=0, maxit=1e8);
 
 
 
-Then we calculate `L1` norm of coefficients at each $\rho$.
+Then we calculate $L_1$ norm of coefficients at each $\rho$.
 
 
 ```julia
@@ -204,9 +201,10 @@ using Plots; pyplot();
 plot(norm1path, β̂path', xaxis = ("||β̂||₁"), yaxis=("β̂"), label="")
 title!("Microbiome Data: Solution Path via Constrained Lasso")
 ```
-
 ![](misc/micro.svg)
 
+```julia
+savefig("misc/micro.svg"); 
+```
 
-
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/micro.ipynb) to access the .ipynb file of this page.*
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/micro.ipynb) to access the .ipynb file of this page.*
