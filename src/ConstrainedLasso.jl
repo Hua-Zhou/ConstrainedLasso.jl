@@ -6,8 +6,8 @@ using Convex, GLMNet, ECOS
 include("constrsparsereg.jl")
 include("classopath.jl")
 include("constrsparsereg_admm.jl")
-#include("genlasso.jl")
+include("genlasso.jl")
 
-export lsq_classopath, lsq_constrsparsereg, lsq_constrsparsereg_admm #, genlasso
+export lsq_classopath, lsq_constrsparsereg, lsq_constrsparsereg_admm, genlasso
 
 end # module

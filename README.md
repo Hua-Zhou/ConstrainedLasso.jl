@@ -38,7 +38,7 @@ The original method paper on the constrained lasso is
 
 *G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <http://www-bcf.usc.edu/~gareth/research/PAC.pdf>*
 
-If you use ConstrainedLasso package in your research, please cite the following paper on the algorithms:
+If you use **ConstrainedLasso** package in your research, please cite the following paper on the algorithms:
 
 *B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <https://arxiv.org/abs/1611.01511>*
 

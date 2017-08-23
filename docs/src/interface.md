@@ -17,6 +17,10 @@ Functions exported from `ConstrainedLasso`:
 	lsq_classopath
 ```
 
+```@docs
+	genlasso
+```
+
 Private function in `ConstrainedLasso`:
 
 ```@docs
