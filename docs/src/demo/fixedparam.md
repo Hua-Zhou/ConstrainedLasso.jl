@@ -3,32 +3,31 @@
 
 `lsq_constrsparsereg.jl` fits constrained lasso
 
-```math
-\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+$$\begin{split}
+& \text{minimize} \hspace{1em} \frac{1}{2}||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
 & \text{ subject to} \hspace{0.5em} \boldsymbol{A\beta}=\boldsymbol{b} \text{ and } \boldsymbol{C\beta} \leq \boldsymbol{d}
-\end{split}
-```
+\end{split}$$
 
-at a fixed tuning parameter value ``\rho`` or several tuning parameter values provided by user.
+at a fixed tuning parameter value $\rho$ or several tuning parameter values provided by user.
 
 ### Single tuning parameter value
 
-We demonstrate using a sum-to-zero constraint example
+We demonstrate the usage of a single tuning parameter value with a sum-to-zero constraint example defined as 
 
-```math
-\begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
-& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0
-\end{split}
-```
+$$\begin{split}
+& \text{minimize} \hspace{1em} \frac{1}{2}||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho||\beta||_1 \\
+& \text{ subject to} \hspace{0.5em} \sum_j \beta_j = 0.
+\end{split}$$
 
 First, let's define a true parameter `β` such that `sum(β) = 0`.
 
 
 ```julia
 using ConstrainedLasso, Base.Test
+```
 
+
+```julia
 n, p = 50, 100  
 β = zeros(p)
 β[1:round(Int, p / 4)] = 0
@@ -152,17 +151,15 @@ y = X * β + randn(n)
 
 Since the equality constraint can be written as 
 
-```math
-\begin{split}
+$$\begin{split}
 \begin{pmatrix} 1 & 1 & \cdots & 1 \end{pmatrix} \beta = 0,
-\end{split}
-```
+\end{split}$$
 
 we define the constraint as below.
 
 
 ```julia
-beq   = [0.0]
+beq   = 0.0
 Aeq   = ones(1, p)
 ```
 
@@ -191,53 +188,53 @@ Now we are ready to fit the constrained lasso problem, say at `ρ=10`.
 
 
     100×1 Array{Float64,2}:
-      0.0334671 
-     -1.1128e-5 
-      5.40916e-6
-     -0.394908  
-      5.69496e-6
-      1.17002e-5
-     -3.90243e-6
-     -1.91365e-5
-      0.288553  
-      2.05743e-6
-      1.12622e-5
-      1.6712e-5 
-     -2.17275e-6
-      ⋮         
-     -0.188179  
-     -3.52148e-6
-      3.50838e-6
-      9.58236e-6
-     -0.844097  
-     -0.645805  
-     -0.257241  
-     -4.90509e-6
-     -1.13326   
-     -7.28399e-6
-      4.69294e-6
-     -8.90143e-6
+      0.0332021  
+      3.10012e-10
+     -4.6978e-10 
+     -0.39502    
+     -2.56803e-10
+     -5.22472e-11
+     -5.31822e-10
+     -4.24518e-11
+      0.288476   
+     -6.96174e-10
+     -1.18309e-10
+     -4.8233e-11 
+     -6.46568e-11
+      ⋮          
+     -0.188338   
+     -2.37826e-9 
+     -1.60819e-9 
+      1.41678e-10
+     -0.84392    
+     -0.645577   
+     -0.257303   
+     -1.43023e-10
+     -1.13316    
+      4.26293e-10
+     -3.84653e-10
+      2.17566e-9 
 
 
 
-We see if the sum of estimated ``\beta`` coefficients equal to 0.
+We see if the sum of estimated $\beta$ coefficients is approximately equal to 0.
 
 
 ```julia
-@test sum(β̂)≈0.0 atol=1e-4
+@test sum(β̂)≈0.0 atol=1e-6
 ```
 
 
 
 
-    Test Passed
-    
+    [1m[32mTest Passed
+    [39m[22m
 
 
 
 ### Multiple tuning parameter values
 
-Define `ρlist` to be a sequence of values from 1 to 10.
+Define `ρlist` to be a decreasing sequence of values from 152.0 to 2.0.
 
 
 ```julia
@@ -267,32 +264,32 @@ Using the same equality constraints, we fit the constrained lasso.
 
 
     100×11 Array{Float64,2}:
-      1.01071e-5  -8.27382e-6  -9.98518e-7  …   2.24039e-6  -1.73712e-8
-     -9.20705e-6  -1.73958e-5  -2.05881e-6     -2.60796e-5   0.178782  
-     -5.63613e-6  -1.75901e-5  -1.8899e-6      -1.01686e-5   3.41563e-8
-     -1.15136e-5  -1.29555e-5  -1.18262e-6     -0.331097    -0.413631  
-     -1.60099e-5  -1.38074e-5  -1.11624e-6     -1.1681e-5    4.44159e-8
-      1.6582e-5   -8.67409e-6  -7.82383e-7  …   2.73047e-5   1.19985e-7
-     -1.06227e-5  -1.47899e-5  -7.36221e-7      4.90329e-6   5.63884e-8
-     -5.7368e-6   -1.48341e-5  -1.65699e-6     -9.84382e-8   3.01081e-8
-      1.42761e-5  -7.54447e-6  -9.46132e-7      0.205789     0.33502   
-     -1.35551e-6  -1.40007e-5  -1.15001e-6      2.14801e-5  -0.158037  
-     -8.39911e-6  -1.04558e-5  -1.59023e-6  …   4.57889e-6   1.88987e-8
-      1.88431e-6  -1.34713e-5  -1.75855e-6     -2.03643e-6  -2.39007e-8
-     -2.78397e-6  -9.21455e-6  -7.11068e-7     -1.14052e-6   3.91139e-8
-      ⋮                                     ⋱                ⋮         
-     -7.31054e-6  -1.5138e-5   -1.6294e-6      -0.137376    -0.392134  
-     -2.28865e-6  -1.4119e-5   -1.41117e-6     -8.14484e-7  -0.333912  
-     -3.48868e-6  -1.27998e-5  -1.60242e-6  …   2.18783e-5   3.13386e-9
-     -2.87686e-6  -1.96206e-5  -2.75763e-6      3.14833e-7   7.63403e-8
-     -2.14002e-5  -0.0184219   -0.152241       -0.914608    -0.867679  
-     -1.57276e-5  -1.80525e-5  -1.42057e-6     -0.218999    -1.00031   
-     -1.09405e-5  -1.16499e-5  -1.0991e-6      -0.237285    -0.578412  
-     -5.97059e-6  -6.69791e-6  -1.30652e-6  …  -4.20856e-6  -3.80778e-8
-     -1.95746e-5  -1.11737e-5  -1.27845e-6     -1.0569      -1.16938   
-      5.18594e-6  -1.26231e-5  -1.82091e-6     -1.37675e-5  -2.69827e-8
-     -7.37912e-6  -1.58805e-5  -1.69692e-6     -7.48234e-6  -1.00642e-7
-      8.30253e-6  -7.94538e-6  -7.58241e-7      1.17015e-5   3.21803e-8
+      5.7885e-8    9.72387e-9    2.81065e-10  …   2.48441e-8    1.51451e-8 
+     -5.87852e-8  -1.31342e-8   -3.79759e-10     -4.08278e-10   0.178717   
+     -3.38004e-8  -7.55024e-9   -2.09421e-10     -5.52919e-9   -1.02944e-9 
+     -8.00996e-8  -1.8626e-8    -6.07662e-10     -0.330981     -0.414043   
+     -1.46534e-7  -4.13375e-8   -1.40985e-9      -5.87274e-9   -3.33221e-10
+      1.35681e-7   2.5494e-8     8.8654e-10   …   1.77541e-9   -4.14188e-10
+     -7.15503e-8  -1.62251e-8   -4.70464e-10     -9.09917e-9    3.28018e-11
+     -3.43517e-8  -7.81034e-9   -2.37254e-10     -1.42302e-9    8.38037e-11
+      9.96051e-8   1.79582e-8    6.78349e-10      0.205806      0.335375   
+     -9.85721e-9  -2.84963e-9   -6.60348e-11     -4.06107e-9   -0.157908   
+     -5.23226e-8  -1.19088e-8   -3.45603e-10  …  -5.93287e-10  -2.44739e-9 
+      7.14349e-9   4.03781e-10  -2.60167e-11     -4.83948e-10  -8.79003e-10
+     -1.71432e-8  -4.23818e-9   -1.15154e-10     -3.84297e-10  -8.17787e-10
+      ⋮                                       ⋱                 ⋮          
+     -4.47748e-8  -9.81256e-9   -2.58362e-10     -0.137195     -0.391635   
+     -1.48721e-8  -3.93589e-9   -1.06969e-10     -6.58309e-9   -0.33352    
+     -2.15687e-8  -5.18704e-9   -1.69607e-10  …  -1.82448e-8   -5.51459e-9 
+     -1.74035e-8  -4.39562e-9   -1.63827e-10      2.06069e-9    1.09637e-9 
+     -4.3585e-7   -0.0198435    -0.152322        -0.914601     -0.867639   
+     -1.40812e-7  -3.82869e-8   -1.1339e-9       -0.218698     -0.999583   
+     -7.48206e-8  -1.72154e-8   -4.88002e-10     -0.237392     -0.577743   
+     -3.60962e-8  -8.21917e-9   -2.17684e-10  …  -8.88674e-10  -8.93601e-10
+     -2.73163e-7  -1.44347e-7   -1.31485e-8      -1.05679      -1.16862    
+      2.52674e-8   3.8825e-9     1.33482e-10      1.82138e-9    2.29367e-9 
+     -4.49981e-8  -9.74654e-9   -2.59147e-10     -6.95863e-9   -1.52035e-9 
+      4.50404e-8   7.3066e-9     2.16334e-10      1.6277e-8     2.71896e-9 
 
 
 
@@ -304,7 +301,12 @@ plot(ρlist, β̂', label="", xaxis = ("ρ", (minimum(ρlist),
 title!("Solution Path at Fixed Parameter Values") 
 ```
 
-![](misc/fixed.svg)
+
+```julia
+savefig("misc/fixed.svg")
+```
+
+<a name="figparam">![](misc/fixed.svg)</a>
 
 
-*Follow this [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/fixedparam.ipynb) to access the .ipynb file of this page.*
+*Follow the [link](https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/fixedparam.ipynb) to access the .ipynb file of this page.*
