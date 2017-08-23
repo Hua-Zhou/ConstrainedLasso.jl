@@ -164,7 +164,7 @@ D = [eye(p-1) zeros(p-1, 1)] - [zeros(p-1, 1) eye(p-1)]
 
 
 ```julia
-β̂path, ρpath = genlasso(X, y)
+β̂path, ρpath = genlasso(X, y; D = D)
 ```
 
 
@@ -360,7 +360,7 @@ Now we extract common values of $\rho$ and compare estimates at those values.
 
 ```julia
 sameρ = intersect(round.(ρpath, 4), round.(lambda_path, 4))
-sameρ_err = []
+sameρ_err = Float64[]
 for i in eachindex(sameρ)
  curρ = sameρ[i]
  idx1 = findmin(abs.(ρpath - curρ))[2]
