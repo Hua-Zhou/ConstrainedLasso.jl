@@ -399,9 +399,9 @@
                 
                 <p><a id='Microbiome-Data-1'></a></p>
 <h1 id="microbiome-data">Microbiome Data</h1>
-<p>This real data application uses microbiome data [<a href="../../references/#7">7</a>]. The dataset itself contains information on 160 bacteria genera from 37 patients. The bacteria counts were $\log_2$-transformed and normalized to have a constant average across samples.</p>
+<p>This real data application uses microbiome data [<a href="../../references/#8">8</a>]. The dataset itself contains information on 160 bacteria genera from 37 patients. The bacteria counts were $\log_2$-transformed and normalized to have a constant average across samples.</p>
 <p>First, let's load and organize data.</p>
-<div class="codehilite"><pre><span></span><span class="n">zerosum</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="s">&quot;misc/zerosum.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><span class="n">zerosum</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="n">joinpath</span><span class="p">(</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;ConstrainedLasso&quot;</span><span class="p">),</span> <span class="s">&quot;docs/src/demo/misc/zerosum.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">true</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">zerosum</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 
@@ -474,7 +474,7 @@
 <p>
 <script type="math/tex; mode=display">
 \begin{split}
-& \text{minimize} \hspace{1em} \frac 12||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
+& \text{minimize} \hspace{1em} \frac{1}{2} ||\boldsymbol{y}-\boldsymbol{X\beta}||^2_2 + \rho\Big(||\boldsymbol{\beta}||_1 + \frac{1-\alpha}{2}||\boldsymbol{\beta}||_2^2\Big) \\
 & \text{subject to} \hspace{1em} \sum_j \beta_j = 0
 \end{split}
 </script>
@@ -483,16 +483,14 @@
 <p>We set up the zero-sum constraint.</p>
 <div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">Aeq</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-<span class="n">beq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">beq</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">m1</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">Aeq</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </pre></div>
 
 
 <p>Now we estimate the constrained lasso solution path using path algorithm.</p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">ConstrainedLasso</span>
-<span class="k">using</span> <span class="n">ECOS</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">ECOSSolver</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mf">1e8</span><span class="p">);</span>
-<span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span><span class="p">)</span>
+<span class="n">β̂path</span><span class="p">,</span> <span class="n">ρpath</span><span class="p">,</span> <span class="o">=</span> <span class="n">lsq_classopath</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="n">Aeq</span> <span class="o">=</span> <span class="n">Aeq</span><span class="p">,</span> <span class="n">beq</span> <span class="o">=</span> <span class="n">beq</span><span class="p">)</span>
 </pre></div>
 
 
@@ -530,7 +528,7 @@
 </pre></div>
 
 
-<p>Then we calculate <code>L1</code> norm of coefficients at each $\rho$.</p>
+<p>Then we calculate $L_1$ norm of coefficients at each $\rho$.</p>
 <div class="codehilite"><pre><span></span><span class="n">norm1path</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">β̂path</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="n">eachindex</span><span class="p">(</span><span class="n">norm1path</span><span class="p">)</span>
     <span class="n">norm1path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">β̂path</span><span class="p">[</span><span class="o">:</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
@@ -577,7 +575,11 @@
 
 
 <p><img alt="" src="../misc/micro.svg" /></p>
-<p><em>Follow this <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/micro.ipynb">link</a> to access the .ipynb file of this page.</em></p>
+<div class="codehilite"><pre><span></span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;misc/micro.svg&quot;</span><span class="p">);</span> 
+</pre></div>
+
+
+<p><em>Follow the <a href="https://github.com/Hua-Zhou/ConstrainedLasso.jl/blob/master/docs/src/demo/micro.ipynb">link</a> to access the .ipynb file of this page.</em></p>
                 
                   
                 
