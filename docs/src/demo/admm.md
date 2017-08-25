@@ -252,8 +252,11 @@ $$\beta_j \geq 0 \hspace{0.8em} \forall j,$$
 
 the appropriate projection function for $\boldsymbol{x} = (x_1, \cdots, x_p)^T$ is 
  
-$$ \text{proj}(\boldsymbol{x})_j = \begin{cases}
-x_j & \text{if } x_j \geq 0 \\ 0 & \text{else} \end{cases} \hspace{0.8em} \text{where } j = 1, \cdots, p.$$
+```math
+\text{proj}(\boldsymbol{x})_j = \begin{cases}
+x_j & \text{if } x_j \geq 0 \\ 
+0 & \text{else} \end{cases} \hspace{0.8em} \text{where } j = 1, \cdots, p.
+```
 
 Now let's generate `X` and `y`.
 
