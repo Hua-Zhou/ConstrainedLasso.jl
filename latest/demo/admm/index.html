@@ -679,8 +679,13 @@
 </script>
 </p>
 <p>the appropriate projection function for $\boldsymbol{x} = (x_1, \cdots, x_p)^T$ is </p>
-<p>:$</p>
-<p>\text{proj}(\boldsymbol{x})_j = <script type="math/tex; mode=display">\begin{cases} x_j & \text{if } x_j \geq 0 \ 0 & \text{else} \end{cases}</script> \hspace{0.8em} \text{where } j = 1, \cdots, p.:$</p>
+<p>
+<script type="math/tex; mode=display">
+\text{proj}(\boldsymbol{x})_j = \begin{cases}
+x_j & \text{if } x_j \geq 0 \\ 
+0 & \text{else} \end{cases} \hspace{0.8em} \text{where } j = 1, \cdots, p.
+</script>
+</p>
 <p>Now let's generate <code>X</code> and <code>y</code>.</p>
 <div class="codehilite"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>   
 <span class="n">β</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
