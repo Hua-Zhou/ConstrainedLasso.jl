@@ -34,7 +34,7 @@ $$\boldsymbol{D} = \begin{pmatrix}
   &		&		&		 &			    &  & 1\\  
 \end{pmatrix} \in \mathbb{R}^{(2P-1)\times p}.$$
 
-As discussed in [Gaines, B.R. and Zhou, H., (2016)](../references.md), the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [[3](../references.md)]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using `genlasso.jl` in **ConstrainedLasso** package. 
+As discussed in [Gaines, B.R. and Zhou, H., (2016)](../references.md), the sparse fused lasso can be reformulated and solved as a constrained lasso problem. (For details of the reformulation, see Section 2 of [[3](../references.md)]). Here, we demonstrate solving the generalized lasso problem as constrained lasso, using `genlasso.jl` in **ConstrainedLasso** package. Note that the performance of `genlasso.jl` will be slow with large size problems because it involves the singular value decomposition (SVD).  
 
 
 
