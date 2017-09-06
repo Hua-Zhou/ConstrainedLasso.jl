@@ -192,7 +192,7 @@ title!("Simulation 1: Solution Path via Constrained Lasso")
 savefig("misc/sumtozero.svg")
 ```
 
-Note the figure above is markedly more smooth than in the [figure](fixedparam.md#figparam) obtained from passing in a sequence of tuning parameter values. This is because the solution path algorithm captures all events. 
+Note the figure above is markedly smoother than in the [figure](fixedparam.md#figparam) obtained from passing in a sequence of tuning parameter values. This is because the solution path algorithm captures all events. 
 
 ## Non-negativity constraint 
 
