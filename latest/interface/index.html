@@ -16,7 +16,7 @@
       
         <link rel="shortcut icon" href="../assets/images/favicon.png">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.9.0">
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
     
     
       
@@ -27,9 +27,9 @@
       <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application-0a3554af36.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-b6a6d08807.css">
       
-        <link rel="stylesheet" href="../assets/stylesheets/application-02c2a4388f.palette.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
       
     
     
@@ -69,10 +69,11 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        
-          <a href=".." title="ConstrainedLasso.jl" class="md-icon md-icon--home md-header-nav__button">
-          </a>
-        
+        <a href=".." title="ConstrainedLasso.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon md-icon--home"></i>
+          
+        </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
@@ -154,9 +155,11 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
-    
-      <i class="md-icon md-icon--home md-nav__button"></i>
-    
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
     ConstrainedLasso.jl
   </label>
   
@@ -473,7 +476,7 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/constrsparsereg.jl#L1-L43' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/constrsparsereg.jl#L1-L43' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_constrsparsereg_admm' href='#ConstrainedLasso.lsq_constrsparsereg_admm'>#</a>
 <strong><code>ConstrainedLasso.lsq_constrsparsereg_admm</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
@@ -516,7 +519,7 @@
 <ul>
 <li><code>β</code>       : estimated coefficents.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/constrsparsereg_admm.jl#L1-L39' class='documenter-source'>source</a><br></p>
 <div class="codehilite"><pre><span></span>  lsq_constrsparsereg_admm(
     X             :: AbstractMatrix{T},
     y             :: AbstractVector{T},
@@ -555,7 +558,7 @@
 <ul>
 <li><code>βpath</code>       : estimated coefficents along the grid of <code>ρ</code> values.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/constrsparsereg_admm.jl#L123-L159' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.lsq_classopath' href='#ConstrainedLasso.lsq_classopath'>#</a>
 <strong><code>ConstrainedLasso.lsq_classopath</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  lsq_classopath(
@@ -590,7 +593,7 @@
 </ul>
 <p><strong>Examples</strong></p>
 <p>See tutorial examples at <a href="https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/">https://hua-zhou.github.io/ConstrainedLasso.jl/latest/demo/path/</a>.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/classopath.jl#L1-L36' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/classopath.jl#L1-L36' class='documenter-source'>source</a><br></p>
 <p><a id='ConstrainedLasso.genlasso' href='#ConstrainedLasso.genlasso'>#</a>
 <strong><code>ConstrainedLasso.genlasso</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>  genlasso(
@@ -623,7 +626,7 @@
 <li><code>objval</code>  : optimal objective value.</li>
 <li><code>problem</code> : Convex.jl problem.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/genlasso.jl#L1-L34' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/genlasso.jl#L1-L34' class='documenter-source'>source</a><br></p>
 <p>Private function in <code>ConstrainedLasso</code>:</p>
 <p><a id='ConstrainedLasso.find_ρmax' href='#ConstrainedLasso.find_ρmax'>#</a>
 <strong><code>ConstrainedLasso.find_ρmax</code></strong> &mdash; <em>Function</em>.</p>
@@ -641,7 +644,7 @@
 
 
 <p>Find the maximum tuning parameter value <code>ρmax</code> to kick-start the solution path.</p>
-<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/8ffeacb2a26b70ecce1de310a997e605e4417095/src/classopath.jl#L652-L666' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Hua-Zhou/ConstrainedLasso.jl/tree/68d60a292b373046a2d5a25e9f1e1753d88a4a10/src/classopath.jl#L652-L666' class='documenter-source'>source</a><br></p>
                 
                   
                 
@@ -711,7 +714,7 @@
       
     </div>
     
-      <script src="../assets/javascripts/application-3700c4cc12.js"></script>
+      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
       
       
       <script>app.initialize({url:{base:".."}})</script>
