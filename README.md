@@ -36,11 +36,11 @@ This package supports Julia v0.6.
 
 The original method paper on the constrained lasso is
 
-*G.M. James, C. Paulson and P. Rusmevichientong. (2013) Penalized and constrained regression. <http://www-bcf.usc.edu/~gareth/research/PAC.pdf>*
+*James, G. M., Paulson, C. and Rusmevichientong, P. (2013). "Penalized and constrained regression," mimeo, Marshall School of Business, University of Southern California. <http://www-bcf.usc.edu/~gareth/research/PAC.pdf>*
 
 If you use **ConstrainedLasso** package in your research, please cite the following paper on the algorithms:
 
-*B.R. Gaines, H. Zhou. (2016) Algorithms for Fitting the Constrained Lasso. <https://arxiv.org/abs/1611.01511>*
+*Gaines, B., Kim, J. and Zhou, H. (2018). “Algorithms for Fitting the Constrained Lasso,” under revision.*
 
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
