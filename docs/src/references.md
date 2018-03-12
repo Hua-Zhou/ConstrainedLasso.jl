@@ -4,7 +4,7 @@
 
 - [2] Bredel, M., Bredel, C., Juric, D., Harsh, G. R., Vogel, H., Recht, L. D., and Sikic, B. I. (2005). High-resolution genome-wide mapping of genetic alterations in human glial brain tumors. *Cancer Research*, 65:4088–4096.
 
-- [3] Gaines, B.R. and Zhou, H. (2016). Algorithms for fitting the constrained lasso. arXiv preprint arXiv:1611.01511.
+- [3] Gaines, B., Kim, J. and Zhou, H. (2018). Algorithms for Fitting the Constrained Lasso, *under revision*.
 
 - [4] Stamey, T.A., Kabalin, J.N., McNeal, J.E., Johnstone, I.M., Freiha, F., Redwine, E.A. and Yang, N. (1989). Prostate specific antigen in the diagnosis and treatment of adenocarcinoma of the prostate: II. radical prostatectomy treated patients. *Journal of Urology* 141(5):1076–1083.
 
