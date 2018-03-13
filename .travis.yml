@@ -3,8 +3,13 @@ language: julia
 os:
   - osx
   - linux 
+compiler
+  - gcc
+  - clang 
+
 julia:
   - 0.6
+  - 0.6.2
   - nightly
 
 matrix:
@@ -18,8 +23,9 @@ addons:
   apt: # apt-get for linux
     packages:
     - gfortran
-before_script: # homebrew for mac
-    - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
+before_install: # homebrew for mac
+     - 'if [[ "$TRAVIS_OS_NAME" == "osx" && "$CC" == "gcc" ]]; then brew install gcc; CC=gcc-5; fi'
+#    - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
 
 ## uncomment the following lines to override the default test script
 script:
