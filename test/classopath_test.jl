@@ -43,7 +43,6 @@ bineq = zeros(p)
 
 solver = ECOSSolver(verbose=0, maxit=1e8)
 
-# NOT WORKING!!
 β̂path2, ρpath2, = lsq_classopath(X, y; Aineq = Aineq, bineq = bineq, solver=solver)
 
 @testset "non-negativity" begin
