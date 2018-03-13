@@ -63,7 +63,7 @@ function lsq_constrsparsereg(
     prob_vec = Convex.Problem[]
 
     β = Variable(p)
-    loss = (1//2)sumsquares(sqrt(obswt) .* (y - X * β)) # loss term
+    loss = (1//2)sumsquares(sqrt.(obswt) .* (y - X * β)) # loss term
     pen  = dot(penwt, abs(β)) # penalty term
     eqconstr   = Aeq * β == beq
     ineqconstr = Aineq * β <= bineq
