@@ -37,11 +37,11 @@ See tutorial examples at <https://hua-zhou.github.io/ConstrainedLasso.jl/latest/
 
 function lsq_classopath(
     X::AbstractMatrix{T},
-    y::AbstractVector{T};
+    y::AbstractMatrix{T};
     Aeq::AbstractMatrix   = zeros(T, 0, size(X, 2)),
-    beq::Union{AbstractVector, Number} = zeros(T, size(Aeq, 1)),
+    beq::Union{AbstractMatrix, Number} = zeros(T, size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(T, 0, size(X, 2)),
-    bineq::Union{AbstractVector, Number} = zeros(T, size(Aineq, 1)),
+    bineq::Union{AbstractMatrix, Number} = zeros(T, size(Aineq, 1)),
     ρridge::Number        = zero(T),
     penidx::Array{Bool}   = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
@@ -666,11 +666,11 @@ Find the maximum tuning parameter value `ρmax` to kick-start the solution path.
 """
 function find_ρmax(
     X::AbstractMatrix,
-    y::AbstractVector;
+    y::AbstractMatrix;
     Aeq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    beq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aeq, 1)),
+    beq::Union{AbstractMatrix, Number} = zeros(eltype(X), size(Aeq, 1)),
     Aineq::AbstractMatrix = zeros(eltype(X), 0, size(X, 2)),
-    bineq::Union{AbstractVector, Number} = zeros(eltype(X), size(Aineq, 1)),
+    bineq::Union{AbstractMatrix, Number} = zeros(eltype(X), size(Aineq, 1)),
     penidx::Array{Bool} = fill(true, size(X, 2)),
     solver = ECOSSolver(maxit=10e8, verbose=0)
     )
@@ -689,11 +689,11 @@ function find_ρmax(
       problem.constraints += Aineq * x <= bineq
     end
 
-    TT = STDOUT # save original STDOUT stream
-    redirect_stdout()
+    # TT = STDOUT # save original STDOUT stream
+    # redirect_stdout()
     solve!(problem, solver)
     β = x.value
-    redirect_stdout(TT) # restore STDOUT
+    # redirect_stdout(TT) # restore STDOUT
 
     λeq = zeros(eltype(X), 0, 1)
     μineq = zeros(eltype(X), 0, 1)
