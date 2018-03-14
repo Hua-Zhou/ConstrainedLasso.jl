@@ -24,8 +24,8 @@ addons:
     packages:
     - gfortran
 before_install: # homebrew for mac
-     - 'if [[ "$TRAVIS_OS_NAME" == "osx" && "$CC" == "gcc" ]]; then brew install gcc; CC=gcc-5; fi'
-#    - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
+#     - 'if [[ "$TRAVIS_OS_NAME" == "osx" && "$CC" == "gcc" ]]; then brew install gcc; CC=gcc-5; fi'
+    - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
 
 ## uncomment the following lines to override the default test script
 script:
