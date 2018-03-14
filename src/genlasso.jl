@@ -35,7 +35,7 @@ Note genralized lasso minimizes
 
 function genlasso(
     X::AbstractMatrix{T},
-    y::AbstractMatrix{T};
+    y::AbstractArray{T};
     path::Bool = true,
     ρ::Union{AbstractVector, Number} = zero(T),
     D::AbstractMatrix{T} = eye(size(X, 2)),
