@@ -3,9 +3,9 @@ language: julia
 os:
   - osx
   - linux 
-compiler:
-  - clang
-  - gcc 
+#compiler:
+#  - clang
+#  - gcc 
 
 julia:
   - 0.6
