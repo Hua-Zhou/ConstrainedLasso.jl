@@ -30,6 +30,6 @@ makedocs()
 deploydocs(
     deps   = Deps.pip("pygments", "mkdocs", "mkdocs-material", "python-markdown-math"),
     repo   = "github.com:Hua-Zhou/ConstrainedLasso.jl.git",
-    julia  = "0.6",
+    julia  = "0.6.2",
     osname = "osx"
 )

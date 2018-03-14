@@ -36,11 +36,11 @@ docs_dir: 'build'
 pages:
 - Home: index.md
 - Interface: interface.md
-- Example:
+- Examples:
      - 'Fixed Tuning Parameter Value': demo/fixedparam.md
      - 'ADMM': demo/admm.md
      - 'Path Algorithm': demo/path.md
-- 'Real Data Applications':
+- 'Benchmark Data Applications':
      - 'Prostate Data': demo/prostate.md
      - 'Global Warming Data': demo/warming.md
      - 'Brain Tumor Data': demo/tumor.md
