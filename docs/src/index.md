@@ -34,4 +34,4 @@ The original method paper on the constrained lasso is
 
 If you use **ConstrainedLasso** package in your research, please cite the following paper on the algorithms:
 
-*Gaines, B., Kim, J. and Zhou, H. (2018). “Algorithms for Fitting the Constrained Lasso,” under revision.*
+*Gaines, B., Kim, J. and Zhou, H. (2018). “Algorithms for Fitting the Constrained Lasso,” Journal of Computational and Graphical Statistics, in press.*
